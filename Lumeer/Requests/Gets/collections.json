@@ -1,0 +1,239 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/collections
+[
+  {
+    "code": "e436cfcb49cacce3",
+    "name": "table1",
+    "icon": "fas fa-chevron-double-left",
+    "color": "#4527a0",
+    "description": "",
+    "priority": null,
+    "permissions": {
+      "users": [
+        {
+          "id": "621636e75eed7129e47d119b",
+          "roles": [
+            {
+              "type": "TechConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataRead",
+              "transitive": false
+            },
+            {
+              "type": "UserConfig",
+              "transitive": false
+            },
+            {
+              "type": "CommentContribute",
+              "transitive": false
+            },
+            {
+              "type": "AttributeEdit",
+              "transitive": false
+            },
+            {
+              "type": "DataDelete",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "DataContribute",
+              "transitive": false
+            },
+            {
+              "type": "Manage",
+              "transitive": false
+            },
+            {
+              "type": "DataWrite",
+              "transitive": false
+            }
+          ]
+        }
+      ],
+      "groups": []
+    },
+    "attributes": [
+      {
+        "id": "a1",
+        "name": "A1",
+        "description": null,
+        "constraint": null,
+        "lock": null,
+        "function": null,
+        "usageCount": 5
+      },
+      {
+        "id": "a2",
+        "name": "A",
+        "description": null,
+        "constraint": null,
+        "lock": null,
+        "function": null,
+        "usageCount": 5
+      }
+    ],
+    "rules": {},
+    "dataDescription": null,
+    "purpose": {
+      "type": "None",
+      "metaData": {}
+    },
+    "id": "6233186925e9217700e11bf7",
+    "version": 9,
+    "nonRemovable": false,
+    "documentsCount": 5,
+    "lastTimeUsed": 1648121692159,
+    "defaultAttributeId": "a1",
+    "favorite": false,
+    "purposeType": "None",
+    "purposeMetaData": {}
+  },
+  {
+    "code": "9bc419460ede840a",
+    "name": "TasksTable",
+    "icon": "fas fa-flag-checkered",
+    "color": "#b2dfdb",
+    "description": "",
+    "priority": null,
+    "permissions": {
+      "users": [
+        {
+          "id": "621636e75eed7129e47d119b",
+          "roles": [
+            {
+              "type": "TechConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataRead",
+              "transitive": false
+            },
+            {
+              "type": "UserConfig",
+              "transitive": false
+            },
+            {
+              "type": "CommentContribute",
+              "transitive": false
+            },
+            {
+              "type": "AttributeEdit",
+              "transitive": false
+            },
+            {
+              "type": "DataDelete",
+              "transitive": false
+            },
+            {
+              "type": "DataContribute",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "Manage",
+              "transitive": false
+            },
+            {
+              "type": "DataWrite",
+              "transitive": false
+            }
+          ]
+        }
+      ],
+      "groups": []
+    },
+    "attributes": [
+      {
+        "id": "a1",
+        "name": "Description",
+        "description": null,
+        "constraint": {
+          "type": "Text",
+          "config": {
+            "caseStyle": "None",
+            "minLength": null,
+            "maxLength": null
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 3
+      },
+      {
+        "id": "a2",
+        "name": "Assignee",
+        "description": null,
+        "constraint": {
+          "type": "User",
+          "config": {
+            "multi": null,
+            "externalUsers": null,
+            "onlyIcon": false,
+            "type": "users"
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 2
+      },
+      {
+        "id": "a3",
+        "name": "Due",
+        "description": null,
+        "constraint": {
+          "type": "DateTime",
+          "config": {
+            "format": "DD.MM.YYYY",
+            "minValue": null,
+            "maxValue": null,
+            "asUtc": true
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 3
+      }
+    ],
+    "rules": {},
+    "dataDescription": null,
+    "purpose": {
+      "type": "Tasks",
+      "metaData": {
+        "assigneeAttributeId": "a2",
+        "dueDateAttributeId": "a3",
+        "stateAttributeId": null,
+        "finalStatesList": [],
+        "observersAttributeId": null,
+        "tagsAttributeId": null,
+        "priorityAttributeId": null,
+        "defaultViewCode": null
+      }
+    },
+    "id": "62402061a26fa76666627730",
+    "version": 23,
+    "nonRemovable": false,
+    "documentsCount": 3,
+    "lastTimeUsed": 1648370151441,
+    "defaultAttributeId": "a1",
+    "favorite": false,
+    "purposeType": "Tasks",
+    "purposeMetaData": {
+      "assigneeAttributeId": "a2",
+      "dueDateAttributeId": "a3",
+      "stateAttributeId": null,
+      "finalStatesList": [],
+      "observersAttributeId": null,
+      "tagsAttributeId": null,
+      "priorityAttributeId": null,
+      "defaultViewCode": null
+    }
+  }
+]

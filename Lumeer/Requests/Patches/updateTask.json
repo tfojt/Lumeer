@@ -1,0 +1,23 @@
+// pridal jsem vykricnik k a1
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/collections/62402061a26fa76666627730/documents/62402117a26fa76666627731/data
+//payload
+//{ "a1": "Napsat bp!" }
+
+{
+  "data": {
+    "_id": "62402117a26fa76666627731",
+    "a1": "Napsat bp!",
+    "a2": "tomasfojt@seznam.cz",
+    "a3": "2022-03-31T00:00:00.000+0000"
+  },
+  "id": "62402117a26fa76666627731",
+  "collectionId": "62402061a26fa76666627730",
+  "creationDate": 1648369943773,
+  "updateDate": 1648551400457,
+  "createdBy": "621636e75eed7129e47d119b",
+  "updatedBy": "621636e75eed7129e47d119b",
+  "dataVersion": 3,
+  "metaData": {},
+  "commentsCount": 0,
+  "favorite": true
+}

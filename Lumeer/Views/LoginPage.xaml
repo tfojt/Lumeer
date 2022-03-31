@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lumeer.Views.LoginPage"
+             Title="Log In">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Margin="10">
+                <StackLayout Margin="10">
+                    <Button Text="Log in with Github"/>
+                    <Button Text="Log in with Google"/>
+                </StackLayout>
+                <Label Text="or" HorizontalOptions="Center"/>
+                <StackLayout Margin="10">
+                    <Entry Keyboard="Email" Placeholder="your@work.email"/>
+                    <Entry IsPassword="True" Placeholder="your password"/>
+                </StackLayout>
+            </StackLayout>
+
+            <Button Text="Don't remember your password?" BackgroundColor="Transparent"/>
+            <Button Text="Log In" Command="{Binding LoginCmd}" BackgroundColor="MediumSpringGreen"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

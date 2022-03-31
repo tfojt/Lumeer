@@ -1,0 +1,75 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/search/tasks?subItems=false
+//payload
+/*{
+  "stems": [
+    {
+      "collectionId": "62402061a26fa76666627730",
+      "documentIds": [],
+      "linkTypeIds": [],
+      "filters": [],
+      "linkFilters": []
+    }
+  ],
+  "fulltexts": [],
+  "page": null,
+  "pageSize": null
+}*/
+
+{
+  "documents": [
+    {
+      "data": {
+        "_id": "62402117a26fa76666627731",
+        "a1": "Napsat bp",
+        "a2": "tomasfojt@seznam.cz",
+        "a3": "2022-03-31T00:00:00.000+0000"
+      },
+      "id": "62402117a26fa76666627731",
+      "collectionId": "62402061a26fa76666627730",
+      "creationDate": 1648369943773,
+      "updateDate": 1648369961478,
+      "createdBy": "621636e75eed7129e47d119b",
+      "updatedBy": "621636e75eed7129e47d119b",
+      "dataVersion": 2,
+      "metaData": {},
+      "commentsCount": 0,
+      "favorite": true
+    },
+    {
+      "data": {
+        "_id": "624021bba26fa7666662773f",
+        "a1": "Uvarit jidlo",
+        "a3": "2022-03-26T00:00:00.000+0000"
+      },
+      "id": "624021bba26fa7666662773f",
+      "collectionId": "62402061a26fa76666627730",
+      "creationDate": 1648370107967,
+      "updateDate": 1648370151448,
+      "createdBy": "621636e75eed7129e47d119b",
+      "updatedBy": "621636e75eed7129e47d119b",
+      "dataVersion": 2,
+      "metaData": {},
+      "commentsCount": 0,
+      "favorite": false
+    },
+    {
+      "data": {
+        "_id": "62402136a26fa76666627739",
+        "a1": "Uklidit si",
+        "a2": "tomasfojt@seznam.cz",
+        "a3": "2022-03-27T00:00:00.000+0000"
+      },
+      "id": "62402136a26fa76666627739",
+      "collectionId": "62402061a26fa76666627730",
+      "creationDate": 1648369974364,
+      "updateDate": 1648369978751,
+      "createdBy": "621636e75eed7129e47d119b",
+      "updatedBy": "621636e75eed7129e47d119b",
+      "dataVersion": 2,
+      "metaData": {},
+      "commentsCount": 0,
+      "favorite": false
+    }
+  ],
+  "linkInstances": []
+}

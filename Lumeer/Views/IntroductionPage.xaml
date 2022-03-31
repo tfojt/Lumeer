@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Lumeer.MarkupExtensions"
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels;assembly=Lumeer"
+             xmlns:models="clr-namespace:Lumeer.Models;assembly=Lumeer"
+             x:Class="Lumeer.Views.IntroductionPage">
+    <ContentPage.BindingContext>
+        <viewModels:IntroductionViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Padding="0,10" BackgroundColor="LightGray">
+                <Image Source="{local:EmbeddedImage Lumeer.Images.lumeerLogo.png}" 
+                       WidthRequest="70"
+                       HeightRequest="70"/>
+                <Label Text="lumeer"
+                       HorizontalOptions="Center"
+                       FontSize="25"
+                       TextColor="Black"/>
+            </StackLayout>
+            <!--TODOT IndicatorView?-->
+            <CarouselView ItemsSource="{Binding IntroductionTips}" Loop="False">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="models:IntroductionTip" >
+                        <StackLayout>
+                            <Image Source="{Binding ImageSource}"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"/>
+                            <Label Text="{Binding Tip}"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <Button Text="Get started"
+                    Command="{Binding AuthenticateCmd}"
+                    BackgroundColor="SeaGreen"
+                    TextColor="White"
+                    HeightRequest="80"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

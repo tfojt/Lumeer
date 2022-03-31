@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels;assembly=Lumeer"
+             x:Class="Lumeer.Views.TestPage">
+    <ContentPage.BindingContext>
+        <viewModels:TestViewModel/>   
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Button Text="Test"
+                Command="{Binding TestCmd}"
+                BackgroundColor="SeaGreen"
+                TextColor="White"
+                HeightRequest="80"/>
+    </ContentPage.Content>
+</ContentPage>

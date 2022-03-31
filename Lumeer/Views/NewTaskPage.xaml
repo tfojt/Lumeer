@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
+             x:Class="Lumeer.Views.NewTaskPage">
+    <ContentPage.BindingContext>
+        <viewModels:NewTaskViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to NewTaskPage!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Grid VerticalOptions="End">
+                <Button Text="Cancel" Grid.Column="0"
+                    Command="{Binding CancelCmd}"
+                    HorizontalOptions="Start"/>
+                <Button Text="Create" Grid.Column="1"
+                    Command="{Binding CreateCmd}"
+                    HorizontalOptions="End"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

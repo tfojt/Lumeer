@@ -1,0 +1,46 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/views/defaultConfigs/all
+[
+  {
+    "key": "default",
+    "perspective": "search",
+    "config": {
+      "search": {
+        "searchTab": "all",
+        "documents": { "size": "S" },
+        "views": { "size": "S" }
+      }
+    },
+    "updatedAt": 1647515935200,
+    "userId": "621636e75eed7129e47d119b"
+  },
+  {
+    "key": "6233186925e9217700e11bf7",
+    "perspective": "table",
+    "config": {
+      "table": {
+        "parts": [
+          {
+            "collectionId": "6233186925e9217700e11bf7",
+            "columns": [
+              {
+                "type": "compound",
+                "attributeIds": [ "a1" ],
+                "children": [],
+                "width": 100
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a2" ],
+                "children": [],
+                "width": 100
+              }
+            ]
+          }
+        ],
+        "rows": []
+      }
+    },
+    "updatedAt": 1647515831964,
+    "userId": "621636e75eed7129e47d119b"
+  }
+]

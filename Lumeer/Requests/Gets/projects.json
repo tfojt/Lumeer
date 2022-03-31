@@ -1,0 +1,116 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects
+[
+  {
+    "code": "BUG",
+    "name": "",
+    "icon": "fas fa-user-plus",
+    "color": "#7e57c2",
+    "description": "",
+    "priority": null,
+    "permissions": {
+      "users": [
+        {
+          "id": "621636e75eed7129e47d119b",
+          "roles": [
+            {
+              "type": "ViewContribute",
+              "transitive": false
+            },
+            {
+              "type": "Manage",
+              "transitive": true
+            },
+            {
+              "type": "LinkContribute",
+              "transitive": true
+            },
+            {
+              "type": "UserConfig",
+              "transitive": true
+            },
+            {
+              "type": "AttributeEdit",
+              "transitive": true
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": true
+            },
+            {
+              "type": "ViewContribute",
+              "transitive": true
+            },
+            {
+              "type": "ProjectContribute",
+              "transitive": true
+            },
+            {
+              "type": "DataDelete",
+              "transitive": true
+            },
+            {
+              "type": "PerspectiveConfig",
+              "transitive": true
+            },
+            {
+              "type": "DataRead",
+              "transitive": true
+            },
+            {
+              "type": "TechConfig",
+              "transitive": true
+            },
+            {
+              "type": "CollectionContribute",
+              "transitive": true
+            },
+            {
+              "type": "LinkContribute",
+              "transitive": false
+            },
+            {
+              "type": "CommentContribute",
+              "transitive": true
+            },
+            {
+              "type": "DataWrite",
+              "transitive": true
+            },
+            {
+              "type": "QueryConfig",
+              "transitive": true
+            },
+            {
+              "type": "DataContribute",
+              "transitive": true
+            },
+            {
+              "type": "CollectionContribute",
+              "transitive": false
+            }
+          ]
+        }
+      ],
+      "groups": []
+    },
+    "public": false,
+    "templateMetadata": {
+      "imageUrl": null,
+      "showTopPanel": false,
+      "editable": true,
+      "tags": null,
+      "relativeDate": null,
+      "defaultView": null,
+      "allowedDomains": null,
+      "organizationId": null
+    },
+    "id": "62305fe17ba59b6cf5da1835",
+    "version": 0,
+    "nonRemovable": false,
+    "collectionsCount": 1
+  }
+]

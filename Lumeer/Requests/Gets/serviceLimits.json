@@ -1,0 +1,15 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/info/serviceLimits
+{
+  "621636e75eed7129e47d119c": {
+    "serviceLevel": "FREE",
+    "users": 3,
+    "projects": 3,
+    "files": 10,
+    "documents": 2000,
+    "dbSizeMb": -1,
+    "validUntil": 1655808798134,
+    "rulesPerCollection": 1,
+    "functionsPerCollection": 1,
+    "groups": false
+  }
+}

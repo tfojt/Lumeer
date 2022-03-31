@@ -1,0 +1,96 @@
+//http://localhost:8080/lumeer-engine/rest/organizations
+[
+  {
+    "code": "TMSFJ",
+    "name": "Lumeer demo",
+    "icon": "fas fa-solar-panel",
+    "color": "#0b5394",
+    "description": null,
+    "priority": null,
+    "permissions": {
+      "users": [
+        {
+          "id": "621636e75eed7129e47d119b",
+          "roles": [
+            {
+              "type": "Manage",
+              "transitive": true
+            },
+            {
+              "type": "LinkContribute",
+              "transitive": true
+            },
+            {
+              "type": "UserConfig",
+              "transitive": true
+            },
+            {
+              "type": "AttributeEdit",
+              "transitive": true
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": true
+            },
+            {
+              "type": "ViewContribute",
+              "transitive": true
+            },
+            {
+              "type": "ProjectContribute",
+              "transitive": true
+            },
+            {
+              "type": "DataDelete",
+              "transitive": true
+            },
+            {
+              "type": "PerspectiveConfig",
+              "transitive": true
+            },
+            {
+              "type": "DataRead",
+              "transitive": true
+            },
+            {
+              "type": "ProjectContribute",
+              "transitive": false
+            },
+            {
+              "type": "TechConfig",
+              "transitive": true
+            },
+            {
+              "type": "CollectionContribute",
+              "transitive": true
+            },
+            {
+              "type": "DataWrite",
+              "transitive": true
+            },
+            {
+              "type": "CommentContribute",
+              "transitive": true
+            },
+            {
+              "type": "QueryConfig",
+              "transitive": true
+            },
+            {
+              "type": "DataContribute",
+              "transitive": true
+            }
+          ]
+        }
+      ],
+      "groups": []
+    },
+    "id": "621636e75eed7129e47d119c",
+    "version": 0,
+    "nonRemovable": false
+  }
+]
