@@ -9,10 +9,12 @@ namespace Lumeer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TaskDetailPage : ContentPage
     {
+        public TaskDetailViewModel TaskDetailViewModel { get; }
+
         public TaskDetailPage(Task task, Table table)
         {
-            var taskDetailViewModel = new TaskDetailViewModel(task, table);
-            BindingContext = taskDetailViewModel;
+            TaskDetailViewModel = new TaskDetailViewModel(task, table);
+            BindingContext = TaskDetailViewModel;
 
             InitializeComponent();
 
@@ -20,7 +22,7 @@ namespace Lumeer.Views
             {
                 var taskTableAttributeWrapper = new TaskTableAttributeWrapper(task, tableAttribute);
                 tableSection.Add(taskTableAttributeWrapper.Cell);
-                taskDetailViewModel.TaskTableAttributeWrappers.Add(taskTableAttributeWrapper);
+                TaskDetailViewModel.TaskTableAttributeWrappers.Add(taskTableAttributeWrapper);
             }
         }
     }

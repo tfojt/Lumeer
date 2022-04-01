@@ -1,5 +1,6 @@
 ﻿using Lumeer.Utils;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -8,6 +9,7 @@ namespace Lumeer.Models.Rest
     public class Task : NotifyPropertyChanged
     {
         public Dictionary<string, object> Data { get; set; }
+        public ObservableCollection<ObservableKeyValuePair<string, object>> ObservableData { get; set; }
         public string Id { get; set; }
         public string CollectionId { get; set; }
         public long CreationDate { get; set; }

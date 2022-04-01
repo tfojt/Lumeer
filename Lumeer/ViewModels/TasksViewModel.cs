@@ -71,9 +71,22 @@ namespace Lumeer.ViewModels
 
         private async void DisplayTaskDetail(Models.Rest.Task task)
         {
+            // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
+
             var table = Session.Instance.Tables.Single(t => t.Id == task.CollectionId);
-            await _navigationService.PushAsync(new TaskDetailPage(task, table));
+            var taskDetailPage = new TaskDetailPage(task, table);
+            taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
+
+            await _navigationService.PushAsync(taskDetailPage);
             SelectedTask = null;
+        }
+
+        private void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
+        {
+            // TODOT make binding work
+            var taskIndex = Tasks.IndexOf(task);
+            Tasks.Remove(task);
+            Tasks.Insert(taskIndex, task);
         }
 
         private void CreateTask()
@@ -146,7 +159,7 @@ namespace Lumeer.ViewModels
                 for (int i = 1; i < propertiesCount + 1; i++)
                 {
                     var label = new Label();
-                    label.SetBinding(Label.TextProperty, $"Data[a{i}]");
+                    label.SetBinding(Label.TextProperty, $"Data[a{i}]", BindingMode.TwoWay);
                     stackLayout.Children.Add(label);
                 }
 

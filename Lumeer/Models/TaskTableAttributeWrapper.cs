@@ -2,6 +2,7 @@
 using Lumeer.Models.Rest;
 using Lumeer.Utils;
 using System;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Lumeer.Models
@@ -12,8 +13,8 @@ namespace Lumeer.Models
         public Task Task { get; }
         public TableAttribute TableAttribute { get; }
         public AttributeType AttributeType { get; }
-        public bool OriginalValueHasValue { get; }
-        public object OriginalValue { get; }
+        public bool OriginalValueHasValue { get; private set; }
+        public object OriginalValue { get; private set; }
         public object CurrentValue { get; }
         public Cell Cell { get; }
 
@@ -64,9 +65,25 @@ namespace Lumeer.Models
                         {
                             HorizontalOptions = LayoutOptions.CenterAndExpand
                         };
-                        if (OriginalValueHasValue && !(OriginalValue is string dateString && string.IsNullOrEmpty(dateString)))
+                        if (OriginalValueHasValue)
                         {
-                            datePicker.NullableDate = (DateTime)OriginalValue;  // TODOT handle format
+                            if (OriginalValue is string dateString)  // Api sometimes sends date in string
+                            {
+                                if (string.IsNullOrEmpty(dateString))
+                                {
+                                    OriginalValueHasValue = false;
+                                    OriginalValue = null;
+                                }
+                                else
+                                {
+                                    datePicker.NullableDate = DateTime.Parse(dateString);
+                                    OriginalValue = datePicker.NullableDate;
+                                }
+                            }
+                            else
+                            {
+                                datePicker.NullableDate = (DateTime)OriginalValue;  // TODOT handle format
+                            }
                         }
                         stackLayout.Children.Add(datePicker);
 
@@ -87,41 +104,47 @@ namespace Lumeer.Models
 
         public bool ValueChanged(out object newValue)
         {
+            bool currentValueHasValue;
+
             switch (Cell)
             {
                 case EntryCell entryCell:
                     {
                         string currentValue = entryCell.Text;
-                        bool currentValueHasValue = !string.IsNullOrEmpty(currentValue);
+                        currentValueHasValue = !string.IsNullOrEmpty(currentValue);
+                        newValue = currentValue;
+                        break;
+                    }
+                case ViewCell viewCell:
+                    {
+                        if (AttributeType == AttributeType.DateTime)
+                        {
+                            var stackLayout = (StackLayout)viewCell.View;
+                            var nullableDatePicker = (NullableDatePicker)stackLayout.Children.Single(ch => ch is NullableDatePicker);
 
-                        if (!OriginalValueHasValue && !currentValueHasValue)
-                        {
-                            newValue = null;
-                            return false;
-                        }
-                        if (!OriginalValueHasValue && currentValueHasValue)
-                        {
+                            DateTime? currentValue = nullableDatePicker.NullableDate;
+                            currentValueHasValue = currentValue.HasValue;
                             newValue = currentValue;
-                            return true;
-                        }
-                        if (OriginalValueHasValue && !currentValueHasValue)
-                        {
-                            newValue = "";
-                            return true;
-                        }
-                        if (OriginalValueHasValue && currentValueHasValue)
-                        {
-                            string originalValue = (string)OriginalValue;
-                            
-                            newValue = currentValue;
-                            return originalValue != currentValue;
+                            break;
                         }
 
-                        throw new NotImplementedException(nameof(EntryCell));
+                        throw new NotImplementedException($"{nameof(ViewCell)} - {AttributeType}");
                     }
                 default:
                     throw new NotImplementedException(Cell.GetType().ToString());
             }
+
+            if (OriginalValueHasValue)
+            {
+                return !OriginalValue.Equals(newValue);
+            }
+
+            if (currentValueHasValue)
+            {
+                return !newValue.Equals(OriginalValue);
+            }
+
+            return false;
         }
     }
 }
