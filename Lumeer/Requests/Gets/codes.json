@@ -1,5 +1,5 @@
 //http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/info/codes
-[ "BUG" ]
+[ "Fst", "Snd" ]
 
 //http://localhost:8080/lumeer-engine/rest/organizations/info/codes
-[ "TMSFJ" ]
+//[ "TMSFJ" ]

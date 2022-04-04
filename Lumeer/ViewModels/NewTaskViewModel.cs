@@ -1,35 +1,41 @@
-﻿using Lumeer.Services;
+﻿using Lumeer.Models;
+using Lumeer.Models.Rest;
+using Lumeer.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Task = Lumeer.Models.Rest.Task;
 
 namespace Lumeer.ViewModels
 {
-    public class NewTaskViewModel
+    public class NewTaskViewModel : AbstractTaskViewModel
     {
-        private readonly IAlertService _alertService;
-        private readonly INavigationService _navigationService;
+        public event TaskEventHandler TaskCreated;
 
         public ICommand CancelCmd { get; set; }
         public ICommand CreateCmd { get; set; }
 
-        public NewTaskViewModel()
+        public List<Table> Tables { get; } = Session.Instance.TaskTables;
+
+        // TODOT what if user does not have task table?
+        public NewTaskViewModel(TableSection tableSection) : base(new Task(), Session.Instance.TaskTables.First(), tableSection)
         {
-            _alertService = DependencyService.Get<IAlertService>();
-            _navigationService = DependencyService.Get<INavigationService>();
+            //Task = new Task();
             CancelCmd = new Command(Cancel);
             CreateCmd = new Command(Create);
         }
 
         public async Task<bool> CheckCancellation()
         {
-            bool discardChanges = await _alertService.DisplayAlert("Warning", "Your changes will be discarded!", "Ok", "Cancel");
+            bool discardChanges = await AlertService.DisplayAlert("Warning", "Your changes will be discarded!", "Ok", "Cancel");
             if (discardChanges)
             {
-                await _navigationService.PopModalAsync();
+                await NavigationService.PopModalAsync();
             }
 
             return discardChanges;
@@ -40,9 +46,25 @@ namespace Lumeer.ViewModels
             await CheckCancellation();
         }
 
-        private void Create()
+        private async void Create()
         {
+            if (TaskAttributesChanged(out Dictionary<string, object> changedAttributes))
+            {
+                var newTask = new NewTask(Table.Id, changedAttributes);
+                HttpResponseMessage response = await SendTaskRequest(HttpMethod.Post, newTask);
+                if (!response.IsSuccessStatusCode)
+                {
+                    await AlertService.DisplayAlert("Error", "Sorry, there was an error while creating data.", "Ok");
+                    return;
+                }
 
+                string content = await response.Content.ReadAsStringAsync();
+                Task = JsonConvert.DeserializeObject<Task>(content);
+
+                TaskCreated?.Invoke(Task);
+            }
+
+            await NavigationService.PopModalAsync();
         }
     }
 }

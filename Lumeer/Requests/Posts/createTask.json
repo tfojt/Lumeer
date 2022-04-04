@@ -1,0 +1,24 @@
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/collections/62402061a26fa76666627730/documents
+// payload
+/*{
+  "collectionId": "62402061a26fa76666627730",
+  "data": {
+    "a1": "Vytvorit task",
+    "a2": "tomasfojt@seznam.cz",
+    "a3": "2022-04-02T00:00:00.000Z"
+  }
+}*/
+
+{
+  "data": {
+    "a1": "Vytvorit task",
+    "a2": "tomasfojt@seznam.cz",
+    "a3": "2022-04-02T00:00:00.000+0000"
+  },
+  "id": "62483a317bb85731a06b0e08",
+  "collectionId": "62402061a26fa76666627730",
+  "creationDate": 1648900657812,
+  "createdBy": "621636e75eed7129e47d119b",
+  "dataVersion": 0,
+  "favorite": false
+}

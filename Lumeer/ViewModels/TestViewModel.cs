@@ -15,7 +15,7 @@ namespace Lumeer.ViewModels
 {
     public class TestViewModel
     {
-        private readonly HttpClient _client = ApiClient.Instance;
+        private readonly HttpClient _client = new HttpClient();
 
         public ICommand TestCmd { get; set; }
 

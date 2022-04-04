@@ -30,22 +30,6 @@
                       IsRefreshing="{Binding IsRefreshingTasks}"
                       HasUnevenRows="True"
                       ItemTemplate="{Binding TasksDataTemplate, Mode=OneWay}">
-                <!--<ListView.ItemTemplate>
-                    <DataTemplate x:DataType="rest:Task">
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Favorite" 
-                                          Command="{Binding FavoriteCmd}" 
-                                          CommandParameter="{Binding .}"/>
-                            </ViewCell.ContextActions>
-                            <StackLayout>
-                                <Label Text="{Binding Data[a1]}"/>
-                                <Label Text="{Binding Data[a2]}"/>
-                                <Label Text="{Binding Data[a3]}"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>-->
             </ListView>
             <Button Grid.Row="1"
                     HorizontalOptions="End"

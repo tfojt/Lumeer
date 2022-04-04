@@ -12,7 +12,7 @@ namespace Lumeer
         {
             InitializeComponent();
 
-            Utils.ApiClient.SetupInstance();    // TODOT delete
+            Utils.ApiClient.Authorize();    // TODOT delete
             MainPage = new NavigationPage(new MainPage());
             //MainPage = new IntroductionPage();
         }

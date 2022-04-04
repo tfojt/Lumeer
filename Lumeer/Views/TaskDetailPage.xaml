@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:customViews="clr-namespace:Lumeer.CustomViews"
              x:Class="Lumeer.Views.TaskDetailPage"
              x:DataType="viewModels:TaskDetailViewModel">
     <ContentPage.Content>
         <StackLayout>
-            <TableView Intent="Data">
+            <!--?><TableView Intent="Data">
                 <TableRoot>
                     <TableSection x:Name="tableSection"
                               Title="Task Detail"/>
                 </TableRoot>
-            </TableView>
+            </TableView>-->
+            <customViews:TaskTableView x:Name="taskTableView"
+                                       IsVisible="{Binding TableSelected}"/>
             <Button Text="Save"
                     Command="{Binding SaveCmd}"
                     VerticalOptions="End"

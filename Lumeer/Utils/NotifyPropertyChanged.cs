@@ -15,16 +15,18 @@ namespace Lumeer.Utils
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
+        protected bool SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {
-                return;
+                return false;
             }
 
             backingField = value;
 
             OnPropertyChanged(propertyName);
+
+            return true;
         }
     }
 }

@@ -3,9 +3,7 @@
   "id": "621636e75eed7129e47d119b",
   "name": "tomasfojt@seznam.cz",
   "email": "tomasfojt@seznam.cz",
-  "organizations": [
-    "621636e75eed7129e47d119c"
-  ],
+  "organizations": [ "621636e75eed7129e47d119c" ],
   "agreement": true,
   "agreementDate": 1645623217321,
   "newsletter": false,
@@ -179,9 +177,9 @@
     "organizationId": "621636e75eed7129e47d119c",
     "projectId": "62305fe17ba59b6cf5da1835",
     "organizationCode": "TMSFJ",
-    "projectCode": "BUG"
+    "projectCode": "Fst"
   },
-  "lastLoggedIn": 1647863594416,
+  "lastLoggedIn": 1648984802360,
   "timeZone": "Europe/Prague",
   "affiliatePartner": false,
   "emailVerified": true,

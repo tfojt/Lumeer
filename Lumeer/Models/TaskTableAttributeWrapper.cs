@@ -16,7 +16,7 @@ namespace Lumeer.Models
         public bool OriginalValueHasValue { get; private set; }
         public object OriginalValue { get; private set; }
         public object CurrentValue { get; }
-        public Cell Cell { get; }
+        public Cell Cell { get; private set; }
 
         public TaskTableAttributeWrapper(Task task, TableAttribute tableAttribute)
         {
@@ -24,22 +24,25 @@ namespace Lumeer.Models
             TableAttribute = tableAttribute;
             OriginalValueHasValue = task.Data.TryGetValue(tableAttribute.Id, out object originalValue);
             OriginalValue = originalValue;
-            AttributeType = (AttributeType)Enum.Parse(typeof(AttributeType), tableAttribute.Constraint.Type);
-            Cell = GenerateCell();
+
+            AttributeType = Enum.TryParse<AttributeType>(tableAttribute?.Constraint?.Type, out var attributeType) ?
+                attributeType : AttributeType.None;
+            
+            GenerateCell();
         }
 
-        private Cell GenerateCell()
+        private void GenerateCell()
         {
-            Cell cell;
             string attributeName = TableAttribute.Name;
 
             switch (AttributeType)
             {
+                case AttributeType.None:
                 case AttributeType.User:    // TODOT Handle user hints
                 case AttributeType.Text:
                     {
                         string text = OriginalValueHasValue ? (string)OriginalValue : "";
-                        cell = new EntryCell
+                        Cell = new EntryCell
                         {
                             Label = attributeName,
                             Text = text
@@ -57,13 +60,14 @@ namespace Lumeer.Models
                         var label = new Label
                         {
                             Text = attributeName,
-                            VerticalOptions = LayoutOptions.Center
+                            VerticalOptions = LayoutOptions.Center,
+                            HorizontalOptions = LayoutOptions.Start
                         };
                         stackLayout.Children.Add(label);
 
                         var datePicker = new NullableDatePicker
                         {
-                            HorizontalOptions = LayoutOptions.CenterAndExpand
+                            HorizontalOptions = LayoutOptions.FillAndExpand
                         };
                         if (OriginalValueHasValue)
                         {
@@ -89,17 +93,15 @@ namespace Lumeer.Models
 
                         // TODOT sometimes TimerPicker
 
-                        cell = new ViewCell
+                        Cell = new ViewCell
                         {
                             View = stackLayout
                         };
                         break;
                     }
                 default:
-                    throw new NotImplementedException(nameof(AttributeType));
+                    throw new NotImplementedException($"{nameof(GenerateCell)} - {AttributeType}");
             }
-
-            return cell;
         }
 
         public bool ValueChanged(out object newValue)
@@ -128,10 +130,10 @@ namespace Lumeer.Models
                             break;
                         }
 
-                        throw new NotImplementedException($"{nameof(ViewCell)} - {AttributeType}");
+                        throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {AttributeType}");
                     }
                 default:
-                    throw new NotImplementedException(Cell.GetType().ToString());
+                    throw new NotImplementedException($"{nameof(ValueChanged)} - {Cell.GetType()}");
             }
 
             if (OriginalValueHasValue)

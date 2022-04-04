@@ -8,7 +8,7 @@ namespace Lumeer.Models.Rest
 {
     public class Task : NotifyPropertyChanged
     {
-        public Dictionary<string, object> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
         public ObservableCollection<ObservableKeyValuePair<string, object>> ObservableData { get; set; }
         public string Id { get; set; }
         public string CollectionId { get; set; }

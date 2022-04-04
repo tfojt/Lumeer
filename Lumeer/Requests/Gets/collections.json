@@ -13,15 +13,7 @@
           "id": "621636e75eed7129e47d119b",
           "roles": [
             {
-              "type": "TechConfig",
-              "transitive": false
-            },
-            {
-              "type": "DataRead",
-              "transitive": false
-            },
-            {
-              "type": "UserConfig",
+              "type": "AttributeEdit",
               "transitive": false
             },
             {
@@ -29,19 +21,15 @@
               "transitive": false
             },
             {
-              "type": "AttributeEdit",
+              "type": "DataContribute",
+              "transitive": false
+            },
+            {
+              "type": "UserConfig",
               "transitive": false
             },
             {
               "type": "DataDelete",
-              "transitive": false
-            },
-            {
-              "type": "Read",
-              "transitive": false
-            },
-            {
-              "type": "DataContribute",
               "transitive": false
             },
             {
@@ -50,6 +38,18 @@
             },
             {
               "type": "DataWrite",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "TechConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataRead",
               "transitive": false
             }
           ]
@@ -90,8 +90,8 @@
     "lastTimeUsed": 1648121692159,
     "defaultAttributeId": "a1",
     "favorite": false,
-    "purposeType": "None",
-    "purposeMetaData": {}
+    "purposeMetaData": {},
+    "purposeType": "None"
   },
   {
     "code": "9bc419460ede840a",
@@ -106,15 +106,7 @@
           "id": "621636e75eed7129e47d119b",
           "roles": [
             {
-              "type": "TechConfig",
-              "transitive": false
-            },
-            {
-              "type": "DataRead",
-              "transitive": false
-            },
-            {
-              "type": "UserConfig",
+              "type": "AttributeEdit",
               "transitive": false
             },
             {
@@ -122,19 +114,15 @@
               "transitive": false
             },
             {
-              "type": "AttributeEdit",
-              "transitive": false
-            },
-            {
-              "type": "DataDelete",
-              "transitive": false
-            },
-            {
               "type": "DataContribute",
               "transitive": false
             },
             {
-              "type": "Read",
+              "type": "UserConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataDelete",
               "transitive": false
             },
             {
@@ -143,6 +131,18 @@
             },
             {
               "type": "DataWrite",
+              "transitive": false
+            },
+            {
+              "type": "TechConfig",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "DataRead",
               "transitive": false
             }
           ]
@@ -165,7 +165,7 @@
         },
         "lock": null,
         "function": null,
-        "usageCount": 3
+        "usageCount": 5
       },
       {
         "id": "a2",
@@ -182,7 +182,7 @@
         },
         "lock": null,
         "function": null,
-        "usageCount": 2
+        "usageCount": 3
       },
       {
         "id": "a3",
@@ -199,7 +199,7 @@
         },
         "lock": null,
         "function": null,
-        "usageCount": 3
+        "usageCount": 4
       }
     ],
     "rules": {},
@@ -218,13 +218,12 @@
       }
     },
     "id": "62402061a26fa76666627730",
-    "version": 23,
+    "version": 34,
     "nonRemovable": false,
-    "documentsCount": 3,
-    "lastTimeUsed": 1648370151441,
+    "documentsCount": 5,
+    "lastTimeUsed": 1648987226218,
     "defaultAttributeId": "a1",
     "favorite": false,
-    "purposeType": "Tasks",
     "purposeMetaData": {
       "assigneeAttributeId": "a2",
       "dueDateAttributeId": "a3",
@@ -234,6 +233,167 @@
       "tagsAttributeId": null,
       "priorityAttributeId": null,
       "defaultViewCode": null
-    }
+    },
+    "purposeType": "Tasks"
+  },
+  {
+    "code": "57141587956cdc83",
+    "name": "SecondTasksTable",
+    "icon": "fas fa-chevron-double-left",
+    "color": "#d32f2f",
+    "description": "",
+    "priority": null,
+    "permissions": {
+      "users": [
+        {
+          "id": "621636e75eed7129e47d119b",
+          "roles": [
+            {
+              "type": "AttributeEdit",
+              "transitive": false
+            },
+            {
+              "type": "CommentContribute",
+              "transitive": false
+            },
+            {
+              "type": "DataContribute",
+              "transitive": false
+            },
+            {
+              "type": "UserConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataDelete",
+              "transitive": false
+            },
+            {
+              "type": "Manage",
+              "transitive": false
+            },
+            {
+              "type": "DataWrite",
+              "transitive": false
+            },
+            {
+              "type": "Read",
+              "transitive": false
+            },
+            {
+              "type": "TechConfig",
+              "transitive": false
+            },
+            {
+              "type": "DataRead",
+              "transitive": false
+            }
+          ]
+        }
+      ],
+      "groups": []
+    },
+    "attributes": [
+      {
+        "id": "a1",
+        "name": "Do",
+        "description": null,
+        "constraint": {
+          "type": "DateTime",
+          "config": {
+            "format": "DD.MM.YYYY H:mm",
+            "minValue": null,
+            "maxValue": null,
+            "asUtc": false
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 5
+      },
+      {
+        "id": "a2",
+        "name": "Popis",
+        "description": null,
+        "constraint": {
+          "type": "Text",
+          "config": {
+            "caseStyle": "None",
+            "minLength": null,
+            "maxLength": null
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 8
+      },
+      {
+        "id": "a3",
+        "name": "Zmocnenec",
+        "description": null,
+        "constraint": {
+          "type": "User",
+          "config": {
+            "multi": null,
+            "externalUsers": null,
+            "onlyIcon": false,
+            "type": "users"
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 7
+      },
+      {
+        "id": "a4",
+        "name": "Pozorovatel",
+        "description": null,
+        "constraint": {
+          "type": "User",
+          "config": {
+            "multi": null,
+            "externalUsers": null,
+            "onlyIcon": false,
+            "type": "users"
+          }
+        },
+        "lock": null,
+        "function": null,
+        "usageCount": 2
+      }
+    ],
+    "rules": {},
+    "dataDescription": null,
+    "purpose": {
+      "type": "Tasks",
+      "metaData": {
+        "assigneeAttributeId": "a3",
+        "dueDateAttributeId": "a1",
+        "stateAttributeId": null,
+        "finalStatesList": [],
+        "observersAttributeId": "a4",
+        "tagsAttributeId": null,
+        "priorityAttributeId": null,
+        "defaultViewCode": null
+      }
+    },
+    "id": "6243354aa26fa7666662774e",
+    "version": 53,
+    "nonRemovable": false,
+    "documentsCount": 8,
+    "lastTimeUsed": 1648825877673,
+    "defaultAttributeId": "a1",
+    "favorite": false,
+    "purposeMetaData": {
+      "assigneeAttributeId": "a3",
+      "dueDateAttributeId": "a1",
+      "stateAttributeId": null,
+      "finalStatesList": [],
+      "observersAttributeId": "a4",
+      "tagsAttributeId": null,
+      "priorityAttributeId": null,
+      "defaultViewCode": null
+    },
+    "purposeType": "Tasks"
   }
 ]

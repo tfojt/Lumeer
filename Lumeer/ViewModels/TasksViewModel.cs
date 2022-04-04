@@ -2,17 +2,14 @@
 using Lumeer.Services;
 using Lumeer.Utils;
 using Lumeer.Views;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Lumeer.ViewModels
@@ -72,8 +69,8 @@ namespace Lumeer.ViewModels
         private async void DisplayTaskDetail(Models.Rest.Task task)
         {
             // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
-
-            var table = Session.Instance.Tables.Single(t => t.Id == task.CollectionId);
+            
+            var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
             var taskDetailPage = new TaskDetailPage(task, table);
             taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
 
@@ -83,18 +80,27 @@ namespace Lumeer.ViewModels
 
         private void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
         {
-            // TODOT make binding work
+            /*// TODOT make binding work
             var taskIndex = Tasks.IndexOf(task);
             Tasks.Remove(task);
-            Tasks.Insert(taskIndex, task);
+            Tasks.Insert(taskIndex, task);*/
+            RefreshTasks();
         }
 
         private void CreateTask()
         {
-            _navigationService.PushModalAsync(new NewTaskPage());
-            // TODOT add new task
+            var newTaskPage = new NewTaskPage();
+            newTaskPage.NewTaskViewModel.TaskCreated += NewTaskViewModel_TaskCreated;
+            _navigationService.PushModalAsync(newTaskPage);
         }
-        
+
+        private void NewTaskViewModel_TaskCreated(Models.Rest.Task task)
+        {
+            /*// TODOT 
+            Tasks.Add(task);*/
+            RefreshTasks();
+        }
+
         private void DisplaySearchSettings()
         {
             _navigationService.PushAsync(new SearchSettingsPage());
@@ -113,7 +119,9 @@ namespace Lumeer.ViewModels
                 Session.Instance.User = await GetUser();
                 Session.Instance.OrganizationId = Session.Instance.User.DefaultWorkspace.OrganizationId;
                 Session.Instance.ProjectId = Session.Instance.User.DefaultWorkspace.ProjectId;
-                Session.Instance.Tables = await GetTables();
+                Session.Instance.AllTables = await GetTables();
+                Session.Instance.Organizations = await GetOrganizations();
+                Session.Instance.Users = await GetUsers();
                 RefreshTasks();
             }
             catch (Exception ex)
@@ -205,35 +213,33 @@ namespace Lumeer.ViewModels
         // TODOT create utility that shows activity indicator when loading data from api?
         private async Task<User> GetUser()
         {
-            var uri = new Uri(ApiClient.Instance.BaseAddress, "users/current");
-            HttpResponseMessage response = await ApiClient.Instance.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
-            string content = await response.Content.ReadAsStringAsync();
-            var user = JsonConvert.DeserializeObject<User>(content);
-            return user;
+            string uri = "users/current";
+            return await ApiClient.Instance.SendRequestGetContent<User>(HttpMethod.Get, uri);
         }
 
         private async Task<List<Table>> GetTables()
         {
-            var uri = new Uri(ApiClient.Instance.BaseAddress, $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections");
-            HttpResponseMessage response = await ApiClient.Instance.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
-            string content = await response.Content.ReadAsStringAsync();
-            var tables = JsonConvert.DeserializeObject<List<Table>>(content);
-            return tables;
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections";
+            return await ApiClient.Instance.SendRequestGetContent<List<Table>>(HttpMethod.Get, uri);
+        }
+        
+        private async Task<List<User>> GetUsers()
+        {
+            string uri = $"users/organizations/{Session.Instance.OrganizationId}/users";
+            return await ApiClient.Instance.SendRequestGetContent<List<User>>(HttpMethod.Get, uri);
+        }
+        
+        private async Task<List<Organization>> GetOrganizations()
+        {
+            string uri = "organizations";
+            return await ApiClient.Instance.SendRequestGetContent<List<Organization>>(HttpMethod.Get, uri);
         }
 
         private async Task<Tasks> GetTasks()
         {
-            var uri = new Uri(ApiClient.Instance.BaseAddress, $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false");
-            //string json = "{\"stems\":[{\"collectionId\":\"62402061a26fa76666627730\",\"documentIds\":[],\"linkTypeIds\":[],\"filters\":[],\"linkFilters\":[]}],\"fulltexts\":[],\"page\":null,\"pageSize\":null}";
-            string json = "{\"stems\":[],\"fulltexts\":[],\"page\":null,\"pageSize\":null}";
-            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await ApiClient.Instance.PostAsync(uri, stringContent);
-            response.EnsureSuccessStatusCode();
-            string content = await response.Content.ReadAsStringAsync();
-            var tasks = JsonConvert.DeserializeObject<Tasks>(content);
-            return tasks;
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false";
+            var searchFilter = new SearchFilter();  // TODOT take this from SearchBar
+            return await ApiClient.Instance.SendRequestGetContent<Tasks>(HttpMethod.Post, uri, searchFilter);
         }
     }
 }

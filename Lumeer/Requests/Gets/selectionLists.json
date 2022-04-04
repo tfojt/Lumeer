@@ -194,5 +194,200 @@
         "background": "#b39ddb"
       }
     ]
+  },
+  {
+    "id": "6249aaba7bb85731a06b0e24",
+    "name": "General",
+    "description": "",
+    "organizationId": "621636e75eed7129e47d119c",
+    "projectId": "6249aaae7bb85731a06b0e23",
+    "displayValues": false,
+    "options": [
+      {
+        "value": "Open",
+        "displayValue": null,
+        "background": "#9e9e9e"
+      },
+      {
+        "value": "In Progress",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Closed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      }
+    ]
+  },
+  {
+    "id": "6249aaba7bb85731a06b0e25",
+    "name": "Kanban",
+    "description": "",
+    "organizationId": "621636e75eed7129e47d119c",
+    "projectId": "6249aaae7bb85731a06b0e23",
+    "displayValues": false,
+    "options": [
+      {
+        "value": "Open",
+        "displayValue": null,
+        "background": "#9e9e9e"
+      },
+      {
+        "value": "In Progress",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Review",
+        "displayValue": null,
+        "background": "#ff8a65"
+      },
+      {
+        "value": "Closed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      }
+    ]
+  },
+  {
+    "id": "6249aaba7bb85731a06b0e26",
+    "name": "Content",
+    "description": "",
+    "organizationId": "621636e75eed7129e47d119c",
+    "projectId": "6249aaae7bb85731a06b0e23",
+    "displayValues": false,
+    "options": [
+      {
+        "value": "Open",
+        "displayValue": null,
+        "background": "#9e9e9e"
+      },
+      {
+        "value": "Ready",
+        "displayValue": null,
+        "background": "#a5d6a7"
+      },
+      {
+        "value": "Writing",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Approved",
+        "displayValue": null,
+        "background": "#81c784"
+      },
+      {
+        "value": "Rejected",
+        "displayValue": null,
+        "background": "#e57373"
+      },
+      {
+        "value": "Publish",
+        "displayValue": null,
+        "background": "#7986cb"
+      },
+      {
+        "value": "Closed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      }
+    ]
+  },
+  {
+    "id": "6249aaba7bb85731a06b0e27",
+    "name": "Marketing",
+    "description": "",
+    "organizationId": "621636e75eed7129e47d119c",
+    "projectId": "6249aaae7bb85731a06b0e23",
+    "displayValues": false,
+    "options": [
+      {
+        "value": "Open",
+        "displayValue": null,
+        "background": "#9e9e9e"
+      },
+      {
+        "value": "Concept",
+        "displayValue": null,
+        "background": "#7986cb"
+      },
+      {
+        "value": "In Progress",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Running",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Review",
+        "displayValue": null,
+        "background": "#ff8a65"
+      },
+      {
+        "value": "Closed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      }
+    ]
+  },
+  {
+    "id": "6249aaba7bb85731a06b0e28",
+    "name": "Scrum",
+    "description": "",
+    "organizationId": "621636e75eed7129e47d119c",
+    "projectId": "6249aaae7bb85731a06b0e23",
+    "displayValues": false,
+    "options": [
+      {
+        "value": "Open",
+        "displayValue": null,
+        "background": "#9e9e9e"
+      },
+      {
+        "value": "Pending",
+        "displayValue": null,
+        "background": "#aed581"
+      },
+      {
+        "value": "In Progress",
+        "displayValue": null,
+        "background": "#fff176"
+      },
+      {
+        "value": "Completed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      },
+      {
+        "value": "In Review",
+        "displayValue": null,
+        "background": "#ff8a65"
+      },
+      {
+        "value": "Accepted",
+        "displayValue": null,
+        "background": "#81c784"
+      },
+      {
+        "value": "Rejected",
+        "displayValue": null,
+        "background": "#e57373"
+      },
+      {
+        "value": "Blocked",
+        "displayValue": null,
+        "background": "#e57373"
+      },
+      {
+        "value": "Closed",
+        "displayValue": null,
+        "background": "#b39ddb"
+      }
+    ]
   }
 ]
