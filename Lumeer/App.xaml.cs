@@ -12,9 +12,9 @@ namespace Lumeer
         {
             InitializeComponent();
 
-            Utils.ApiClient.Authorize();    // TODOT delete
-            MainPage = new NavigationPage(new MainPage());
-            //MainPage = new IntroductionPage();
+            /*Utils.ApiClient.Authorize();    // TODOT delete
+            MainPage = new NavigationPage(new MainPage());*/
+            MainPage = new IntroductionPage();
         }
 
         protected override void OnStart()

@@ -20,8 +20,7 @@ namespace Lumeer.Droid.Services
             {
                 Domain = AuthConfig.Domain,
                 ClientId = AuthConfig.ClientId,
-                ClientSecret = AuthConfig.ClientSecret,
-                Scope = "openid email profile name username groups roles",
+                Scope = AuthConfig.Scope,
             });
         }
 

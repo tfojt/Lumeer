@@ -16,7 +16,8 @@ namespace Lumeer.iOS.Services
             _auth0Client = new Auth0Client(new Auth0ClientOptions
             {
                 Domain = AuthConfig.Domain,
-                ClientId = AuthConfig.ClientId
+                ClientId = AuthConfig.ClientId,
+                Scope = AuthConfig.Scope
             });
         }
 
@@ -24,7 +25,8 @@ namespace Lumeer.iOS.Services
 
         public async Task<AuthenticationResult> Authenticate()
         {
-            var auth0LoginResult = await _auth0Client.LoginAsync(new { audience = AuthConfig.Audience });
+            //var auth0LoginResult = await _auth0Client.LoginAsync(new { audience = AuthConfig.Audience });
+            var auth0LoginResult = await _auth0Client.LoginAsync();
             AuthenticationResult authenticationResult;
 
             if (!auth0LoginResult.IsError)
