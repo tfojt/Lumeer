@@ -20,7 +20,7 @@ namespace Lumeer.Droid.Services
             {
                 Domain = AuthConfig.Domain,
                 ClientId = AuthConfig.ClientId,
-                Scope = AuthConfig.Scope,
+                Scope = AuthConfig.Scope
             });
         }
 
@@ -28,9 +28,7 @@ namespace Lumeer.Droid.Services
 
         public async Task<AuthenticationResult> Authenticate()
         {
-            //var auth0LoginResult = await _auth0Client.LoginAsync(new { audience = AuthConfig.Audience });
-            var auth0LoginResult = await _auth0Client.LoginAsync();
-
+            var auth0LoginResult = await _auth0Client.LoginAsync(new { audience = AuthConfig.Audience });
             AuthenticationResult authenticationResult;
 
             if (!auth0LoginResult.IsError)

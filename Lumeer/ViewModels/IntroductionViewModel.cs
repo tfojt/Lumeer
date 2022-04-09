@@ -41,7 +41,7 @@ namespace Lumeer.ViewModels
             {
                 await SecureStorage.SetAsync("accessToken", authenticationResult.AccessToken);
                 await SecureStorage.SetAsync("identityToken", authenticationResult.IdToken);
-                await ApiClient.Authorize();
+                ApiClient.Instance.Authorize(authenticationResult.AccessToken);
                 App.Current.MainPage = new NavigationPage(new MainPage());
             }
             else
