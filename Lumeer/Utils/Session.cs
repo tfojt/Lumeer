@@ -31,6 +31,8 @@ namespace Lumeer.Utils
 
         public List<User> Users { get; set; }
 
+        public List<SelectionList> SelectionLists { get; set; }
+
         static Session()
         {
             Instance = new Session();

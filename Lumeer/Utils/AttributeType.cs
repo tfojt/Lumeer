@@ -5,6 +5,8 @@
         None,
         Text,
         User,
-        DateTime
+        DateTime,
+        Number,
+        Select
     }
 }

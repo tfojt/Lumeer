@@ -24,11 +24,20 @@ namespace Lumeer.Models
             TableAttribute = tableAttribute;
             OriginalValueHasValue = task.Data.TryGetValue(tableAttribute.Id, out object originalValue);
             OriginalValue = originalValue;
-
-            AttributeType = Enum.TryParse<AttributeType>(tableAttribute?.Constraint?.Type, out var attributeType) ?
-                attributeType : AttributeType.None;
+            AttributeType = ParseAttributeType(tableAttribute);
             
             GenerateCell();
+        }
+
+        private AttributeType ParseAttributeType(TableAttribute tableAttribute)
+        {
+            var constraint = tableAttribute.Constraint;
+            if (constraint == null)
+            {
+                return AttributeType.None;
+            }
+
+            return (AttributeType)Enum.Parse(typeof(AttributeType), constraint.Type);
         }
 
         private void GenerateCell()
@@ -41,32 +50,22 @@ namespace Lumeer.Models
                 case AttributeType.User:    // TODOT Handle user hints
                 case AttributeType.Text:
                     {
-                        string text = OriginalValueHasValue ? (string)OriginalValue : "";
-                        Cell = new EntryCell
-                        {
-                            Label = attributeName,
-                            Text = text
-                        };
+                        Cell = GenerateEntryCell(attributeName);
                         break;
                     }
                 case AttributeType.DateTime:
                     {
-                        var stackLayout = new StackLayout
-                        {
-                            Orientation = StackOrientation.Horizontal,
-                            Padding = new Thickness(13, 0)
-                        };
+                        var stackLayout = GenerateStackLayout();
 
-                        var label = new Label
-                        {
-                            Text = attributeName,
-                            VerticalOptions = LayoutOptions.Center,
-                            HorizontalOptions = LayoutOptions.Start
-                        };
+                        var label = GenerateLabel(attributeName);
+
                         stackLayout.Children.Add(label);
+
+                        string dateFormat = (string)TableAttribute.Constraint.Config["format"];
 
                         var datePicker = new NullableDatePicker
                         {
+                            Format = dateFormat,
                             HorizontalOptions = LayoutOptions.FillAndExpand
                         };
                         if (OriginalValueHasValue)
@@ -80,8 +79,9 @@ namespace Lumeer.Models
                                 }
                                 else
                                 {
-                                    datePicker.NullableDate = DateTime.Parse(dateString);
-                                    OriginalValue = datePicker.NullableDate;
+                                    var dateTime = DateTime.Parse(dateString);
+                                    datePicker.NullableDate = dateTime;
+                                    OriginalValue = dateTime;
                                 }
                             }
                             else
@@ -97,11 +97,96 @@ namespace Lumeer.Models
                         {
                             View = stackLayout
                         };
+
+                        break;
+                    }
+                case AttributeType.Number:
+                    {
+                        // TODOT check string or int
+                        Cell = GenerateEntryCell(attributeName, Keyboard.Numeric);
+
+                        if (OriginalValueHasValue)
+                        {
+                            OriginalValue = OriginalValue.ToString();   // api accepts this only as string...
+                        }
+
+                        break;
+                    }
+                case AttributeType.Select:
+                    {
+                        var stackLayout = GenerateStackLayout();
+
+                        var label = GenerateLabel(attributeName);
+                        stackLayout.Children.Add(label);
+
+                        var selectionListId = (string)TableAttribute.Constraint.Config["selectionListId"];
+                        var selectionList = Session.Instance.SelectionLists.Single(sl => sl.Id == selectionListId);
+
+                        var picker = new Picker
+                        {
+                            ItemsSource = selectionList.Options,
+                            HorizontalOptions = LayoutOptions.FillAndExpand
+                        };
+
+                        if (OriginalValueHasValue)
+                        {
+                            SelectionOption selectionOption = selectionList.Options.Single(so => so.GetValue() == (string)OriginalValue);
+                            picker.SelectedItem = selectionOption;
+                        }
+
+                        stackLayout.Children.Add(picker);
+
+                        Cell = new ViewCell
+                        {
+                            View = stackLayout
+                        };
+
                         break;
                     }
                 default:
                     throw new NotImplementedException($"{nameof(GenerateCell)} - {AttributeType}");
             }
+        }
+
+        private StackLayout GenerateStackLayout(StackOrientation orientation = StackOrientation.Horizontal)
+        {
+            var stackLayout = new StackLayout
+            {
+                Orientation = orientation,
+                Padding = new Thickness(13, 0)
+            };
+
+            return stackLayout;
+        }
+
+        private Label GenerateLabel(string text)
+        {
+            var label = new Label
+            {
+                Text = text,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Start
+            };
+
+            return label;
+        }
+
+        private EntryCell GenerateEntryCell(string label, Keyboard keyboard = null)
+        {
+            string text = OriginalValueHasValue ? OriginalValue.ToString() : "";
+
+            var entryCell = new EntryCell
+            {
+                Label = label,
+                Text = text,
+            };
+
+            if (keyboard != null)
+            {
+                entryCell.Keyboard = keyboard;
+            }
+
+            return entryCell;
         }
 
         public bool ValueChanged(out object newValue)
@@ -113,24 +198,59 @@ namespace Lumeer.Models
                 case EntryCell entryCell:
                     {
                         string currentValue = entryCell.Text;
-                        currentValueHasValue = !string.IsNullOrEmpty(currentValue);
-                        newValue = currentValue;
+
+                        switch (AttributeType)
+                        {
+                            case AttributeType.None:
+                            case AttributeType.Text:
+                            case AttributeType.User:
+                            case AttributeType.Number:
+                                {
+                                    currentValueHasValue = !string.IsNullOrEmpty(currentValue);
+                                    newValue = currentValue;
+                                    break;
+                                }
+                            /*case AttributeType.Number:
+                                {
+                                    currentValueHasValue = long.TryParse(currentValue, out long currentParsedValue);
+                                    newValue = currentParsedValue;
+                                    break;
+                                }*/
+                            default:
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {AttributeType}");
+                        }
+
                         break;
                     }
                 case ViewCell viewCell:
                     {
-                        if (AttributeType == AttributeType.DateTime)
+                        switch (AttributeType)
                         {
-                            var stackLayout = (StackLayout)viewCell.View;
-                            var nullableDatePicker = (NullableDatePicker)stackLayout.Children.Single(ch => ch is NullableDatePicker);
+                            case AttributeType.DateTime:
+                                {
+                                    var stackLayout = (StackLayout)viewCell.View;
+                                    var nullableDatePicker = (NullableDatePicker)stackLayout.Children.Single(ch => ch is NullableDatePicker);
 
-                            DateTime? currentValue = nullableDatePicker.NullableDate;
-                            currentValueHasValue = currentValue.HasValue;
-                            newValue = currentValue;
-                            break;
+                                    DateTime? currentValue = nullableDatePicker.NullableDate;
+                                    currentValueHasValue = currentValue.HasValue;
+                                    newValue = currentValue;
+                                    break;
+                                }
+                            case AttributeType.Select:
+                                {
+                                    var stackLayout = (StackLayout)viewCell.View;
+                                    var picker = (Picker)stackLayout.Children.Single(ch => ch is Picker);
+
+                                    var currentValue = (SelectionOption)picker.SelectedItem;
+                                    currentValueHasValue = currentValue != null;
+                                    newValue = currentValue?.Value;
+                                    break;
+                                }
+                            default:
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {AttributeType}");
                         }
 
-                        throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {AttributeType}");
+                        break;
                     }
                 default:
                     throw new NotImplementedException($"{nameof(ValueChanged)} - {Cell.GetType()}");

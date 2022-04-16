@@ -122,6 +122,7 @@ namespace Lumeer.ViewModels
                 Session.Instance.AllTables = await GetTables();
                 Session.Instance.Organizations = await GetOrganizations();
                 Session.Instance.Users = await GetUsers();
+                Session.Instance.SelectionLists = await GetSelectionLists();
                 RefreshTasks();
             }
             catch (Exception ex)
@@ -233,6 +234,12 @@ namespace Lumeer.ViewModels
         {
             string uri = "organizations";
             return await ApiClient.Instance.SendRequestGetContent<List<Organization>>(HttpMethod.Get, uri);
+        }
+        
+        private async Task<List<SelectionList>> GetSelectionLists()
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/selection-lists";
+            return await ApiClient.Instance.SendRequestGetContent<List<SelectionList>>(HttpMethod.Get, uri);
         }
 
         private async Task<Tasks> GetTasks()
