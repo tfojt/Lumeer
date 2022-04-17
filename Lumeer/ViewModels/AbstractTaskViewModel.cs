@@ -104,9 +104,9 @@ namespace Lumeer.ViewModels
 
             foreach (var wrapper in TaskTableAttributeWrappers)
             {
-                if (wrapper.ValueChanged(out object newValue))
+                if (wrapper.ValueChanged(out string attributeId, out object newValue))
                 {
-                    changedAttributes.Add(wrapper.TableAttribute.Id, newValue);
+                    changedAttributes.Add(attributeId, newValue);
                 }
             }
 

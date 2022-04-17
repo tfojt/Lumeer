@@ -7,24 +7,22 @@ using Xamarin.Forms;
 
 namespace Lumeer.Models
 {
-
     public class TaskTableAttributeWrapper
     {
-        public Task Task { get; }
-        public TableAttribute TableAttribute { get; }
-        public AttributeType AttributeType { get; }
-        public bool OriginalValueHasValue { get; private set; }
-        public object OriginalValue { get; private set; }
-        public object CurrentValue { get; }
+        private Task _task;
+        private TableAttribute _tableAttribute;
+        private AttributeType _attributeType;
+        private bool _originalValueHasValue;
+        private object _originalValue;
         public Cell Cell { get; private set; }
 
         public TaskTableAttributeWrapper(Task task, TableAttribute tableAttribute)
         {
-            Task = task;
-            TableAttribute = tableAttribute;
-            OriginalValueHasValue = task.Data.TryGetValue(tableAttribute.Id, out object originalValue);
-            OriginalValue = originalValue;
-            AttributeType = ParseAttributeType(tableAttribute);
+            _task = task;
+            _tableAttribute = tableAttribute;
+            _originalValueHasValue = task.Data.TryGetValue(tableAttribute.Id, out object originalValue);
+            _originalValue = originalValue;
+            _attributeType = ParseAttributeType(tableAttribute);
             
             GenerateCell();
         }
@@ -42,9 +40,9 @@ namespace Lumeer.Models
 
         private void GenerateCell()
         {
-            string attributeName = TableAttribute.Name;
+            string attributeName = _tableAttribute.Name;
 
-            switch (AttributeType)
+            switch (_attributeType)
             {
                 case AttributeType.None:
                 case AttributeType.User:    // TODOT Handle user hints
@@ -58,35 +56,35 @@ namespace Lumeer.Models
                         var stackLayout = GenerateStackLayout();
 
                         var label = GenerateLabel(attributeName);
-
                         stackLayout.Children.Add(label);
 
-                        string dateFormat = (string)TableAttribute.Constraint.Config["format"];
+                        var format = (string)_tableAttribute.Constraint.Config["format"];
 
                         var datePicker = new NullableDatePicker
                         {
-                            Format = dateFormat,
+                            Format = format,
                             HorizontalOptions = LayoutOptions.FillAndExpand
                         };
-                        if (OriginalValueHasValue)
+
+                        if (_originalValueHasValue)
                         {
-                            if (OriginalValue is string dateString)  // Api sometimes sends date in string
+                            if (_originalValue is string dateString)  // Api sometimes sends date in string
                             {
                                 if (string.IsNullOrEmpty(dateString))
                                 {
-                                    OriginalValueHasValue = false;
-                                    OriginalValue = null;
+                                    _originalValueHasValue = false;
+                                    _originalValue = null;
                                 }
                                 else
                                 {
                                     var dateTime = DateTime.Parse(dateString);
                                     datePicker.NullableDate = dateTime;
-                                    OriginalValue = dateTime;
+                                    _originalValue = dateTime;
                                 }
                             }
                             else
                             {
-                                datePicker.NullableDate = (DateTime)OriginalValue;  // TODOT handle format
+                                datePicker.NullableDate = (DateTime)_originalValue;  // TODOT handle format
                             }
                         }
                         stackLayout.Children.Add(datePicker);
@@ -105,9 +103,9 @@ namespace Lumeer.Models
                         // TODOT check string or int
                         Cell = GenerateEntryCell(attributeName, Keyboard.Numeric);
 
-                        if (OriginalValueHasValue)
+                        if (_originalValueHasValue)
                         {
-                            OriginalValue = OriginalValue.ToString();   // api accepts this only as string...
+                            _originalValue = _originalValue.ToString();   // api accepts this only as string...
                         }
 
                         break;
@@ -119,7 +117,7 @@ namespace Lumeer.Models
                         var label = GenerateLabel(attributeName);
                         stackLayout.Children.Add(label);
 
-                        var selectionListId = (string)TableAttribute.Constraint.Config["selectionListId"];
+                        var selectionListId = (string)_tableAttribute.Constraint.Config["selectionListId"];
                         var selectionList = Session.Instance.SelectionLists.Single(sl => sl.Id == selectionListId);
 
                         var picker = new Picker
@@ -128,9 +126,9 @@ namespace Lumeer.Models
                             HorizontalOptions = LayoutOptions.FillAndExpand
                         };
 
-                        if (OriginalValueHasValue)
+                        if (_originalValueHasValue)
                         {
-                            SelectionOption selectionOption = selectionList.Options.Single(so => so.GetValue() == (string)OriginalValue);
+                            SelectionOption selectionOption = selectionList.Options.Single(so => so.GetValue() == (string)_originalValue);
                             picker.SelectedItem = selectionOption;
                         }
 
@@ -144,7 +142,7 @@ namespace Lumeer.Models
                         break;
                     }
                 default:
-                    throw new NotImplementedException($"{nameof(GenerateCell)} - {AttributeType}");
+                    throw new NotImplementedException($"{nameof(GenerateCell)} - {_attributeType}");
             }
         }
 
@@ -173,7 +171,7 @@ namespace Lumeer.Models
 
         private EntryCell GenerateEntryCell(string label, Keyboard keyboard = null)
         {
-            string text = OriginalValueHasValue ? OriginalValue.ToString() : "";
+            string text = _originalValueHasValue ? _originalValue.ToString() : "";
 
             var entryCell = new EntryCell
             {
@@ -189,8 +187,9 @@ namespace Lumeer.Models
             return entryCell;
         }
 
-        public bool ValueChanged(out object newValue)
+        public bool ValueChanged(out string attributeId, out object newValue)
         {
+            attributeId = _tableAttribute.Id;
             bool currentValueHasValue;
 
             switch (Cell)
@@ -199,7 +198,7 @@ namespace Lumeer.Models
                     {
                         string currentValue = entryCell.Text;
 
-                        switch (AttributeType)
+                        switch (_attributeType)
                         {
                             case AttributeType.None:
                             case AttributeType.Text:
@@ -217,14 +216,14 @@ namespace Lumeer.Models
                                     break;
                                 }*/
                             default:
-                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {AttributeType}");
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {_attributeType}");
                         }
 
                         break;
                     }
                 case ViewCell viewCell:
                     {
-                        switch (AttributeType)
+                        switch (_attributeType)
                         {
                             case AttributeType.DateTime:
                                 {
@@ -247,7 +246,7 @@ namespace Lumeer.Models
                                     break;
                                 }
                             default:
-                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {AttributeType}");
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {_attributeType}");
                         }
 
                         break;
@@ -256,14 +255,14 @@ namespace Lumeer.Models
                     throw new NotImplementedException($"{nameof(ValueChanged)} - {Cell.GetType()}");
             }
 
-            if (OriginalValueHasValue)
+            if (_originalValueHasValue)
             {
-                return !OriginalValue.Equals(newValue);
+                return !_originalValue.Equals(newValue);
             }
 
             if (currentValueHasValue)
             {
-                return !newValue.Equals(OriginalValue);
+                return !newValue.Equals(_originalValue);
             }
 
             return false;
