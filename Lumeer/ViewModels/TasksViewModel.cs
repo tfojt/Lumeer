@@ -19,7 +19,34 @@ namespace Lumeer.ViewModels
         private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
 
-        public ObservableCollection<Models.Rest.Task> Tasks { get; set; } = new ObservableCollection<Models.Rest.Task>();
+        private List<Models.Rest.Task> _originalTasks = new List<Models.Rest.Task>();
+        public List<Models.Rest.Task> OriginalTasks 
+        {
+            get => _originalTasks;
+            set
+            {
+                _originalTasks = value;
+
+                FilterDisplayedTasks();
+            }
+        }
+
+        public ObservableCollection<Models.Rest.Task> DisplayedTasks { get; set; } = new ObservableCollection<Models.Rest.Task>();
+
+        private string _searchedText;
+        public string SearchedText
+        {
+            get => _searchedText;
+            set
+            {
+                SetValue(ref _searchedText, value);
+
+                if (string.IsNullOrEmpty(_searchedText))    // text is cleared and we have to manually show all tasks, because search is not triggered when the text is empty
+                {
+                    FilterDisplayedTasks();
+                }
+            }
+        }
 
         public ICommand RefreshTasksCmd { get; set; }
         public ICommand SearchCmd { get; set; }
@@ -109,13 +136,47 @@ namespace Lumeer.ViewModels
 
         private void Search()
         {
-            // TODOT filter
+            FilterDisplayedTasks();
+        }
+
+        private void FilterDisplayedTasks()
+        {
+            DisplayedTasks.Clear();
+
+            if (string.IsNullOrEmpty(SearchedText))
+            {
+                foreach (var task in OriginalTasks)
+                {
+                    DisplayedTasks.Add(task);
+                }
+            }
+            else
+            {
+                foreach (var task in OriginalTasks)
+                {
+                    foreach (object value in task.Data.Values)
+                    {
+                        if (value == null)
+                        {
+                            continue;
+                        }
+
+                        string stringValue = value.ToString();
+                        if (stringValue.Contains(SearchedText))
+                        {
+                            DisplayedTasks.Add(task);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private async void Init()
         {
             try
             {
+                // TODOT move these somewhere more propriate
                 Session.Instance.User = await GetUser();
                 Session.Instance.OrganizationId = Session.Instance.User.DefaultWorkspace.OrganizationId;
                 Session.Instance.ProjectId = Session.Instance.User.DefaultWorkspace.ProjectId;
@@ -141,11 +202,7 @@ namespace Lumeer.ViewModels
                 //LoadedTasks?.Invoke(tasks);
                 UpdateTasksDataTemplate();
 
-                Tasks.Clear();
-                foreach (var task in tasks.Documents)
-                {
-                    Tasks.Add(task);
-                }
+                OriginalTasks = tasks.Documents;
             }
             catch (Exception ex)
             {
