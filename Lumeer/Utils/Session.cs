@@ -1,6 +1,7 @@
 ﻿using Lumeer.Models.Rest;
 using System.Collections.Generic;
 using System.Linq;
+using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.Utils
 {
@@ -36,6 +37,17 @@ namespace Lumeer.Utils
         static Session()
         {
             Instance = new Session();
+        }
+
+        public async Task LoadUsersInitialData()
+        {
+            User = await ApiClient.Instance.GetUser();
+            OrganizationId = User.DefaultWorkspace.OrganizationId;
+            ProjectId = User.DefaultWorkspace.ProjectId;
+            AllTables = await ApiClient.Instance.GetTables();
+            Organizations = await ApiClient.Instance.GetOrganizations();
+            Users = await ApiClient.Instance.GetUsers();
+            SelectionLists = await ApiClient.Instance.GetSelectionLists();
         }
     }
 }

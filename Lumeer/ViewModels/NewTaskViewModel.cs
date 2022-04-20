@@ -1,11 +1,8 @@
-﻿using Lumeer.Models;
-using Lumeer.Models.Rest;
+﻿using Lumeer.Models.Rest;
 using Lumeer.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -51,15 +48,16 @@ namespace Lumeer.ViewModels
             if (TaskAttributesChanged(out Dictionary<string, object> changedAttributes))
             {
                 var newTask = new NewTask(Table.Id, changedAttributes);
-                HttpResponseMessage response = await SendTaskRequest(HttpMethod.Post, newTask);
-                if (!response.IsSuccessStatusCode)
+
+                try
                 {
-                    await AlertService.DisplayAlert("Error", "Sorry, there was an error while creating data.", "Ok");
+                    Task = await ApiClient.Instance.CreateTask(newTask);
+                }
+                catch (Exception ex)
+                {
+                    await AlertService.DisplayAlert("Error", "Sorry, there was an error while creating task.", "Ok", ex);
                     return;
                 }
-
-                string content = await response.Content.ReadAsStringAsync();
-                Task = JsonConvert.DeserializeObject<Task>(content);
 
                 TaskCreated?.Invoke(Task);
             }

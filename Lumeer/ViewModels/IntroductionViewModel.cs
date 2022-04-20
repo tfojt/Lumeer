@@ -6,6 +6,8 @@ using Lumeer.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Lumeer.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace Lumeer.ViewModels
 {
@@ -13,6 +15,7 @@ namespace Lumeer.ViewModels
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IAlertService _alertService;
+        private readonly INavigationService _navigationService;
 
         public ICommand AuthenticateCmd { get; set; }
 
@@ -22,6 +25,7 @@ namespace Lumeer.ViewModels
         {
             _authenticationService = DependencyService.Get<IAuthenticationService>();
             _alertService = DependencyService.Get<IAlertService>();
+            _navigationService = DependencyService.Get<INavigationService>();
 
             AuthenticateCmd = new Command(Authenticate);
 
@@ -36,17 +40,31 @@ namespace Lumeer.ViewModels
 
         private async void Authenticate()
         {
-            var authenticationResult = await _authenticationService.Authenticate();
-            if (!authenticationResult.IsError)
+            using (new LoadingPopup())
             {
-                await SecureStorage.SetAsync("accessToken", authenticationResult.AccessToken);
-                await SecureStorage.SetAsync("identityToken", authenticationResult.IdToken);
-                ApiClient.Instance.Authorize(authenticationResult.AccessToken);
-                App.Current.MainPage = new NavigationPage(new MainPage());
-            }
-            else
-            {
-                await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
+                var authenticationResult = await _authenticationService.Authenticate();
+                if (!authenticationResult.IsError)
+                {
+                    try
+                    {
+                        // TODOT are these tokens needed to be saved in SecureStorage?
+                        await SecureStorage.SetAsync("accessToken", authenticationResult.AccessToken);
+                        await SecureStorage.SetAsync("identityToken", authenticationResult.IdToken);
+                        ApiClient.Instance.Authorize(authenticationResult.AccessToken);
+                        await Session.Instance.LoadUsersInitialData();
+
+                        App.Current.MainPage = new NavigationPage(new MainPage());
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = "Could not obtain data from server";
+                        await _alertService.DisplayAlert("Error", message, "Ok", ex);
+                    }
+                }
+                else
+                {
+                    await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
+                }
             }
         }
     }

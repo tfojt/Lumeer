@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Lumeer.Models.Rest;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 
 namespace Lumeer.Utils
 {
@@ -31,12 +32,10 @@ namespace Lumeer.Utils
 
         public void Authorize(string token)
         {
-            //var identityToken = await SecureStorage.GetAsync("identityToken");
-            //var identityToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik16VTRNMFEwTkVVNVJUZ3lRa0ZFUlVZMFJEVkdNREk1UlRVeFFVTkJSRFV4TWprMU16azJSQSJ9.eyJpc3MiOiJodHRwczovL2x1bWVlci5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjIwZjk1ZGUzZThhMmIwMDY5ZmUwMTA0IiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC8iLCJodHRwczovL2x1bWVlci5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjQ5MDE0NDIwLCJleHAiOjE2NDkwMTgwMjAsImF6cCI6IkhqZWUwTGEyRGpsWWpJSDVDbEN4M1huZmFqMDJuMk9uIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.ArWSwvXcgybavHqFtEwfwZSG8Ccr3zmkKbU_8cEimaKIFMuFWtAwN4nNDJaogWa4l0v_ZfM7D_pFRrfWyQyk9wzt-vnP_dJpx1AuklXJwR5YXidGZ-iMejYuhC-aTL1CCgb1Uv_F34aNyTkl68f9Z8Fs9RVnLhByTSF9dAgw6ju1MHyGToPNOcKBvxAOy17l_e844D8eDL-XfKtpny6HGSQA0HACkb5HghlRJov0vgyKj-89ilPy2oIvigC6gprZj_aQG_K-nyChMPUcFHegAJpCBu_KfQFDETlaz1M8y1G5WSpwaLwHNRC4TaBcRwSNU6Z5SdOnQoXZTtREab_LOQ";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public async Task<HttpResponseMessage> SendRequest(HttpMethod method, string uriPart, object payload = null)
+        private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string uriPart, object payload = null)
         {
             var uri = new Uri(_httpClient.BaseAddress, uriPart);
             var request = new HttpRequestMessage(method, uri);
@@ -56,12 +55,60 @@ namespace Lumeer.Utils
             return await _httpClient.SendAsync(request);
         }
 
-        public async Task<T> SendRequestGetContent<T>(HttpMethod method, string uriPart, object payload = null)
+        private async Task<T> SendRequestGetContent<T>(HttpMethod method, string uriPart, object payload = null)
         {
             var response = await SendRequest(method, uriPart, payload);
             response.EnsureSuccessStatusCode();
             string content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(content);
+        }
+
+        public async Task<User> GetUser()
+        {
+            string uri = "users/current";
+            return await SendRequestGetContent<User>(HttpMethod.Get, uri);
+        }
+
+        public async Task<List<Table>> GetTables()
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections";
+            return await SendRequestGetContent<List<Table>>(HttpMethod.Get, uri);
+        }
+
+        public async Task<List<User>> GetUsers()
+        {
+            string uri = $"users/organizations/{Session.Instance.OrganizationId}/users";
+            return await SendRequestGetContent<List<User>>(HttpMethod.Get, uri);
+        }
+
+        public async Task<List<Organization>> GetOrganizations()
+        {
+            string uri = "organizations";
+            return await SendRequestGetContent<List<Organization>>(HttpMethod.Get, uri);
+        }
+
+        public async Task<List<SelectionList>> GetSelectionLists()
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/selection-lists";
+            return await SendRequestGetContent<List<SelectionList>>(HttpMethod.Get, uri);
+        }
+
+        public async Task<Tasks> GetTasks(SearchFilter searchFilter)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false";
+            return await SendRequestGetContent<Tasks>(HttpMethod.Post, uri, searchFilter);
+        }
+
+        public async Task<Models.Rest.Task> CreateTask(NewTask newTask)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{newTask.CollectionId}/documents";
+            return await SendRequestGetContent<Models.Rest.Task>(HttpMethod.Post, uri, newTask);
+        }
+
+        public async Task<Models.Rest.Task> UpdateTask(Models.Rest.Task oldTask, Dictionary<string, object> changedAttributes)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{oldTask.CollectionId}/documents/{oldTask.Id}/data";
+            return await SendRequestGetContent<Models.Rest.Task>(new HttpMethod("PATCH"), uri, changedAttributes);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Lumeer.Utils;
 using System;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
 namespace Lumeer.Services
@@ -12,5 +13,6 @@ namespace Lumeer.Services
         Task PushModalAsync(Page page);
         Task<Page> PopAsync();
         Task<Page> PopModalAsync();
+        void ShowPopup(BasePopup basePopup);
     }
 }

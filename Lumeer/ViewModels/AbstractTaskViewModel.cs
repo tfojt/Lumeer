@@ -1,14 +1,7 @@
 ﻿using Lumeer.Models;
 using Lumeer.Models.Rest;
 using Lumeer.Services;
-using Lumeer.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Task = Lumeer.Models.Rest.Task;
 
@@ -17,9 +10,6 @@ namespace Lumeer.ViewModels
     public abstract class AbstractTaskViewModel : BaseViewModel
     {
         public delegate void TaskEventHandler(Task task);
-
-        /*public event TaskTableAttributeWrappersEventHandler TaskTableAttributeWrappersCreated;
-        public delegate void TaskTableAttributeWrappersEventHandler(List<TaskTableAttributeWrapper> taskTableAttributeWrappers);*/
 
         public Task Task { get; set; }
 
@@ -83,19 +73,6 @@ namespace Lumeer.ViewModels
                 TaskTableAttributeWrappers.Add(taskTableAttributeWrapper);
                 _tableSection.Add(taskTableAttributeWrapper.Cell);
             }
-
-            //TaskTableAttributeWrappersCreated?.Invoke(TaskTableAttributeWrappers);
-        }
-
-        protected async Task<HttpResponseMessage> SendTaskRequest(HttpMethod method, object payload)
-        {
-            string commonPartUri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{Table.Id}/documents";
-            if (method.Method == "PATCH")
-            {
-                commonPartUri += $"/{Task.Id}/data";
-            }
-
-            return await ApiClient.Instance.SendRequest(method, commonPartUri, payload);
         }
 
         protected bool TaskAttributesChanged(out Dictionary<string, object> changedAttributes)

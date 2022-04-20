@@ -1,8 +1,7 @@
-﻿using Lumeer.Models;
-using Lumeer.Models.Rest;
+﻿using Lumeer.Models.Rest;
+using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -24,15 +23,15 @@ namespace Lumeer.ViewModels
         {
             if (TaskAttributesChanged(out Dictionary<string, object> changedAttributes))
             {
-                var method = new HttpMethod("PATCH");
-                HttpResponseMessage response = await SendTaskRequest(method, changedAttributes);
-                if (!response.IsSuccessStatusCode)
+                try
                 {
-                    await AlertService.DisplayAlert("Error", "Sorry, there was an error while saving data.", "Ok");
+                    Task = await ApiClient.Instance.UpdateTask(Task, changedAttributes);
+                }
+                catch (Exception ex)
+                {
+                    await AlertService.DisplayAlert("Error", "Sorry, there was an error while saving task.", "Ok", ex);
                     return;
                 }
-
-                UpdateTaskDataAttributes(changedAttributes);
 
                 TaskChangesSaved?.Invoke(Task);
             }

@@ -5,7 +5,6 @@ using Lumeer.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -90,7 +89,7 @@ namespace Lumeer.ViewModels
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             CreateTaskCmd = new Command(CreateTask);
 
-            Init();
+            RefreshTasks();
         }
 
         private async void DisplayTaskDetail(Models.Rest.Task task)
@@ -172,34 +171,13 @@ namespace Lumeer.ViewModels
             }
         }
 
-        private async void Init()
-        {
-            try
-            {
-                // TODOT move these somewhere more propriate
-                Session.Instance.User = await GetUser();
-                Session.Instance.OrganizationId = Session.Instance.User.DefaultWorkspace.OrganizationId;
-                Session.Instance.ProjectId = Session.Instance.User.DefaultWorkspace.ProjectId;
-                Session.Instance.AllTables = await GetTables();
-                Session.Instance.Organizations = await GetOrganizations();
-                Session.Instance.Users = await GetUsers();
-                Session.Instance.SelectionLists = await GetSelectionLists();
-                RefreshTasks();
-            }
-            catch (Exception ex)
-            {
-                var message = "Could not obtain data from server";
-                await ProcessException(message, ex);
-                // TODOT Exit app?
-            }
-        }
-
         private async void RefreshTasks()
         {
+            IsRefreshingTasks = true;
+
             try
             {
                 var tasks = await GetTasks();
-                //LoadedTasks?.Invoke(tasks);
                 UpdateTasksDataTemplate();
 
                 OriginalTasks = tasks.Documents;
@@ -207,7 +185,7 @@ namespace Lumeer.ViewModels
             catch (Exception ex)
             {
                 var message = "Could not refresh tasks";
-                _ = ProcessException(message, ex);
+                await _alertService.DisplayAlert("Error", message, "Ok", ex);
             }
             finally
             {
@@ -262,48 +240,10 @@ namespace Lumeer.ViewModels
             });
         }
 
-        private async System.Threading.Tasks.Task ProcessException(string message, Exception ex)
-        {
-            Debug.WriteLine($"{message}: {ex}");
-            await _alertService.DisplayAlert("Error", message, "Ok");
-        }
-
-        // TODOT create utility that shows activity indicator when loading data from api?
-        private async Task<User> GetUser()
-        {
-            string uri = "users/current";
-            return await ApiClient.Instance.SendRequestGetContent<User>(HttpMethod.Get, uri);
-        }
-
-        private async Task<List<Table>> GetTables()
-        {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections";
-            return await ApiClient.Instance.SendRequestGetContent<List<Table>>(HttpMethod.Get, uri);
-        }
-        
-        private async Task<List<User>> GetUsers()
-        {
-            string uri = $"users/organizations/{Session.Instance.OrganizationId}/users";
-            return await ApiClient.Instance.SendRequestGetContent<List<User>>(HttpMethod.Get, uri);
-        }
-        
-        private async Task<List<Organization>> GetOrganizations()
-        {
-            string uri = "organizations";
-            return await ApiClient.Instance.SendRequestGetContent<List<Organization>>(HttpMethod.Get, uri);
-        }
-        
-        private async Task<List<SelectionList>> GetSelectionLists()
-        {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/selection-lists";
-            return await ApiClient.Instance.SendRequestGetContent<List<SelectionList>>(HttpMethod.Get, uri);
-        }
-
         private async Task<Tasks> GetTasks()
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false";
-            var searchFilter = new SearchFilter();  // TODOT take this from SearchBar
-            return await ApiClient.Instance.SendRequestGetContent<Tasks>(HttpMethod.Post, uri, searchFilter);
+            var searchFilter = new SearchFilter();  // TODOT take this from SearchSettings
+            return await ApiClient.Instance.GetTasks(searchFilter);
         }
     }
 }
