@@ -12,17 +12,7 @@ namespace Lumeer
         {
             InitializeComponent();
 
-            const bool useCustomToken = false;
-            if (useCustomToken)
-            {
-                const string token = "";
-                Utils.ApiClient.Instance.Authorize(token);    // TODOT delete
-                MainPage = new NavigationPage(new MainPage());
-            }
-            else
-            {
-                MainPage = new IntroductionPage();
-            }
+            MainPage = new IntroductionPage();
         }
 
         protected override void OnStart()
