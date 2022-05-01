@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels;assembly=Lumeer"
              xmlns:models="clr-namespace:Lumeer.Models;assembly=Lumeer"
-             xmlns:customviews="clr-namespace:Lumeer.CustomViews"
+             xmlns:views="clr-namespace:Lumeer.Views"
              x:Class="Lumeer.Views.IntroductionPage">
     <ContentPage.BindingContext>
         <viewModels:IntroductionViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Spacing="0">
-            <customviews:LogoView BackgroundColor="LightGray"/>
+            <views:LogoView BackgroundColor="LightGray"/>
             <CarouselView ItemsSource="{Binding IntroductionTips}" 
                           IndicatorView="indicatorView"
                           Loop="False"

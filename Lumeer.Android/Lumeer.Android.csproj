@@ -91,12 +91,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lumeer\Lumeer.csproj">
-      <Project>{C32930E2-130F-4CEE-92CE-C5A3B920BC44}</Project>
-      <Name>Lumeer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\lumeer_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lumeer\Lumeer.csproj">
+      <Project>{f2336402-0a6b-41d7-a583-566accfa55a1}</Project>
+      <Name>Lumeer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -2,7 +2,7 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:Lumeer.MarkupExtensions"
-             x:Class="Lumeer.CustomViews.LogoView">
+             x:Class="Lumeer.Views.LogoView">
   <ContentView.Content>
         <StackLayout Padding="0,10">
             <Image Source="{local:EmbeddedImage Lumeer.Images.lumeerLogo.png}" 

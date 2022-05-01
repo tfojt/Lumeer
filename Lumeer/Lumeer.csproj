@@ -37,10 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="CustomViews\LogoView.xaml">
+    <EmbeddedResource Update="Views\LogoView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="CustomViews\TaskTableView.xaml">
+    <EmbeddedResource Update="Views\TaskTableView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AuthPage.xaml">
