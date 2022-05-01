@@ -11,21 +11,33 @@
     <ContentPage.Content>
         <StackLayout Spacing="0">
             <customviews:LogoView BackgroundColor="LightGray"/>
-            <!--TODOT IndicatorView?-->
-            <CarouselView ItemsSource="{Binding IntroductionTips}" Loop="False">
+            <CarouselView ItemsSource="{Binding IntroductionTips}" 
+                          IndicatorView="indicatorView"
+                          Loop="False"
+                          Margin="20">
                 <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:IntroductionTip" >
-                        <StackLayout>
-                            <Image Source="{Binding ImageSource}"
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand"/>
-                            <Label Text="{Binding Tip}"
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand"/>
-                        </StackLayout>
+                    <DataTemplate x:DataType="models:IntroductionTip">
+                        <Frame HasShadow="True"
+                               BorderColor="DarkGray"
+                               CornerRadius="5"
+                               HorizontalOptions="Center">
+                            <StackLayout>
+                                <Image Source="{Binding ImageSource}" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding Tip}"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+                        </Frame>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
+            <IndicatorView x:Name="indicatorView"
+                           Margin="0,0,0,20"
+                           IndicatorSize="8"
+                           IndicatorColor="LightGray"
+                           SelectedIndicatorColor="SeaGreen"/>
             <Button Text="Get started"
                     Command="{Binding AuthenticateCmd}"
                     BackgroundColor="SeaGreen"
