@@ -26,7 +26,7 @@ namespace Lumeer.Models.Rest
         public string DefaultAttributeId { get; set; }
         public bool Favorite { get; set; }
         public PurposeType PurposeType{ get; set; }
-        public object PurposeMetaData{ get; set; }
+        public Dictionary<string, object> PurposeMetaData{ get; set; }
 
         public override string ToString()
         {

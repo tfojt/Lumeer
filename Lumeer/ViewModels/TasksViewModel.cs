@@ -1,5 +1,6 @@
 ﻿using Lumeer.Models.Rest;
 using Lumeer.Services;
+using Lumeer.TemplateSelectors;
 using Lumeer.Utils;
 using Lumeer.Views;
 using System;
@@ -10,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.ViewModels
 {
@@ -51,6 +53,7 @@ namespace Lumeer.ViewModels
         public ICommand SearchCmd { get; set; }
         public ICommand SearchSettingsCmd { get; set; }
         public ICommand CreateTaskCmd { get; set; }
+        public ICommand ChangeTaskFavoriteStatusCmd { get; set; }
 
         private bool _isRefreshingTasks;
         public bool IsRefreshingTasks 
@@ -84,12 +87,122 @@ namespace Lumeer.ViewModels
         {
             _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
+
             RefreshTasksCmd = new Command(RefreshTasks);
             SearchCmd = new Command(Search);
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             CreateTaskCmd = new Command(CreateTask);
+            ChangeTaskFavoriteStatusCmd = new Command<Models.Rest.Task>(ChangeTaskFavoriteStatus);
+
+            var tableDataTemplates = CreateTableDataTemplates();
+            TasksDataTemplate = new TaskDataTemplateSelector(tableDataTemplates);
 
             RefreshTasks();
+        }
+
+        private Dictionary<string, DataTemplate> CreateTableDataTemplates()
+        {
+            var tableDataTemplates = new Dictionary<string, DataTemplate>();
+
+            foreach (var table in Session.Instance.TaskTables)
+            {
+                /*foreach (TableAttribute tableAttribute in table.Attributes)
+                {
+                    var constraint = tableAttribute.Constraint;
+                    if (constraint == null)
+                    {
+                        return AttributeType.None;
+                    }
+
+                    return (AttributeType)Enum.Parse(typeof(AttributeType), constraint.Type);
+                }*/
+
+                /*var favoriteSwipeItem = new SwipeItem()
+                {
+                    BackgroundColor = Color.Orange,
+                    Command = ChangeTaskFavoriteStatusCmd,
+                };
+                favoriteSwipeItem.SetBinding(MenuItem.TextProperty, "FavoriteText");
+                favoriteSwipeItem.SetBinding(MenuItem.CommandParameterProperty, ".");
+
+                var dataTemplate = new DataTemplate(() =>
+                {
+                    var stackLayout = new StackLayout();
+
+                    var swipeView = new SwipeView()
+                    {
+                        RightItems = new SwipeItems()
+                        {
+                            favoriteSwipeItem
+                        },
+                    };
+
+                    int propertiesCount = 4;
+                    for (int i = 1; i < propertiesCount + 1; i++)
+                    {
+                        var label = new Label();
+                        label.SetBinding(Label.TextProperty, $"Data[a{i}]", BindingMode.TwoWay);
+                        stackLayout.Children.Add(label);
+                    }
+
+                    swipeView.Content = stackLayout;
+
+                    return swipeView;
+                });*/
+
+                var dataTemplate = new DataTemplate(() =>
+                {
+                    var stackLayout = new StackLayout()
+                    {
+                        Orientation = StackOrientation.Horizontal
+                    };
+
+                    // TODOT replace with icon
+                    var boxView = new BoxView()
+                    {
+                        Color = Color.FromHex(table.Color),
+                        WidthRequest = 35,
+                        HeightRequest = 35,
+                    };
+                    stackLayout.Children.Add(boxView);
+
+                    // TODOT find out how to display "Empty title" if value is null
+                    var label = new Label()
+                    {
+                        Margin = new Thickness(8, 0, 0, 0),
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    label.SetBinding(Label.TextProperty, $"Data[a{1}]", BindingMode.TwoWay);
+                    stackLayout.Children.Add(label);
+
+                    var menuItem = new MenuItem()
+                    {
+                        Command = ChangeTaskFavoriteStatusCmd,
+                    };
+                    menuItem.SetBinding(MenuItem.TextProperty, "FavoriteText");
+                    menuItem.SetBinding(MenuItem.CommandParameterProperty, ".");
+
+                    var viewCell = new ViewCell
+                    {
+                        View = new Frame()
+                        {
+                            CornerRadius = 10,
+                            HasShadow = true,
+                            Content = stackLayout
+                        },
+                        ContextActions =
+                        {
+                            menuItem
+                        }
+                    };
+
+                    return viewCell;
+                });
+
+                tableDataTemplates.Add(table.Id, dataTemplate);
+            }
+
+            return tableDataTemplates;
         }
 
         private async void DisplayTaskDetail(Models.Rest.Task task)
@@ -178,8 +291,6 @@ namespace Lumeer.ViewModels
             try
             {
                 var tasks = await GetTasks();
-                UpdateTasksDataTemplate();
-
                 OriginalTasks = tasks.Documents;
             }
             catch (Exception ex)
@@ -192,58 +303,26 @@ namespace Lumeer.ViewModels
                 IsRefreshingTasks = false;
             }
         }
-
-        private void UpdateTasksDataTemplate()
-        {
-            TasksDataTemplate = new DataTemplate(() =>
-            {
-                var stackLayout = new StackLayout();
-                // TODOT kolik se jich tady realne ukazuje? nebo se ukazuji jen pokud jsou tam Assignee, DueDate,...?
-                int propertiesCount = 4;
-                for (int i = 1; i < propertiesCount + 1; i++)
-                {
-                    var label = new Label();
-                    label.SetBinding(Label.TextProperty, $"Data[a{i}]", BindingMode.TwoWay);
-                    stackLayout.Children.Add(label);
-                }
-
-                // TODOT add menu item
-                /*
-                <ViewCell.ContextActions>
-                                <MenuItem Text="Favorite" 
-                                          Command="{Binding FavoriteCmd}" 
-                                          CommandParameter="{Binding .}"/>
-                            </ViewCell.ContextActions> 
-                */
-
-                var viewCell = new ViewCell 
-                { 
-                    View = stackLayout 
-                };
-
-                return viewCell;
-
-                /*var grid = new Grid();
-                var nameLabel = new Label { FontAttributes = FontAttributes.Bold };
-                var ageLabel = new Label();
-                var locationLabel = new Label { HorizontalTextAlignment = TextAlignment.End };
-
-                nameLabel.SetBinding(Label.TextProperty, "Data[a1]");
-                ageLabel.SetBinding(Label.TextProperty, "Data[a2]");
-                locationLabel.SetBinding(Label.TextProperty, "Data[a3]");
-
-                grid.Children.Add(nameLabel);
-                grid.Children.Add(ageLabel, 1, 0);
-                grid.Children.Add(locationLabel, 2, 0);
-
-                return new ViewCell { View = grid };*/
-            });
-        }
-
+        
         private async Task<Tasks> GetTasks()
         {
             var searchFilter = new SearchFilter();  // TODOT take this from SearchSettings
             return await ApiClient.Instance.GetTasks(searchFilter);
+        }
+
+        private async void ChangeTaskFavoriteStatus(Models.Rest.Task task)
+        {
+            try
+            {
+                bool newFavoriteValue = !task.Favorite;
+                await ApiClient.Instance.ChangeTaskFavoriteStatus(task, newFavoriteValue);
+                task.Favorite = newFavoriteValue;
+            }
+            catch (Exception ex)
+            {
+                await _alertService.DisplayAlert("Error", "Sorry, there was an error while changing favorite status", "Ok", ex);
+                return;
+            }
         }
     }
 }

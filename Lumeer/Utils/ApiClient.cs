@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.Utils
 {
@@ -55,10 +56,16 @@ namespace Lumeer.Utils
             return await _httpClient.SendAsync(request);
         }
 
-        private async Task<T> SendRequestGetContent<T>(HttpMethod method, string uriPart, object payload = null)
+        private async Task<HttpResponseMessage> SendRequestAndEnsureSuccessStatusCode(HttpMethod method, string uriPart, object payload = null)
         {
             var response = await SendRequest(method, uriPart, payload);
             response.EnsureSuccessStatusCode();
+            return response;
+        }
+
+        private async Task<T> SendRequestGetContent<T>(HttpMethod method, string uriPart, object payload = null)
+        {
+            var response = await SendRequestAndEnsureSuccessStatusCode(method, uriPart, payload);
             string content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(content);
         }
@@ -109,6 +116,26 @@ namespace Lumeer.Utils
         {
             string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{oldTask.CollectionId}/documents/{oldTask.Id}/data";
             return await SendRequestGetContent<Models.Rest.Task>(new HttpMethod("PATCH"), uri, changedAttributes);
+        }
+
+        public async Task<HttpResponseMessage> ChangeTaskFavoriteStatus(Models.Rest.Task task, bool makeFavorite)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}/favorite";
+
+            HttpMethod httpMethod;
+            object payload;
+            if (makeFavorite)
+            {
+                httpMethod = HttpMethod.Post;
+                payload = new object();
+            }
+            else
+            {
+                httpMethod = HttpMethod.Delete;
+                payload = new object();
+            }
+            
+            return await SendRequestAndEnsureSuccessStatusCode(httpMethod, uri, payload);
         }
     }
 }

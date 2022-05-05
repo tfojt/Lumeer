@@ -22,7 +22,18 @@ namespace Lumeer.Models.Rest
         public bool Favorite
         {
             get => _favorite;
-            set => SetValue(ref _favorite, value);
+            set
+            {
+                SetValue(ref _favorite, value);
+                FavoriteText = _favorite ? "Favorite" : "Not favorite";
+            }
+        }
+
+        private string _favoriteText;
+        public string FavoriteText
+        {
+            get => _favoriteText;
+            set => SetValue(ref _favoriteText, value);
         }
 
         public ICommand FavoriteCmd { get; set; }
