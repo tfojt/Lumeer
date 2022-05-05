@@ -6,6 +6,8 @@
         public string DisplayValue { get; set; }
         public string Background { get; set; }
 
+        public string EffectiveValue => GetValue();
+
         public string GetValue() => DisplayValue ?? Value;
 
         public override string ToString() => GetValue();

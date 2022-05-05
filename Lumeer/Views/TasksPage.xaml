@@ -24,14 +24,67 @@
                 <Button Text="..." 
                         Command="{Binding SearchSettingsCmd}"/>
             </StackLayout>
-            <ListView Grid.Row="1"
+            <ListView 
+                x:Name="listView"
+                Grid.Row="1"
                       ItemsSource="{Binding DisplayedTasks}"
                       SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
                       IsPullToRefreshEnabled="True"
                       RefreshCommand="{Binding RefreshTasksCmd}"
                       IsRefreshing="{Binding IsRefreshingTasks}"
-                      HasUnevenRows="True"
-                      ItemTemplate="{Binding TasksDataTemplate, Mode=OneWay}">
+                HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem
+                                    Text="{Binding Task.FavoriteText}"
+                                    Command="{Binding Path=BindingContext.ChangeTaskFavoriteStatusCmd, Source={x:Reference Name=listView}}"
+                                    CommandParameter="{Binding .}"/>
+                            </ViewCell.ContextActions>
+                            <Frame
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="20"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Margin="0,0,10,0"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        Color="{Binding TableColor}"/>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="{Binding Title}"
+                                        FontAttributes="Bold"/>
+                                    <CollectionView
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        ItemsLayout="HorizontalList"
+                                        ItemsSource="{Binding Selections}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout>
+                                                    <Label 
+                                                        Text="{Binding EffectiveValue}"/>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
             <!--<RefreshView Grid.Row="1"
                 Command="{Binding RefreshTasksCmd}"

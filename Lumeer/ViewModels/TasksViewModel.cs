@@ -1,4 +1,5 @@
-﻿using Lumeer.Models.Rest;
+﻿using Lumeer.Models;
+using Lumeer.Models.Rest;
 using Lumeer.Services;
 using Lumeer.TemplateSelectors;
 using Lumeer.Utils;
@@ -32,7 +33,7 @@ namespace Lumeer.ViewModels
             }
         }
 
-        public ObservableCollection<Models.Rest.Task> DisplayedTasks { get; set; } = new ObservableCollection<Models.Rest.Task>();
+        public ObservableCollection<TaskItem> DisplayedTasks { get; set; } = new ObservableCollection<TaskItem>();
 
         private string _searchedText;
         public string SearchedText
@@ -62,8 +63,8 @@ namespace Lumeer.ViewModels
             set => SetValue(ref _isRefreshingTasks, value); 
         }
 
-        private Models.Rest.Task _selectedTask;
-        public Models.Rest.Task SelectedTask 
+        private TaskItem _selectedTask;
+        public TaskItem SelectedTask 
         {
             get => _selectedTask;
             set
@@ -92,10 +93,10 @@ namespace Lumeer.ViewModels
             SearchCmd = new Command(Search);
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             CreateTaskCmd = new Command(CreateTask);
-            ChangeTaskFavoriteStatusCmd = new Command<Models.Rest.Task>(ChangeTaskFavoriteStatus);
+            ChangeTaskFavoriteStatusCmd = new Command<TaskItem>(ChangeTaskFavoriteStatus);
 
-            var tableDataTemplates = CreateTableDataTemplates();
-            TasksDataTemplate = new TaskDataTemplateSelector(tableDataTemplates);
+            /*var tableDataTemplates = CreateTableDataTemplates();
+            TasksDataTemplate = new TaskDataTemplateSelector(tableDataTemplates);*/
 
             RefreshTasks();
         }
@@ -205,10 +206,11 @@ namespace Lumeer.ViewModels
             return tableDataTemplates;
         }
 
-        private async void DisplayTaskDetail(Models.Rest.Task task)
+        private async void DisplayTaskDetail(TaskItem taskItem)
         {
             // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
-            
+
+            var task = taskItem.Task;
             var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
             var taskDetailPage = new TaskDetailPage(task, table);
             taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
@@ -259,7 +261,8 @@ namespace Lumeer.ViewModels
             {
                 foreach (var task in OriginalTasks)
                 {
-                    DisplayedTasks.Add(task);
+                    var taskItem = new TaskItem(task);
+                    DisplayedTasks.Add(taskItem);
                 }
             }
             else
@@ -276,7 +279,8 @@ namespace Lumeer.ViewModels
                         string stringValue = value.ToString();
                         if (stringValue.Contains(SearchedText))
                         {
-                            DisplayedTasks.Add(task);
+                            var taskItem = new TaskItem(task);
+                            DisplayedTasks.Add(taskItem);
                             break;
                         }
                     }
@@ -310,10 +314,11 @@ namespace Lumeer.ViewModels
             return await ApiClient.Instance.GetTasks(searchFilter);
         }
 
-        private async void ChangeTaskFavoriteStatus(Models.Rest.Task task)
+        private async void ChangeTaskFavoriteStatus(TaskItem taskItem)
         {
             try
             {
+                var task = taskItem.Task;
                 bool newFavoriteValue = !task.Favorite;
                 await ApiClient.Instance.ChangeTaskFavoriteStatus(task, newFavoriteValue);
                 task.Favorite = newFavoriteValue;
