@@ -5,7 +5,9 @@
             x:Class="Lumeer.Views.MainPage"
             NavigationPage.HasNavigationBar="False"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-            android:TabbedPage.ToolbarPlacement="Bottom">
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            SelectedTabColor="{StaticResource LumeerGreen}">
     <views:TasksPage/>
+    <views:NotificationsPage/>
     <views:SettingsPage/>
 </TabbedPage>

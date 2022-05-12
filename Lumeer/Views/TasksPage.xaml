@@ -1,13 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
-             xmlns:rest="clr-namespace:Lumeer.Models.Rest"
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
              x:Class="Lumeer.Views.TasksPage"
              Title="Tasks">
     <ContentPage.BindingContext>
         <viewModels:TasksViewModel/>
     </ContentPage.BindingContext>
+
+    <ContentPage.IconImageSource>
+        <FontImageSource FontFamily="FAS" Glyph="{x:Static fa:FontAwesomeIcons.CalendarCheck}"/>
+        <!--TODOT FAR-->
+    </ContentPage.IconImageSource>
     
     <ContentPage.Content>
         <Grid>
@@ -20,19 +25,25 @@
                 <SearchBar x:Name="searchBar"
                            Placeholder="Search..."
                            Text="{Binding SearchedText}"
-                           SearchCommand="{Binding SearchCmd}"/>
-                <Button Text="..." 
-                        Command="{Binding SearchSettingsCmd}"/>
+                           SearchCommand="{Binding SearchCmd}"
+                           HorizontalOptions="FillAndExpand"/>
+                <ImageButton Command="{Binding SearchSettingsCmd}"
+                           Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="20" WidthRequest="20">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="FAS" Color="DarkGray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/> <!--TODOT FAR-->
+                    </ImageButton.Source>
+                </ImageButton>
             </StackLayout>
             <ListView 
                 x:Name="listView"
                 Grid.Row="1"
-                      ItemsSource="{Binding DisplayedTasks}"
-                      SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
-                      IsPullToRefreshEnabled="True"
-                      RefreshCommand="{Binding RefreshTasksCmd}"
-                      IsRefreshing="{Binding IsRefreshingTasks}"
-                HasUnevenRows="True">
+                ItemsSource="{Binding DisplayedTasks}"
+                SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshTasksCmd}"
+                IsRefreshing="{Binding IsRefreshingTasks}"
+                HasUnevenRows="True"
+                SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -97,12 +108,18 @@
                     SelectionMode="Single">
                 </CollectionView>
             </RefreshView>-->
-            <Button Grid.Row="1"
+            <ImageButton Grid.Row="1"
+                         Margin="0,0,20,20"
+                         HeightRequest="60"
+                         WidthRequest="60"
                     HorizontalOptions="End"
                     VerticalOptions="End"
-                    Text="+"
                     Command="{Binding CreateTaskCmd}"
-                    CornerRadius="35"/>
+                    BackgroundColor="Transparent">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="FAS" Color="{StaticResource LumeerGreen}" Glyph="{x:Static fa:FontAwesomeIcons.CirclePlus}"/>
+                </ImageButton.Source>
+            </ImageButton>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

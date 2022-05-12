@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
              x:Class="Lumeer.Views.SettingsPage"
              Title="Settings">
+
+    <ContentPage.IconImageSource>
+        <FontImageSource FontFamily="FAS" Glyph="{x:Static fa:FontAwesomeIcons.Gear}"/>
+        <!--TODOT FAR-->
+    </ContentPage.IconImageSource>
+
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to Settings Page!"

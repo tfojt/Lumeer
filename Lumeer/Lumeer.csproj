@@ -11,11 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\FontAwesomeRegular.otf" />
+    <None Remove="Fonts\FontAwesomeSolid.otf" />
     <None Remove="Images\kanban.gif" />
     <None Remove="Images\lumeerLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Fonts\FontAwesomeRegular.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesomeSolid.otf" />
     <EmbeddedResource Include="Images\kanban.gif" />
     <EmbeddedResource Include="Images\lumeerLogo.png" />
   </ItemGroup>
@@ -38,6 +42,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Views\LogoView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\NotificationsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TaskTableView.xaml">

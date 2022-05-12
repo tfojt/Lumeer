@@ -37,10 +37,10 @@
                            Margin="0,0,0,20"
                            IndicatorSize="8"
                            IndicatorColor="LightGray"
-                           SelectedIndicatorColor="SeaGreen"/>
+                           SelectedIndicatorColor="{StaticResource LumeerGreen}"/>
             <Button Text="Get started"
                     Command="{Binding AuthenticateCmd}"
-                    BackgroundColor="SeaGreen"
+                    BackgroundColor="{StaticResource LumeerGreen}"
                     TextColor="White"
                     HeightRequest="80"/>
         </StackLayout>

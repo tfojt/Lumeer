@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Lumeer.App">
     <Application.Resources>
-
+        <Color x:Key="LumeerGreen">#08b48c</Color>
     </Application.Resources>
 </Application>
