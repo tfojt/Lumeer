@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\FontAwesome6BrandsRegular.otf" />
+    <None Remove="Fonts\FontAwesome6DuotoneSolid.otf" />
+    <None Remove="Fonts\FontAwesome6ProLight.otf" />
+    <None Remove="Fonts\FontAwesome6ProRegular.otf" />
+    <None Remove="Fonts\FontAwesome6ProSolid.otf" />
+    <None Remove="Fonts\FontAwesome6ProThin.otf" />
     <None Remove="Fonts\FontAwesomeRegular.otf" />
     <None Remove="Fonts\FontAwesomeSolid.otf" />
     <None Remove="Images\kanban.gif" />
@@ -18,8 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Fonts\FontAwesomeRegular.otf" />
-    <EmbeddedResource Include="Fonts\FontAwesomeSolid.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6BrandsRegular.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6DuotoneSolid.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6ProLight.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6ProRegular.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6ProSolid.otf" />
+    <EmbeddedResource Include="Fonts\FontAwesome6ProThin.otf" />
     <EmbeddedResource Include="Images\kanban.gif" />
     <EmbeddedResource Include="Images\lumeerLogo.png" />
   </ItemGroup>

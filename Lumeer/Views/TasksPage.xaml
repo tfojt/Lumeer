@@ -10,8 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.IconImageSource>
-        <FontImageSource FontFamily="FAS" Glyph="{x:Static fa:FontAwesomeIcons.CalendarCheck}"/>
-        <!--TODOT FAR-->
+        <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.CalendarCheck}"/>
     </ContentPage.IconImageSource>
     
     <ContentPage.Content>
@@ -28,9 +27,9 @@
                            SearchCommand="{Binding SearchCmd}"
                            HorizontalOptions="FillAndExpand"/>
                 <ImageButton Command="{Binding SearchSettingsCmd}"
-                           Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="20" WidthRequest="20">
+                           Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="25" WidthRequest="25">
                     <ImageButton.Source>
-                        <FontImageSource FontFamily="FAS" Color="DarkGray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/> <!--TODOT FAR-->
+                        <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/>
                     </ImageButton.Source>
                 </ImageButton>
             </StackLayout>
@@ -117,7 +116,7 @@
                     Command="{Binding CreateTaskCmd}"
                     BackgroundColor="Transparent">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="FAS" Color="{StaticResource LumeerGreen}" Glyph="{x:Static fa:FontAwesomeIcons.CirclePlus}"/>
+                    <FontImageSource FontFamily="FAPS" Color="{StaticResource LumeerGreen}" Glyph="{x:Static fa:FontAwesomeIcons.CirclePlus}"/>
                 </ImageButton.Source>
             </ImageButton>
         </Grid>

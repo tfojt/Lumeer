@@ -100,6 +100,12 @@ namespace Lumeer.Utils
             return await SendRequestGetContent<List<SelectionList>>(HttpMethod.Get, uri);
         }
 
+        public async Task<List<Notification>> GetNotifications()
+        {
+            string uri = $"notifications";
+            return await SendRequestGetContent<List<Notification>>(HttpMethod.Get, uri);
+        }
+
         public async Task<Tasks> GetTasks(SearchFilter searchFilter)
         {
             string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false";

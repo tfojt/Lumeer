@@ -6,8 +6,7 @@
              Title="Settings">
 
     <ContentPage.IconImageSource>
-        <FontImageSource FontFamily="FAS" Glyph="{x:Static fa:FontAwesomeIcons.Gear}"/>
-        <!--TODOT FAR-->
+        <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.Gear}"/>
     </ContentPage.IconImageSource>
 
     <ContentPage.Content>
