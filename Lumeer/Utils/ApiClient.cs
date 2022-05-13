@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.Utils
 {
@@ -31,9 +30,10 @@ namespace Lumeer.Utils
             _httpClient.DefaultRequestHeaders.Host = "localhost";
         }
 
-        public void Authorize(string token)
+        public void Authorize(string accessToken)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            // TODOT what if accessToken expires?
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
         private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string uriPart, object payload = null)
@@ -68,6 +68,13 @@ namespace Lumeer.Utils
             var response = await SendRequestAndEnsureSuccessStatusCode(method, uriPart, payload);
             string content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(content);
+        }
+
+        public async Task<bool> IsAccessTokenValid()
+        {
+            string uri = "users/current";
+            var response = await SendRequest(HttpMethod.Get, uri);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<User> GetUser()

@@ -8,6 +8,8 @@ using Xamarin.Forms;
 using Lumeer.Utils;
 using System;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace Lumeer.ViewModels
 {
@@ -27,7 +29,7 @@ namespace Lumeer.ViewModels
             _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
 
-            AuthenticateCmd = new Command(Authenticate);
+            AuthenticateCmd = new AsyncCommand(Authenticate, allowsMultipleExecutions:false);
 
             IntroductionTips = new ObservableCollection<IntroductionTip>
             {
@@ -38,33 +40,65 @@ namespace Lumeer.ViewModels
             };
         }
 
-        private async void Authenticate()
+        private async Task Authenticate()
         {
+            const string ACCESS_TOKEN_KEY = "accessToken";
+
             using (new LoadingPopup())
             {
-                var authenticationResult = await _authenticationService.Authenticate();
-                if (!authenticationResult.IsError)
+                string accessToken = await GetToken(ACCESS_TOKEN_KEY);
+                if (accessToken == null)
                 {
-                    try
+                    var authenticationResult = await _authenticationService.Authenticate();
+                    if (authenticationResult.IsError)
                     {
-                        // TODOT are these tokens needed to be saved in SecureStorage?
-                        await SecureStorage.SetAsync("accessToken", authenticationResult.AccessToken);
-                        await SecureStorage.SetAsync("identityToken", authenticationResult.IdToken);
-                        ApiClient.Instance.Authorize(authenticationResult.AccessToken);
-                        await Session.Instance.LoadUsersInitialData();
+                        await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
+                        return;
+                    }
 
-                        App.Current.MainPage = new NavigationPage(new MainPage());
-                    }
-                    catch (Exception ex)
-                    {
-                        var message = "Could not obtain data from server";
-                        await _alertService.DisplayAlert("Error", message, "Ok", ex);
-                    }
+                    accessToken = authenticationResult.AccessToken;
+                    await SaveToken(ACCESS_TOKEN_KEY, accessToken);
                 }
-                else
+
+                ApiClient.Instance.Authorize(accessToken);
+
+                try
                 {
-                    await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
+                    await Session.Instance.LoadUsersInitialData();
+                    App.Current.MainPage = new NavigationPage(new MainPage());
                 }
+                catch (Exception ex)
+                {
+                    var message = "Could not obtain data from server";
+                    await _alertService.DisplayAlert("Error", message, "Ok", ex);
+                }
+            }
+        }
+
+        private async Task<string> GetToken(string key)
+        {
+            try
+            {
+                return await SecureStorage.GetAsync(key);
+            }
+            catch (Exception ex)
+            {
+                // Possible that device doesn't support secure storage on device.
+                Debug.WriteLine(ex);
+                return null;
+            }
+        }
+
+        private async Task SaveToken(string key, string token)
+        {
+            try
+            {
+                await SecureStorage.SetAsync(key, token);
+            }
+            catch (Exception ex)
+            {
+                // Possible that device doesn't support secure storage on device.
+                Debug.WriteLine(ex);
             }
         }
     }
