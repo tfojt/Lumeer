@@ -43,7 +43,13 @@ namespace Lumeer.Models
                     continue;
                 }
 
-                string selection = task.Data[tableAttribute.Id]?.ToString();
+                bool hasValue = task.Data.TryGetValue(tableAttribute.Id, out object value);
+                if (!hasValue)
+                {
+                    continue;
+                }
+
+                string selection = value.ToString();
 
                 if (!string.IsNullOrEmpty(selection))
                 {
