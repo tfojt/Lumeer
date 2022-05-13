@@ -98,7 +98,7 @@ namespace Lumeer.ViewModels
             /*var tableDataTemplates = CreateTableDataTemplates();
             TasksDataTemplate = new TaskDataTemplateSelector(tableDataTemplates);*/
 
-            RefreshTasks();
+            Task.Run(RefreshTasks);
         }
 
         private Dictionary<string, DataTemplate> CreateTableDataTemplates()
@@ -294,6 +294,7 @@ namespace Lumeer.ViewModels
 
             try
             {
+                await Task.Delay(15000);
                 var tasks = await GetTasks();
                 OriginalTasks = tasks.Documents;
             }
