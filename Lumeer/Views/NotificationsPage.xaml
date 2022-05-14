@@ -52,6 +52,11 @@
                                     Text="{Binding ReadContextMenuText}"
                                     Command="{Binding Path=BindingContext.ChangeNotificationReadStatusCmd, Source={x:Reference Name=listView}}"
                                     CommandParameter="{Binding .}"/>
+                                <MenuItem
+                                    Text="Delete"
+                                    IsDestructive="True"
+                                    Command="{Binding Path=BindingContext.DeleteNotificationCmd, Source={x:Reference Name=listView}}"
+                                    CommandParameter="{Binding .}"/>
                             </ViewCell.ContextActions>
                             <Frame
                                 CornerRadius="10"
@@ -59,7 +64,7 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="20"/>
-                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="20"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -77,10 +82,19 @@
                                         Grid.Row="0"
                                         Grid.Column="1"
                                         Text="{Binding DateText}"/>
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalOptions="End">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{Binding ReadIconGlyph}"/>
+                                        </Image.Source>
+                                    </Image>
                                     <Label
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         Text="{Binding Title}"
+                                        TextColor="{Binding TitleColor}"
                                         FontAttributes="Bold"/>
                                     <CollectionView
                                         Grid.Row="2"

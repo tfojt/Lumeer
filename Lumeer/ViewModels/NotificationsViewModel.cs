@@ -52,6 +52,7 @@ namespace Lumeer.ViewModels
         public ICommand SearchCmd { get; set; }
         public ICommand SearchSettingsCmd { get; set; }
         public ICommand ChangeNotificationReadStatusCmd { get; set; }
+        public ICommand DeleteNotificationCmd { get; set; }
 
         private bool _isRefreshingNotifications;
         public bool IsRefreshingNotifications
@@ -83,6 +84,7 @@ namespace Lumeer.ViewModels
             SearchCmd = new Command(Search);
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             ChangeNotificationReadStatusCmd = new Command<NotificationItem>(ChangeNotificationReadStatus);
+            DeleteNotificationCmd = new Command<NotificationItem>(DeleteNotification);
 
             Task.Run(RefreshNotifications);
         }
@@ -190,18 +192,40 @@ namespace Lumeer.ViewModels
 
         private async void ChangeNotificationReadStatus(NotificationItem notificationItem)
         {
-            /*try
+            try
             {
-                var task = notificationItem.Task;
-                bool newFavoriteValue = !task.Favorite;
-                await ApiClient.Instance.ChangeTaskFavoriteStatus(task, newFavoriteValue);
-                task.Favorite = newFavoriteValue;
+                var notification = notificationItem.Notification;
+                bool newReadValue = !notification.Read;
+                await ApiClient.Instance.ChangeNotificationReadStatus(notification, newReadValue);
+                notificationItem.ChangeReadStatus();
             }
             catch (Exception ex)
             {
-                await _alertService.DisplayAlert("Error", "Sorry, there was an error while changing favorite status", "Ok", ex);
+                await _alertService.DisplayAlert("Error", "Sorry, there was an error while changing read status", "Ok", ex);
                 return;
-            }*/
+            }
+        }
+
+        private async void DeleteNotification(NotificationItem notificationItem)
+        {
+            bool delete = await _alertService.DisplayAlert("Warning", $"Do you really want to delete notification {notificationItem.Title}?", "Yes", "No");
+            if (!delete)
+            {
+                return;
+            }
+
+            try
+            {
+                var notification = notificationItem.Notification;
+                await ApiClient.Instance.DeleteNotification(notification);
+                DisplayedNotifications.Remove(notificationItem);
+                OriginalNotifications.Remove(notification);
+            }
+            catch (Exception ex)
+            {
+                await _alertService.DisplayAlert("Error", "Sorry, there was an error while deleting notification", "Ok", ex);
+                return;
+            }
         }
     }
 }

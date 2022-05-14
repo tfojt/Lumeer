@@ -1,0 +1,38 @@
+//http://localhost:8080/lumeer-engine/rest/notifications/627eb1051a0f666ccf8efd51
+// payload {"id":"627eb1051a0f666ccf8efd51","userId":"620fa0b63a52ef0d9b3fbaa7","read":true}
+
+{
+  "userId": "620fa0b63a52ef0d9b3fbaa7",
+  "createdAt": 1652470021490,
+  "read": true,
+  "firstReadAt": 1652527380673,
+  "type": "PAST_DUE_DATE",
+  "data": {
+    "organizationColor": "#073763",
+    "projectIcon": "fas fa-computer-classic",
+    "collectionColor": "#7cb342",
+    "collectionName": "Table2",
+    "organizationId": "620fa0b63a52ef0d9b3fbaa8",
+    "taskState": null,
+    "assigneeViaTeamOnly": false,
+    "projectCode": "TIME",
+    "taskNameAttribute": "a1",
+    "collectionId": "623c9626a1985c3b3356f829",
+    "organizationName": "Lumeer demo",
+    "documentCursor": "eyJhIjoiYTEiLCJjIjoiNjIzYzk2MjZhMTk4NWMzYjMzNTZmODI5IiwicyI6dHJ1ZSwiZCI6IjYyM2Q4ZGRmYTE5ODVjM2IzMzU2ZjgzYyJ96194bc07",
+    "taskDueDate": "16.03.2022",
+    "collectionIcon": "fas fa-function",
+    "dueDateFormat": "DD.MM.YYYY",
+    "organizationCode": "TMSFJ",
+    "taskCompleted": false,
+    "projectColor": "#1565c0",
+    "taskName": "tomasfojt@seznam.cz",
+    "documentId": "623d8ddfa1985c3b3356f83c",
+    "collectionQuery": "eyJzIjpbeyJjIjoiNjIzYzk2MjZhMTk4NWMzYjMzNTZmODI5In1dfQcb26b620",
+    "assignee": "tomasfojt@seznam.cz",
+    "organizationIcon": "fas fa-shipping-timed",
+    "projectName": "",
+    "projectId": "620fa1033a52ef0d9b3fbaaa"
+  },
+  "id": "627eb1051a0f666ccf8efd51"
+}

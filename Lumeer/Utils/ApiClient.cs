@@ -150,5 +150,28 @@ namespace Lumeer.Utils
             
             return await SendRequestAndEnsureSuccessStatusCode(httpMethod, uri, payload);
         }
+
+        public async Task<HttpResponseMessage> ChangeNotificationReadStatus(Notification notification, bool read)
+        {
+            string uri = $"notifications/{notification.Id}";
+
+            var payload = new 
+            {
+                id = notification.Id,
+                userId = notification.UserId,
+                read = read
+            };
+            
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Put, uri, payload);
+        }
+
+        public async Task<HttpResponseMessage> DeleteNotification(Notification notification)
+        {
+            string uri = $"notifications/{notification.Id}";
+
+            var payload = new object();
+            
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, payload);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Lumeer.Models.Rest;
+﻿using Lumeer.Fonts;
+using Lumeer.Models.Rest;
 using Lumeer.Models.Rest.Enums;
 using Lumeer.Utils;
 using System;
@@ -25,24 +26,38 @@ namespace Lumeer.Models
 
         public string DateText { get; set; }
 
-        public List<string> Path { get; set; } = new List<string>() { "somar", "ej"};
+        public List<string> Path { get; set; } = new List<string>() { "Org", "Proj", "Table"};
 
-        public NotificationItem(Notification notification)
+        private Color _titleColor;
+        public Color TitleColor 
+        {
+            get => _titleColor;
+            set => SetValue(ref _titleColor, value);
+        }
+
+        private string _readIconGlyph;
+        public string ReadIconGlyph
+        {
+            get => _readIconGlyph;
+            set => SetValue(ref _readIconGlyph, value);
+        }
+
+    public NotificationItem(Notification notification)
         {
             Notification = notification;
 
-            SetReadContextMenuText();
+            ApplyAccordingToReadStatus();
 
             ParseNotificationType();
 
-            DateText = new DateTime(notification.CreatedAt).ToString(); // TODOT hours looks correct, date is 1/2/0001
+            DateText = DateTimeOffset.FromUnixTimeMilliseconds(notification.CreatedAt).ToString("M/d/yy, h:m tt");
         }
 
         public void ChangeReadStatus()
         {
             Notification.Read = !Notification.Read;
 
-            SetReadContextMenuText();
+            ApplyAccordingToReadStatus();
         }
 
         private void ParseNotificationType()
@@ -72,22 +87,22 @@ namespace Lumeer.Models
                     }
                 case NotificationType.DUE_DATE_SOON:
                     {
-                        Title = "Due Date soon.";
+                        Title = $"The task {GetTaskName()} has due date soon {GetTaskDueDate()}.";
                         break;
                     }
                 case NotificationType.DUE_DATE_CHANGED:
                     {
-                        Title = "Due Date changed.";
+                        Title = $"The task {GetTaskName()} due date has been changed {GetTaskDueDate()}.";
                         break;
                     }
                 case NotificationType.PAST_DUE_DATE:
                     {
-                        Title = "Past Due Date.";
+                        Title = $"The task {GetTaskName()} is past due date {GetTaskDueDate()}.";
                         break;
                     }
                 case NotificationType.STATE_UPDATE:
                     {
-                        Title = "State has been updated.";
+                        Title = $"The task {GetTaskName()} state has been updated.";
                         break;
                     }
                 case NotificationType.BULK_ACTION:
@@ -97,22 +112,22 @@ namespace Lumeer.Models
                     }
                 case NotificationType.TASK_ASSIGNED:
                     {
-                        Title = GetTaskTitleCommonPart() + "been assigned";
+                        Title = GetTaskTitleCommonPart() + "been assigned.";
                         break;
                     }
                 case NotificationType.TASK_UPDATED:
                     {
-                        Title = GetTaskTitleCommonPart() + "been updated";
+                        Title = GetTaskTitleCommonPart() + "been updated.";
                         break;
                     }
                 case NotificationType.TASK_REMOVED:
                     {
-                        Title = GetTaskTitleCommonPart() + "been removed";
+                        Title = GetTaskTitleCommonPart() + "been removed.";
                         break;
                     }
                 case NotificationType.TASK_UNASSIGNED:
                     {
-                        Title = GetTaskTitleCommonPart() + "been unassigned";
+                        Title = GetTaskTitleCommonPart() + "been unassigned.";
                         break;
                     }
                 case NotificationType.TASK_COMMENTED:
@@ -140,6 +155,11 @@ namespace Lumeer.Models
             }
         }
 
+        private string GetTaskDueDate()
+        {
+            return (string)Notification.Data["taskDueDate"];
+        }
+        
         private string GetTaskName()
         {
             return (string)Notification.Data["taskName"];
@@ -150,12 +170,21 @@ namespace Lumeer.Models
             var taskName = GetTaskName();
             return $"Task {taskName} has ";
         }
-
-        private void SetReadContextMenuText()
+        
+        private void ApplyAccordingToReadStatus()
         {
-            string prefix = Notification.Read ? "un" : "";
-
-            ReadContextMenuText = $"Mark as {prefix}read";
+            if (Notification.Read)
+            {
+                TitleColor = Color.Gray;
+                ReadIconGlyph = FontAwesomeIcons.Eye;
+                ReadContextMenuText = "Unread";
+            }
+            else
+            {
+                TitleColor = Color.Black;
+                ReadIconGlyph = FontAwesomeIcons.EyeSlash;
+                ReadContextMenuText = "Read";
+            }
         }
     }
 }
