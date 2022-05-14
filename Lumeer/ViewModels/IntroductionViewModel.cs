@@ -19,6 +19,8 @@ namespace Lumeer.ViewModels
         private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
 
+        private const string ACCESS_TOKEN_KEY = "accessToken";
+
         public ICommand AuthenticateCmd { get; set; }
 
         public ObservableCollection<IntroductionTip> IntroductionTips { get; set; }
@@ -39,25 +41,33 @@ namespace Lumeer.ViewModels
                 new IntroductionTip("Lumeer.Images.lumeerLogo.png", "Tip 3"),
             };
         }
-
+        
         private async Task Authenticate()
         {
-            const string ACCESS_TOKEN_KEY = "accessToken";
-
             using (new LoadingPopup())
             {
                 string accessToken = await GetToken(ACCESS_TOKEN_KEY);
                 if (accessToken == null)
                 {
-                    var authenticationResult = await _authenticationService.Authenticate();
-                    if (authenticationResult.IsError)
+                    accessToken = await Login();
+                    if (accessToken == null)
                     {
-                        await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
                         return;
                     }
-
-                    accessToken = authenticationResult.AccessToken;
-                    await SaveToken(ACCESS_TOKEN_KEY, accessToken);
+                }
+                else
+                {
+                    ApiClient.Instance.Authorize(accessToken);
+                    bool isValid = await ApiClient.Instance.IsAccessTokenValid();
+                    if (!isValid)
+                    {
+                        SecureStorage.Remove(ACCESS_TOKEN_KEY);
+                        accessToken = await Login();
+                        if (accessToken == null)
+                        {
+                            return;
+                        }
+                    }
                 }
 
                 ApiClient.Instance.Authorize(accessToken);
@@ -73,6 +83,19 @@ namespace Lumeer.ViewModels
                     await _alertService.DisplayAlert("Error", message, "Ok", ex);
                 }
             }
+        }
+
+        private async Task<string> Login()
+        {
+            var authenticationResult = await _authenticationService.Authenticate();
+            if (authenticationResult.IsError)
+            {
+                await _alertService.DisplayAlert("Error", $"{authenticationResult.Error}", "Ok");
+                return null;
+            }
+
+            await SaveToken(ACCESS_TOKEN_KEY, authenticationResult.AccessToken);
+            return authenticationResult.AccessToken;
         }
 
         private async Task<string> GetToken(string key)
