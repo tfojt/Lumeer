@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Lumeer.Views.TaskOverviewPage">
+    <ContentPage.Content>
+        <Grid>
+            <xct:TabView x:Name="tabView"
+                TabStripHeight="45"
+                TabIndicatorColor="{StaticResource LumeerGreen}">
+                <xct:TabView.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="xct:TabViewItem">
+                            <Setter Property="TextColor" Value="Gray"/>
+                            <Setter Property="TextColorSelected" Value="{StaticResource LumeerGreen}"/>
+                        </Style>
+                    </ResourceDictionary>
+                </xct:TabView.Resources>
+
+                <!-- TabViewItems instantiated in codebehind -->
+            </xct:TabView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

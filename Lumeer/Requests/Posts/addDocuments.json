@@ -1,0 +1,25 @@
+// http://localhost:8080/lumeer-engine/rest/
+//organizations/620fa0b63a52ef0d9b3fbaa8/projects/620fa1033a52ef0d9b3fbaaa/data/documents
+
+// payload ["623d8ddfa1985c3b3356f83c"]
+
+[
+  {
+    "data": {
+      "_id": "623d8ddfa1985c3b3356f83c",
+      "a1": "tomasfojt@seznam.cz",
+      "a2": "2022-03-16T00:00:00.000+0000",
+      "a3": "Programovat"
+    },
+    "id": "623d8ddfa1985c3b3356f83c",
+    "collectionId": "623c9626a1985c3b3356f829",
+    "creationDate": 1648201183103,
+    "updateDate": 1650462983937,
+    "createdBy": "620fa0b63a52ef0d9b3fbaa7",
+    "updatedBy": "620fa0b63a52ef0d9b3fbaa7",
+    "dataVersion": 2,
+    "metaData": {},
+    "commentsCount": 12,
+    "favorite": true
+  }
+]

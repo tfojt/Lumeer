@@ -1,0 +1,25 @@
+// TWO STEPS REQUEST! send 'addDocuments.json' after this request
+
+// http://localhost:8080/lumeer-engine/rest/
+//organizations/620fa0b63a52ef0d9b3fbaa8/projects/620fa1033a52ef0d9b3fbaaa/comments/document/623d8ddfa1985c3b3356f83c
+
+// payload
+/*
+{
+  "correlationId": "1652534869160104a33bc2feaa",
+  "resourceType": "DOCUMENT",
+  "resourceId": "623d8ddfa1985c3b3356f83c",
+  "comment": "<p>10</p>"
+}*/
+
+{
+  "comment": "<p>10</p>",
+  "id": "627fae551a0f666ccf8efd62",
+  "resourceType": "DOCUMENT",
+  "resourceId": "623d8ddfa1985c3b3356f83c",
+  "parentId": "623c9626a1985c3b3356f829",
+  "creationDate": 1652534869860,
+  "author": "620fa0b63a52ef0d9b3fbaa7",
+  "authorEmail": "tomasfojt@seznam.cz",
+  "authorName": "Tomas Fojt"
+}

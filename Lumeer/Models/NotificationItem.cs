@@ -50,7 +50,7 @@ namespace Lumeer.Models
 
             ParseNotificationType();
 
-            DateText = DateTimeOffset.FromUnixTimeMilliseconds(notification.CreatedAt).ToString("M/d/yy, h:m tt");
+            DateText = DateTimeOffset.FromUnixTimeMilliseconds(notification.CreatedAt).ToString("M/d/yy, h:mm tt");
         }
 
         public void ChangeReadStatus()

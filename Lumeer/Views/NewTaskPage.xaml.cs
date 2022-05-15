@@ -18,7 +18,7 @@ namespace Lumeer.Views
         {
             InitializeComponent();
 
-            NewTaskViewModel = new NewTaskViewModel(taskTableView.TableSection);
+            NewTaskViewModel = new NewTaskViewModel(tableSection);
             BindingContext = NewTaskViewModel;
         }
 

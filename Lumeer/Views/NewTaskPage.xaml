@@ -15,8 +15,13 @@
                         SelectedItem="{Binding Table}"
                         HorizontalOptions="FillAndExpand"/>
             </StackLayout>
-            <views:TaskTableView x:Name="taskTableView"
-                                 IsVisible="{Binding TableSelected}"/>
+            <TableView Intent="Data"
+                       IsVisible="{Binding TableSelected}">
+                <TableRoot>
+                    <TableSection x:Name="tableSection"
+                                  Title="Task Detail"/>
+                </TableRoot>
+            </TableView>
             <Grid VerticalOptions="End">
                 <Button Text="Cancel" Grid.Column="0"
                     Command="{Binding CancelCmd}"

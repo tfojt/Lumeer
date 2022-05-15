@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:views="clr-namespace:Lumeer.Views" 
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
+             x:DataType="viewModels:TaskDetailViewModel"
+             x:Class="Lumeer.Views.TaskDetailView">
+  <ContentView.Content>
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout>
+                <TableView Intent="Data">
+                    <TableRoot>
+                        <TableSection x:Name="tableSection"/>
+                    </TableRoot>
+                </TableView>
+                <Button Text="Save"
+                    Command="{Binding SaveCmd}"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentView.Content>
+</ContentView>

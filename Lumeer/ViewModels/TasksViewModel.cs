@@ -72,7 +72,7 @@ namespace Lumeer.ViewModels
                 SetValue(ref _selectedTask, value);
                 if (value != null)
                 {
-                    DisplayTaskDetail(value);
+                    DisplayTaskOverview(value);
                 }
             }
         }
@@ -206,7 +206,22 @@ namespace Lumeer.ViewModels
             return tableDataTemplates;
         }
 
-        private async void DisplayTaskDetail(TaskItem taskItem)
+        private async void DisplayTaskOverview(TaskItem taskItem)
+        {
+            var task = taskItem.Task;
+            var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
+
+            // TODOT save changes made in TaskDetailView
+
+            /*var taskDetailPage = new TaskDetailPage(task, table);
+            taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;*/
+
+            var taskOverviewPage = new TaskOverviewPage(task, table);
+            await _navigationService.PushAsync(taskOverviewPage);
+            SelectedTask = null;
+        }
+        
+        /*private async void DisplayTaskDetail(TaskItem taskItem)
         {
             // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
 
@@ -217,7 +232,7 @@ namespace Lumeer.ViewModels
 
             await _navigationService.PushAsync(taskDetailPage);
             SelectedTask = null;
-        }
+        }*/
 
         private void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
         {
