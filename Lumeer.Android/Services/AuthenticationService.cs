@@ -1,11 +1,9 @@
 ﻿using Auth0.OidcClient;
 using Lumeer.Auth;
 using Lumeer.Droid.Services;
-using System.Threading.Tasks;
-using IdentityModel.OidcClient.Browser;
 using Lumeer.Services;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Collections.Generic;
 
 [assembly: Dependency(typeof(AuthenticationService))]
 namespace Lumeer.Droid.Services
@@ -49,7 +47,7 @@ namespace Lumeer.Droid.Services
 
         public async Task Logout()
         {
-            var x = await _auth0Client.LogoutAsync();
+            await _auth0Client.LogoutAsync();
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:fa="clr-namespace:Lumeer.Fonts"
+             xmlns:fa="clr-namespace:Lumeer.Fonts" 
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
+             x:DataType="viewmodels:SettingsViewModel"
              x:Class="Lumeer.Views.SettingsPage"
              Title="Settings">
 
@@ -62,6 +64,9 @@
                             </ViewCell>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GetHelpCmd}"/>
+                                    </StackLayout.GestureRecognizers>
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
                                             <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.LifeRing}"/>
@@ -88,6 +93,9 @@
                         <TableSection>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding LogoutCmd}"/>
+                                    </StackLayout.GestureRecognizers>
                                     <Image  Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
                                             <FontImageSource FontFamily="FAPR" Color="Red" Glyph="{x:Static fa:FontAwesomeIcons.ArrowRightFromBracket}"/>

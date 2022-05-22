@@ -18,8 +18,7 @@ namespace Lumeer.ViewModels
         private readonly IAuthenticationService _authenticationService;
         private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
-
-        private const string ACCESS_TOKEN_KEY = "accessToken";
+        private readonly ISecureStorageService _secureStorageService;
 
         public ICommand AuthenticateCmd { get; set; }
 
@@ -30,8 +29,9 @@ namespace Lumeer.ViewModels
             _authenticationService = DependencyService.Get<IAuthenticationService>();
             _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
+            _secureStorageService = DependencyService.Get<ISecureStorageService>();
 
-            AuthenticateCmd = new AsyncCommand(Authenticate, allowsMultipleExecutions:false);
+            AuthenticateCmd = new AsyncCommand(Authenticate, allowsMultipleExecutions: false);
 
             IntroductionTips = new ObservableCollection<IntroductionTip>
             {
@@ -41,12 +41,12 @@ namespace Lumeer.ViewModels
                 new IntroductionTip("Lumeer.Images.lumeerLogo.png", "Tip 3"),
             };
         }
-        
+
         private async Task Authenticate()
         {
             using (new LoadingPopup())
             {
-                string accessToken = await GetToken(ACCESS_TOKEN_KEY);
+                string accessToken = await _secureStorageService.GetAsync(SecureStorageService.ACCESS_TOKEN_KEY);
                 if (accessToken == null)
                 {
                     accessToken = await Login();
@@ -61,7 +61,7 @@ namespace Lumeer.ViewModels
                     bool isValid = await ApiClient.Instance.IsAccessTokenValid();
                     if (!isValid)
                     {
-                        SecureStorage.Remove(ACCESS_TOKEN_KEY);
+                        _secureStorageService.Remove(SecureStorageService.ACCESS_TOKEN_KEY);
                         accessToken = await Login();
                         if (accessToken == null)
                         {
@@ -94,35 +94,8 @@ namespace Lumeer.ViewModels
                 return null;
             }
 
-            await SaveToken(ACCESS_TOKEN_KEY, authenticationResult.AccessToken);
+            await _secureStorageService.SetAsync(SecureStorageService.ACCESS_TOKEN_KEY, authenticationResult.AccessToken);
             return authenticationResult.AccessToken;
-        }
-
-        private async Task<string> GetToken(string key)
-        {
-            try
-            {
-                return await SecureStorage.GetAsync(key);
-            }
-            catch (Exception ex)
-            {
-                // Possible that device doesn't support secure storage on device.
-                Debug.WriteLine(ex);
-                return null;
-            }
-        }
-
-        private async Task SaveToken(string key, string token)
-        {
-            try
-            {
-                await SecureStorage.SetAsync(key, token);
-            }
-            catch (Exception ex)
-            {
-                // Possible that device doesn't support secure storage on device.
-                Debug.WriteLine(ex);
-            }
         }
     }
 }

@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AlertService))]
 [assembly: Dependency(typeof(NavigationService))]
+[assembly: Dependency(typeof(SecureStorageService))]
 namespace Lumeer
 {
     public partial class App : Application
