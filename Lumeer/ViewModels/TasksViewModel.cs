@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using Task = System.Threading.Tasks.Task;
 
@@ -50,7 +51,7 @@ namespace Lumeer.ViewModels
             }
         }
 
-        public ICommand RefreshTasksCmd { get; set; }
+        public IAsyncCommand RefreshTasksCmd { get; set; }
         public ICommand SearchCmd { get; set; }
         public ICommand SearchSettingsCmd { get; set; }
         public ICommand CreateTaskCmd { get; set; }
@@ -89,7 +90,7 @@ namespace Lumeer.ViewModels
             _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
 
-            RefreshTasksCmd = new Command(RefreshTasks);
+            RefreshTasksCmd = new AsyncCommand(RefreshTasks, allowsMultipleExecutions: false);
             SearchCmd = new Command(Search);
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             CreateTaskCmd = new Command(CreateTask);
@@ -303,13 +304,12 @@ namespace Lumeer.ViewModels
             }
         }
 
-        private async void RefreshTasks()
+        private async Task RefreshTasks()
         {
             IsRefreshingTasks = true;
 
             try
             {
-                await Task.Delay(15000);
                 var tasks = await GetTasks();
                 OriginalTasks = tasks.Documents;
             }

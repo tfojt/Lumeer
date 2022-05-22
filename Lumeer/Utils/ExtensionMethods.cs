@@ -1,4 +1,7 @@
-﻿namespace Lumeer.Utils
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace Lumeer.Utils
 {
     public static class ExtensionMethods
     {
@@ -13,6 +16,19 @@
             }
 
             return false;
+        }
+
+        public static void AddRange<T>(this ObservableCollection<T> observableCollection, IEnumerable<T> collection, bool clearTargetCollection = false)
+        {
+            if (clearTargetCollection)
+            {
+                observableCollection.Clear();
+            }
+
+            foreach (var item in collection)
+            {
+                observableCollection.Add(item);
+            }
         }
     }
 }

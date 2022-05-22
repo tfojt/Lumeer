@@ -1,4 +1,4 @@
-// TWO STEPS REQUEST! send 'addDocuments.json' after this request
+// TWO STEPS REQUEST! send 'documents.json' after this request
 
 // http://localhost:8080/lumeer-engine/rest/
 //organizations/620fa0b63a52ef0d9b3fbaa8/projects/620fa1033a52ef0d9b3fbaaa/comments/document/623d8ddfa1985c3b3356f83c
@@ -8,7 +8,7 @@
 {
   "correlationId": "1652534869160104a33bc2feaa",
   "resourceType": "DOCUMENT",
-  "resourceId": "623d8ddfa1985c3b3356f83c",
+  "resourceId": "623d8ddfa1985c3b3356f83c", // Task.Id
   "comment": "<p>10</p>"
 }*/
 

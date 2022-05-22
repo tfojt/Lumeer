@@ -112,6 +112,24 @@ namespace Lumeer.Utils
             string uri = $"notifications";
             return await SendRequestGetContent<List<Notification>>(HttpMethod.Get, uri);
         }
+        
+        public async Task<List<TaskComment>> GetComments(Models.Rest.Task task, int pageStart = 0, int pageLength = 0)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{task.Id}?pageStart={pageStart}&pageLength={pageLength}";
+            return await SendRequestGetContent<List<TaskComment>>(HttpMethod.Get, uri);
+        }
+
+        public async Task<List<TaskActivity>> GetTaskActivity(Models.Rest.Task task)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}/audit";
+            return await SendRequestGetContent<List<TaskActivity>>(HttpMethod.Get, uri);
+        }
+        
+        public async Task<List<Models.Rest.Task>> GetActualTasks(params string[] taskIds)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/data/documents";
+            return await SendRequestGetContent<List<Models.Rest.Task>>(HttpMethod.Post, uri, taskIds);
+        }
 
         public async Task<Tasks> GetTasks(SearchFilter searchFilter)
         {
@@ -124,6 +142,24 @@ namespace Lumeer.Utils
             string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{newTask.CollectionId}/documents";
             return await SendRequestGetContent<Models.Rest.Task>(HttpMethod.Post, uri, newTask);
         }
+        
+        public async Task<TaskComment> SendComment(TaskComment taskComment)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{taskComment.ParentId}/documents";
+            return await SendRequestGetContent<TaskComment>(HttpMethod.Post, uri, taskComment);
+        }
+        
+        public async Task<TaskComment> EditComment(EditedTaskComment editedTaskComment)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{editedTaskComment.ResourceId}";
+            return await SendRequestGetContent<TaskComment>(HttpMethod.Put, uri, editedTaskComment);
+        }
+        
+        public async Task<HttpResponseMessage> DeleteComment(TaskComment taskComment)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{taskComment.ResourceId}/{taskComment.Id}";
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, new object());
+        }
 
         public async Task<Models.Rest.Task> UpdateTask(Models.Rest.Task oldTask, Dictionary<string, object> changedAttributes)
         {
@@ -134,21 +170,7 @@ namespace Lumeer.Utils
         public async Task<HttpResponseMessage> ChangeTaskFavoriteStatus(Models.Rest.Task task, bool makeFavorite)
         {
             string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}/favorite";
-
-            HttpMethod httpMethod;
-            object payload;
-            if (makeFavorite)
-            {
-                httpMethod = HttpMethod.Post;
-                payload = new object();
-            }
-            else
-            {
-                httpMethod = HttpMethod.Delete;
-                payload = new object();
-            }
-            
-            return await SendRequestAndEnsureSuccessStatusCode(httpMethod, uri, payload);
+            return await SendRequestAndEnsureSuccessStatusCode(makeFavorite ? HttpMethod.Post : HttpMethod.Delete, uri, new object());
         }
 
         public async Task<HttpResponseMessage> ChangeNotificationReadStatus(Notification notification, bool read)

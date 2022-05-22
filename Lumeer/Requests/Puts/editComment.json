@@ -1,0 +1,25 @@
+// https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/comments/document/621fb8f9d508224e0888e7a0
+
+/*payload
+  {
+  "id": "62852e4e14644801966ba3bd",
+  "resourceType": "DOCUMENT",
+  "resourceId": "621fb8f9d508224e0888e7a0",
+  "parentId": "621fb8f9d508224e0888e794",
+  "comment": "<p>e</p>"
+}*/
+
+{
+  "comment": "<p>e</p>",
+  "metaData": {},
+  "id": "62852e4e14644801966ba3bd",
+  "resourceType": "DOCUMENT",
+  "resourceId": "621fb8f9d508224e0888e7a0",
+  "parentId": "621fb8f9d508224e0888e794",
+  "creationDate": 1652895310238,
+  "updateDate": 1652895335702,
+  "author": "620fa0c48e43bf296c088962",
+  "authorEmail": "tomasfojt@seznam.cz",
+  "authorName": "Tomas Fojt"
+}

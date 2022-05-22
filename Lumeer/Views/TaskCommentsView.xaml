@@ -1,10 +1,98 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Lumeer.Views.TaskCommentsView">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:models="clr-namespace:Lumeer.Models"
+             xmlns:fa="clr-namespace:Lumeer.Fonts" xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
+             x:Class="Lumeer.Views.TaskCommentsView"
+             x:DataType="viewModels:TaskCommentsViewModel">
+    <ContentView.Resources>
+        <ControlTemplate x:Key="baseCommentControlTemplate" x:DataType="models:TaskCommentItem">
+            <Frame
+                CornerRadius="10"
+                HasShadow="True">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Image WidthRequest="10" HeightRequest="10">
+                            <Image.Source>
+                                <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.FilePlus}"/>
+                            </Image.Source>
+                        </Image>
+                        <Label VerticalOptions="Center" Text="{TemplateBinding BindingContext.CreationDateTxt}"/>
+                    </StackLayout>
+                    <Label Margin="0,0,0,-20"
+                        Text="{TemplateBinding BindingContext.TaskComment.Comment}"
+                        TextType="Html"
+                        TextColor="Black"/>
+                </StackLayout>
+            </Frame>
+        </ControlTemplate>
+        
+        <DataTemplate x:Key="commentDataTemplate" x:DataType="models:TaskCommentItem">
+            <ViewCell>
+                <ContentView ControlTemplate="{StaticResource baseCommentControlTemplate}"/>
+            </ViewCell>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="commentWithRightsDataTemplate" x:DataType="models:TaskCommentItem">
+            <ViewCell>
+                <ViewCell.ContextActions>
+                    <MenuItem
+                            Text="Edit"
+                            Command="{Binding Path=BindingContext.StartEditingCommentCmd, Source={x:Reference Name=listView}}"
+                            CommandParameter="{Binding .}"/>
+                    <MenuItem
+                            Text="Delete"
+                            IsDestructive="True"
+                            Command="{Binding Path=BindingContext.DeleteCommentCmd, Source={x:Reference Name=listView}}"
+                            CommandParameter="{Binding .}"/>
+                </ViewCell.ContextActions>
+                <ContentView ControlTemplate="{StaticResource baseCommentControlTemplate}"/>
+            </ViewCell>
+        </DataTemplate>
+        <templateSelectors:CommentDataTemplateSelector x:Key="commentTemplateSelector"
+                                                       CommentDataTemplate="{StaticResource commentDataTemplate}"
+                                                       CommentWithRightsDataTemplate="{StaticResource commentWithRightsDataTemplate}"/>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListView 
+                x:Name="listView"
+                Grid.Row="0"
+                VerticalOptions="Fill"
+                ItemsSource="{Binding Comments}"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding LoadCommentsCmd}"
+                IsRefreshing="{Binding LoadingComments}"
+                HasUnevenRows="True"
+                SeparatorVisibility="Default"
+                SelectionMode="None"
+                ItemTemplate="{StaticResource commentTemplateSelector}">
+            </ListView>
+            <Grid Grid.Row="1" Margin="10,0,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Editor Grid.Column="0" VerticalOptions="FillAndExpand" Text="{Binding NewCommentText}" AutoSize="TextChanges" Keyboard="Text" Placeholder="Write a new comment..."/>
+                <StackLayout Grid.Column="1" VerticalOptions="End" Orientation="Horizontal">
+                    <ImageButton Command="{Binding EndEditingCommentCmd}" IsVisible="{Binding EditingComment}" BackgroundColor="Transparent" HeightRequest="25" WidthRequest="25">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FAPS" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Xmark}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding SendCommentCmd}" IsEnabled="{Binding CanSendComment}" BackgroundColor="Transparent" HeightRequest="25" WidthRequest="25">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FAPS" Color="{Binding SendCommentColor}" Glyph="{x:Static fa:FontAwesomeIcons.PaperPlaneTop}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
 </ContentView>

@@ -1,3 +1,5 @@
+// Get all current data of tasks according to ids of tasks
+
 // http://localhost:8080/lumeer-engine/rest/
 //organizations/620fa0b63a52ef0d9b3fbaa8/projects/620fa1033a52ef0d9b3fbaaa/data/documents
 
