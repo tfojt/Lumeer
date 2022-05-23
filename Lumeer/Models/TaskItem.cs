@@ -1,4 +1,5 @@
-﻿using Lumeer.Models.Rest;
+﻿using Lumeer.Fonts;
+using Lumeer.Models.Rest;
 using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Lumeer.Models
 
         public string Title { get; set; }
 
+        public string TableFontFamily { get; set; }
+        public string TableGlyph { get; set; }
         public Color TableColor { get; set; }
 
         public List<SelectionOption> Selections { get; set; } = new List<SelectionOption>();
@@ -33,6 +36,9 @@ namespace Lumeer.Models
             }
 
             var table = Session.Instance.TaskTables.Single(t => t.Id == task.CollectionId);
+
+            TableFontFamily = FontAwesomeAliases.PRO_REGULAR;
+            TableGlyph = FontAwesomeIcons.CircleQuestion;
             TableColor = Color.FromHex(table.Color);
 
             foreach (var tableAttribute in table.Attributes)

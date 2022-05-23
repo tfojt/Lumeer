@@ -11,7 +11,7 @@ namespace Lumeer.Models.Rest
         public bool Agreement { get; set; }
         public long AgreementDate { get; set; }
         public bool Newsletter { get; set; }
-        public object Notifications { get; set; }
+        public UserNotifications Notifications { get; set; }
         public object Hints { get; set; }
         public DefaultWorkspace DefaultWorkspace { get; set; }
         public string TimeZone { get; set; }

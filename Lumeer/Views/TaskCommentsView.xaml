@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
              xmlns:models="clr-namespace:Lumeer.Models"
-             xmlns:fa="clr-namespace:Lumeer.Fonts" xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
+             xmlns:fa="clr-namespace:Lumeer.Fonts" 
+             xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
              x:Class="Lumeer.Views.TaskCommentsView"
              x:DataType="viewModels:TaskCommentsViewModel">
     <ContentView.Resources>

@@ -64,13 +64,16 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <BoxView
+                                    <Image
                                         Grid.RowSpan="2"
                                         Grid.Column="0"
                                         Margin="0,0,10,0"
                                         WidthRequest="40"
-                                        HeightRequest="40"
-                                        Color="{Binding TableColor}"/>
+                                        HeightRequest="40">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="{Binding TableFontFamily}" Color="{Binding TableColor}" Glyph="{Binding TableGlyph}"/>
+                                        </Image.Source>
+                                    </Image>
                                     <Label
                                         Grid.Row="0"
                                         Grid.Column="1"

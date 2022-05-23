@@ -1,4 +1,5 @@
-﻿using Lumeer.Utils;
+﻿using Lumeer.Models.Rest.Enums;
+using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,8 +26,8 @@ namespace Lumeer.Models.Rest
         public long LastTimeUsed { get; set; }
         public string DefaultAttributeId { get; set; }
         public bool Favorite { get; set; }
-        public PurposeType PurposeType{ get; set; }
-        public Dictionary<string, object> PurposeMetaData{ get; set; }
+        public CollectionPurposeType PurposeType { get; set; }
+        public Dictionary<string, object> PurposeMetaData { get; set; }
 
         public override string ToString()
         {

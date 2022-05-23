@@ -2,8 +2,9 @@
 using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
+using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.ViewModels
 {
@@ -11,15 +12,14 @@ namespace Lumeer.ViewModels
     {
         public event TaskEventHandler TaskChangesSaved;
 
-        public ICommand SaveCmd { get; set; }
+        public IAsyncCommand SaveCmd => new AsyncCommand(Save);
 
-        public TaskDetailViewModel(Task task, Table table, TableSection tableSection)
+        public TaskDetailViewModel(Models.Rest.Task task, Table table, TableSection tableSection)
             : base(task, table, tableSection)
         {
-            SaveCmd = new Command(Save);
         }
 
-        private async void Save()
+        private async Task Save()
         {
             if (TaskAttributesChanged(out Dictionary<string, object> changedAttributes))
             {
@@ -35,8 +35,6 @@ namespace Lumeer.ViewModels
 
                 TaskChangesSaved?.Invoke(Task);
             }
-
-            await NavigationService.PopAsync();
         }
     }
 }
