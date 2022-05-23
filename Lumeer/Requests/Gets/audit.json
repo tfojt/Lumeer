@@ -1,0 +1,47 @@
+// activity of task
+
+//https://get.lumeer.io/lumeer-engine/rest/
+  //organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/collections/621fb8f9d508224e0888e794/documents/621fb8f9d508224e0888e7a0/audit
+
+[
+  {
+    "parentId": "621fb8f9d508224e0888e794",
+    "resourceType": "DOCUMENT",
+    "resourceId": "621fb8f9d508224e0888e7a0",
+    "changeDate": 1653209395280,
+    "user": "620fa0c48e43bf296c088962",
+    "userName": "Tomas Fojt",
+    "userEmail": "tomasfojt@seznam.cz",
+    "oldState": {
+      "a1": "Add your projects, clients, goals...",
+      "a2": "medium",
+      "a5": "aturing@lumeerio.com",
+      "a6": "2022-03-02T20:35:37.181+0000",
+      "a9": "Create tables for your own data. Add columns and populate rows."
+    },
+    "newState": {
+      "a1": "Add your projects, clients, goals",
+      "a2": "low",
+      "a5": "tomasfojt@seznam.cz",
+      "a6": "2022-02-28T23:00:00.000+0000",
+      "a9": "Create tables for your own data. Add columns and populate rows"
+    },
+    "id": "6289f8bdf531217c09f2c578",
+    "viewId": "",
+    "type": "Updated"
+  },
+  {
+    "parentId": "621fb8f9d508224e0888e794",
+    "resourceType": "DOCUMENT",
+    "resourceId": "621fb8f9d508224e0888e7a0",
+    "changeDate": 1651770747335,
+    "user": "620fa0c48e43bf296c088962",
+    "userName": "Tomas Fojt",
+    "userEmail": "tomasfojt@seznam.cz",
+    "oldState": { "a3": "open" },
+    "newState": { "a3": "Open" },
+    "id": "6274057b47fe0b7f53194194",
+    "viewId": "",
+    "type": "Updated"
+  }
+]

@@ -1,10 +1,106 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:fa="clr-namespace:Lumeer.Fonts" 
+             xmlns:models="clr-namespace:Lumeer.Models" 
+             xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
+             x:DataType="viewmodels:TaskActivityViewModel"
              x:Class="Lumeer.Views.TaskActivityView">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
+    <ContentView.Resources>
+        <ControlTemplate x:Key="frameControlTemplate">
+            <Frame
+                CornerRadius="10"
+                HasShadow="True"/>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="userImageControlTemplate">
+            <Image HeightRequest="25" WidthRequest="25">
+                <Image.Source>
+                    <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.User}"/>
+                </Image.Source>
+            </Image>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="typeLabelControlTemplate">
+            <Label VerticalOptions="Center" TextColor="Black" Text="{TemplateBinding BindingContext.Type}"/>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="changeDateLabelControlTemplate">
+            <Label VerticalOptions="Center" Text="{TemplateBinding BindingContext.ChangeDateTxt}"/>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="activityDataTemplate" x:DataType="models:TaskActivityItem">
+            <ViewCell>
+                <Frame 
+                    CornerRadius="10"
+                    HasShadow="True">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ContentView Grid.Column="0" Grid.Row="0" ControlTemplate="{x:StaticResource userImageControlTemplate}"/>
+                        <ContentView Grid.Column="1" Grid.Row="0" ControlTemplate="{x:StaticResource typeLabelControlTemplate}"/>
+                        <ContentView Grid.Column="2" Grid.Row="0" ControlTemplate="{x:StaticResource changeDateLabelControlTemplate}"/>
+                        <Frame Padding="10"
+                            Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"
+                            CornerRadius="10"
+                            HasShadow="True">
+                            <Label TextColor="Black" Text="{Binding NewStateTxt}"/>
+                        </Frame>
+                        <Frame Padding="10"
+                            Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2"
+                            CornerRadius="10"
+                            HasShadow="True">
+                            <Label TextColor="Black" Text="{Binding OldStateTxt}" TextDecorations="Strikethrough"/>
+                        </Frame>
+                    </Grid>
+                </Frame>
+            </ViewCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="creationActivityDataTemplate" x:DataType="models:TaskActivityItem">
+            <ViewCell>
+                <Frame 
+                    CornerRadius="10"
+                    HasShadow="True">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ContentView Grid.Column="0" ControlTemplate="{x:StaticResource userImageControlTemplate}"/>
+                        <ContentView Grid.Column="1" ControlTemplate="{x:StaticResource typeLabelControlTemplate}"/>
+                        <ContentView Grid.Column="2" ControlTemplate="{x:StaticResource changeDateLabelControlTemplate}"/>
+                    </Grid>
+                </Frame>
+            </ViewCell>
+        </DataTemplate>
+        
+        <templateSelectors:TaskActivityDataTemplateSelector x:Key="activityTemplateSelector"
+                                                       ActivityDataTemplate="{StaticResource activityDataTemplate}"
+                                                       CreationActivityDataTemplate="{StaticResource creationActivityDataTemplate}"/>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <ListView 
+            x:Name="listView"
+            ItemsSource="{Binding Activities}"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding LoadActivityCmd}"
+            IsRefreshing="{Binding LoadingActivity}"
+            HasUnevenRows="True"
+            SeparatorVisibility="Default"
+            SelectionMode="None"
+            ItemTemplate="{x:StaticResource activityTemplateSelector}">
+        </ListView>
+    </ContentView.Content>
 </ContentView>
