@@ -17,9 +17,8 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.ViewModels
 {
-    public class TasksViewModel : BaseViewModel
+    public class TasksViewModel : BaseTaskViewModel
     {
-        private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
 
         private List<Models.Rest.Task> _originalTasks = new List<Models.Rest.Task>();
@@ -87,7 +86,6 @@ namespace Lumeer.ViewModels
 
         public TasksViewModel()
         {
-            _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
 
             RefreshTasksCmd = new AsyncCommand(RefreshTasks, allowsMultipleExecutions: false);
@@ -95,9 +93,6 @@ namespace Lumeer.ViewModels
             SearchSettingsCmd = new Command(DisplaySearchSettings);
             CreateTaskCmd = new Command(CreateTask);
             ChangeTaskFavoriteStatusCmd = new Command<TaskItem>(ChangeTaskFavoriteStatus);
-
-            /*var tableDataTemplates = CreateTableDataTemplates();
-            TasksDataTemplate = new TaskDataTemplateSelector(tableDataTemplates);*/
 
             Task.Run(RefreshTasks);
         }
@@ -218,10 +213,19 @@ namespace Lumeer.ViewModels
             taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;*/
 
             var taskOverviewPage = new TaskOverviewPage(task, table);
+            taskOverviewPage.TaskOverviewViewModel.TaskDeleted += TaskOverviewViewModel_TaskDeleted;
             await _navigationService.PushAsync(taskOverviewPage);
             SelectedTask = null;
         }
-        
+
+        private void TaskOverviewViewModel_TaskDeleted(Models.Rest.Task task)
+        {
+            var taskItem = DisplayedTasks.Single(t => t.Task == task);
+            DisplayedTasks.Remove(taskItem);
+
+            OriginalTasks.Remove(task);
+        }
+
         /*private async void DisplayTaskDetail(TaskItem taskItem)
         {
             // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
@@ -316,7 +320,7 @@ namespace Lumeer.ViewModels
             catch (Exception ex)
             {
                 var message = "Could not refresh tasks";
-                await _alertService.DisplayAlert("Error", message, "Ok", ex);
+                await AlertService.DisplayAlert("Error", message, "Ok", ex);
             }
             finally
             {
@@ -332,18 +336,7 @@ namespace Lumeer.ViewModels
 
         private async void ChangeTaskFavoriteStatus(TaskItem taskItem)
         {
-            try
-            {
-                var task = taskItem.Task;
-                bool newFavoriteValue = !task.Favorite;
-                await ApiClient.Instance.ChangeTaskFavoriteStatus(task, newFavoriteValue);
-                task.Favorite = newFavoriteValue;
-            }
-            catch (Exception ex)
-            {
-                await _alertService.DisplayAlert("Error", "Sorry, there was an error while changing favorite status", "Ok", ex);
-                return;
-            }
+            await ChangeTaskFavoriteStatus(taskItem.Task);
         }
     }
 }

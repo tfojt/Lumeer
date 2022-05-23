@@ -100,6 +100,12 @@ namespace Lumeer.Utils
             string uri = "organizations";
             return await SendRequestGetContent<List<Organization>>(HttpMethod.Get, uri);
         }
+        
+        public async Task<List<Project>> GetProjects()
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects";
+            return await SendRequestGetContent<List<Project>>(HttpMethod.Get, uri);
+        }
 
         public async Task<List<SelectionList>> GetSelectionLists()
         {
@@ -190,10 +196,13 @@ namespace Lumeer.Utils
         public async Task<HttpResponseMessage> DeleteNotification(Notification notification)
         {
             string uri = $"notifications/{notification.Id}";
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, new object());
+        }
 
-            var payload = new object();
-            
-            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, payload);
+        public async Task<HttpResponseMessage> DeleteTask(Models.Rest.Task task)
+        {
+            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}";
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, new object());
         }
     }
 }

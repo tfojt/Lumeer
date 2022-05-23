@@ -19,6 +19,11 @@ namespace Lumeer.Services
             return await Current.MainPage.DisplayAlert(title, message, accept, cancel);
         }
 
+        public async Task<string> DisplayActionSheet(string title, string cancel, string destruction, params string[] buttons)
+        {
+            return await Current.MainPage.DisplayActionSheet(title, cancel, destruction, buttons);
+        }
+
         private void WriteDebug(string title, string message, Exception debugException = null)
         {
             string exceptionText = debugException == null ? "" : $": {debugException}";

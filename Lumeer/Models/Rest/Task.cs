@@ -28,7 +28,7 @@ namespace Lumeer.Models.Rest
             set
             {
                 SetValue(ref _favorite, value);
-                FavoriteText = _favorite ? "Favorite" : "Not favorite";
+                FavoriteText = _favorite ? "Unfavorite" : "Favorite";
             }
         }
 

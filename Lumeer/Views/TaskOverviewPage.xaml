@@ -2,7 +2,24 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels"
+             x:DataType="viewmodels:TaskOverviewViewModel"
              x:Class="Lumeer.Views.TaskOverviewPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Order="Primary" Command="{Binding DisplayOptionsCmd}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.Ellipsis}">
+                    <FontImageSource.Color>
+                        <OnPlatform x:TypeArguments="Color">
+                            <On Platform="Android">White</On>
+                            <On Platform="iOS">Black</On>
+                        </OnPlatform>
+                    </FontImageSource.Color>
+                </FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <xct:TabView x:Name="tabView"
