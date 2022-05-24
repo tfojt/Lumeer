@@ -25,12 +25,13 @@ namespace Lumeer.Utils
 
         private List<Table> _taskTables;
         public List<Table> TaskTables => _taskTables;
+        public Table CurrentTaskTable { get; set; }
 
         public List<Organization> Organizations { get; set; }
-        public string OrganizationId { get; set; }
+        public Organization CurrentOrganization { get; set; }
 
         public List<Project> Projects { get; set; }
-        public string ProjectId { get; set; }
+        public Project CurrentProject { get; set; }
 
         public List<User> Users { get; set; }
 
@@ -44,12 +45,40 @@ namespace Lumeer.Utils
         public async Task LoadUsersInitialData()
         {
             User = await ApiClient.Instance.GetUser();
-            OrganizationId = User.DefaultWorkspace.OrganizationId;
-            ProjectId = User.DefaultWorkspace.ProjectId;
-            AllTables = await ApiClient.Instance.GetTables();
+
+            await LoadOrganizations();
+            CurrentOrganization = Organizations.Single(o => o.Id == User.DefaultWorkspace.OrganizationId);
+
+            await LoadProjects();
+            CurrentProject = Projects.Single(p => p.Id == User.DefaultWorkspace.ProjectId);
+
+            await LoadTables();
+            await LoadUsers();
+            await LoadSelectionLists();
+        }
+
+        public async Task LoadOrganizations()
+        {
             Organizations = await ApiClient.Instance.GetOrganizations();
+        }
+
+        public async Task LoadProjects()
+        {
             Projects = await ApiClient.Instance.GetProjects();
+        }
+
+        public async Task LoadTables()
+        {
+            AllTables = await ApiClient.Instance.GetTables();
+        }
+
+        public async Task LoadUsers()
+        {
             Users = await ApiClient.Instance.GetUsers();
+        }
+
+        public async Task LoadSelectionLists()
+        {
             SelectionLists = await ApiClient.Instance.GetSelectionLists();
         }
     }

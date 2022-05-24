@@ -10,7 +10,7 @@ namespace Lumeer.Views
     public partial class TaskOverviewPage : ContentPage
     {
         public TaskOverviewViewModel TaskOverviewViewModel { get; set; }
-        private TaskDetailView _taskDetailView;
+        public TaskDetailView TaskDetailView { get; set; }
 
         public TaskOverviewPage(Models.Rest.Task task, Table table)
         {
@@ -19,11 +19,11 @@ namespace Lumeer.Views
             TaskOverviewViewModel = new TaskOverviewViewModel(task);
             BindingContext = TaskOverviewViewModel;
 
-            _taskDetailView = new TaskDetailView(task, table);
+            TaskDetailView = new TaskDetailView(task, table);
             var detailTabViewItem = new TabViewItem()
             {
                 Text = "Detail",
-                Content = _taskDetailView
+                Content = TaskDetailView
             };
             this.tabView.TabItems.Add(detailTabViewItem);
 
@@ -51,7 +51,7 @@ namespace Lumeer.Views
 
         protected async override void OnDisappearing()
         {
-            await _taskDetailView.TaskDetailViewModel.SaveCmd.ExecuteAsync();
+            await TaskDetailView.TaskDetailViewModel.SaveCmd.ExecuteAsync();
         }
     }
 }

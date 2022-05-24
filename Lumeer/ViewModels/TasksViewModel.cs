@@ -52,7 +52,7 @@ namespace Lumeer.ViewModels
 
         public IAsyncCommand RefreshTasksCmd { get; set; }
         public ICommand SearchCmd { get; set; }
-        public ICommand SearchSettingsCmd { get; set; }
+        public ICommand TasksFilterCmd { get; set; }
         public ICommand CreateTaskCmd { get; set; }
         public ICommand ChangeTaskFavoriteStatusCmd { get; set; }
 
@@ -84,13 +84,15 @@ namespace Lumeer.ViewModels
             set => SetValue(ref _tasksDataTemplate, value);
         }
 
+        private TasksFilterSettings _tasksFilterSettings = new TasksFilterSettings();
+
         public TasksViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>();
 
             RefreshTasksCmd = new AsyncCommand(RefreshTasks, allowsMultipleExecutions: false);
             SearchCmd = new Command(Search);
-            SearchSettingsCmd = new Command(DisplaySearchSettings);
+            TasksFilterCmd = new Command(DisplayTasksFilter);
             CreateTaskCmd = new Command(CreateTask);
             ChangeTaskFavoriteStatusCmd = new Command<TaskItem>(ChangeTaskFavoriteStatus);
 
@@ -207,13 +209,9 @@ namespace Lumeer.ViewModels
             var task = taskItem.Task;
             var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
 
-            // TODOT save changes made in TaskDetailView
-
-            /*var taskDetailPage = new TaskDetailPage(task, table);
-            taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;*/
-
             var taskOverviewPage = new TaskOverviewPage(task, table);
             taskOverviewPage.TaskOverviewViewModel.TaskDeleted += TaskOverviewViewModel_TaskDeleted;
+            taskOverviewPage.TaskDetailView.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
             await _navigationService.PushAsync(taskOverviewPage);
             SelectedTask = null;
         }
@@ -226,26 +224,13 @@ namespace Lumeer.ViewModels
             OriginalTasks.Remove(task);
         }
 
-        /*private async void DisplayTaskDetail(TaskItem taskItem)
-        {
-            // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
-
-            var task = taskItem.Task;
-            var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
-            var taskDetailPage = new TaskDetailPage(task, table);
-            taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
-
-            await _navigationService.PushAsync(taskDetailPage);
-            SelectedTask = null;
-        }*/
-
-        private void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
+        private async void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
         {
             /*// TODOT make binding work
             var taskIndex = Tasks.IndexOf(task);
             Tasks.Remove(task);
             Tasks.Insert(taskIndex, task);*/
-            RefreshTasks();
+            await RefreshTasks();
         }
 
         private void CreateTask()
@@ -255,17 +240,24 @@ namespace Lumeer.ViewModels
             _navigationService.PushModalAsync(newTaskPage);
         }
 
-        private void NewTaskViewModel_TaskCreated(Models.Rest.Task task)
+        private async void NewTaskViewModel_TaskCreated(Models.Rest.Task task)
         {
             /*// TODOT 
             Tasks.Add(task);*/
-            RefreshTasks();
+            await RefreshTasks();
         }
 
-        private void DisplaySearchSettings()
+        private void DisplayTasksFilter()
         {
-            _navigationService.PushAsync(new SearchSettingsPage());
-            // TODOT apply settings
+            var tasksFilterPage = new TasksFilterPage(_tasksFilterSettings);
+            tasksFilterPage.TasksFilterViewModel.TasksFilterChanged += TasksFilterViewModel_TasksFilterChanged;
+
+            _navigationService.PushAsync(tasksFilterPage);
+        }
+
+        private async void TasksFilterViewModel_TasksFilterChanged()
+        {
+            await RefreshTasks();
         }
 
         private void Search()
@@ -314,7 +306,7 @@ namespace Lumeer.ViewModels
 
             try
             {
-                var tasks = await GetTasks();
+                var tasks = await ApiClient.Instance.GetTasks(_tasksFilterSettings);
                 OriginalTasks = tasks.Documents;
             }
             catch (Exception ex)
@@ -326,12 +318,6 @@ namespace Lumeer.ViewModels
             {
                 IsRefreshingTasks = false;
             }
-        }
-        
-        private async Task<Tasks> GetTasks()
-        {
-            var searchFilter = new SearchFilter();  // TODOT take this from SearchSettings
-            return await ApiClient.Instance.GetTasks(searchFilter);
         }
 
         private async void ChangeTaskFavoriteStatus(TaskItem taskItem)

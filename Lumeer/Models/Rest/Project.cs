@@ -19,5 +19,10 @@ namespace Lumeer.Models.Rest
         public int Version { get; set; }
         public bool NonRemovable { get; set; }
         public int CollectionsCount { get; set; }
+
+        public override string ToString()
+        {
+            return Code;
+        }
     }
 }

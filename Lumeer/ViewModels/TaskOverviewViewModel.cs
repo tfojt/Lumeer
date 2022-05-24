@@ -69,9 +69,7 @@ namespace Lumeer.ViewModels
         {
             try
             {
-                var organization = Session.Instance.Organizations.Single(o => o.Id == Session.Instance.OrganizationId);
-                var project = Session.Instance.Projects.Single(p => p.Id == Session.Instance.ProjectId);
-                var link = $"https://get.lumeer.io/en/w/{organization.Code}/{project.Code}/document/{_task.CollectionId}/{_task.Id}";
+                var link = $"https://get.lumeer.io/en/w/{Session.Instance.CurrentOrganization.Code}/{Session.Instance.CurrentProject.Code}/document/{_task.CollectionId}/{_task.Id}";
                 await Clipboard.SetTextAsync(link);
             }
             catch (Exception ex)

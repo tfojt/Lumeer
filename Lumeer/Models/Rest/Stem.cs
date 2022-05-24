@@ -20,5 +20,15 @@ namespace Lumeer.Models.Rest
         public List<object> LinkTypeIds { get; set; } = new List<object>();
         public List<object> Filters { get; set; } = new List<object>();
         public List<object> LinkFilters { get; set; } = new List<object>();
+
+        public Stem()
+        {
+
+        }
+
+        public Stem(Table table)
+        {
+            CollectionId = table.Id;
+        }
     }
 }

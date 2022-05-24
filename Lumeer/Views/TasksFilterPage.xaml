@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
+             x:DataType="viewModels:TasksFilterViewModel"
+             x:Class="Lumeer.Views.TasksFilterPage"
+             Title="Tasks Filter">
+    <ContentPage.Content>
+        <TableView Intent="Form">
+            <TableRoot>
+                <TableSection>
+                    <ViewCell>
+                        <Grid Margin="16, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" VerticalOptions="Center" Text="Organization"/>
+                            <Picker Grid.Column="1"
+                                    ItemsSource="{Binding Organizations}"
+                                    SelectedItem="{Binding SelectedOrganization}"/>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell>
+                        <Grid Margin="16, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" VerticalOptions="Center" Text="Project"/>
+                            <Picker Grid.Column="1"
+                                    ItemsSource="{Binding Projects}"
+                                    SelectedItem="{Binding SelectedProject}"
+                                    IsEnabled="{Binding CanSelectProject}"/>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell>
+                        <Grid Margin="16, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" VerticalOptions="Center" Text="Table"/>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Picker Grid.Column="0"
+                                    ItemsSource="{Binding Tables}"
+                                    SelectedItem="{Binding SelectedTable}"
+                                    IsEnabled="{Binding CanSelectTable}"/>
+
+                                <ImageButton Grid.Column="1" Command="{Binding ClearSelectedTableCmd}" IsVisible="{Binding IsTableSelected}" BackgroundColor="Transparent" WidthRequest="15" HeightRequest="15">
+                                    <ImageButton.Source>
+                                        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Xmark}"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+                            </Grid>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell>
+                        <Grid Margin="16, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" VerticalOptions="Center" Text="Include sub-items"/>
+                            <Switch HorizontalOptions="Start" Grid.Column="1" IsToggled="{Binding IncludeSubItems}"/>
+                        </Grid>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

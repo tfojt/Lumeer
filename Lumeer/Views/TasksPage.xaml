@@ -26,7 +26,7 @@
                            Text="{Binding SearchedText}"
                            SearchCommand="{Binding SearchCmd}"
                            HorizontalOptions="FillAndExpand"/>
-                <ImageButton Command="{Binding SearchSettingsCmd}"
+                <ImageButton Command="{Binding TasksFilterCmd}"
                            Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="25" WidthRequest="25">
                     <ImageButton.Source>
                         <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/>

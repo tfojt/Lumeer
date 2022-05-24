@@ -48,6 +48,9 @@
     <Compile Update="Views\IntroductionPage.xaml.cs">
       <DependentUpon>IntroductionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\TasksFilterPage.xaml.cs">
+      <DependentUpon>TasksFilterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TaskOverviewPage.xaml.cs">
       <DependentUpon>TaskOverviewPage.xaml</DependentUpon>
     </Compile>
@@ -93,7 +96,7 @@
     <EmbeddedResource Update="Views\NewTaskPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SearchSettingsPage.xaml">
+    <EmbeddedResource Update="Views\TasksFilterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SettingsPage.xaml">

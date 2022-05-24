@@ -12,5 +12,10 @@
         public string Id { get; set; }
         public int Version { get; set; }
         public bool NonRemovable { get; set; }
+
+        public override string ToString()
+        {
+            return Code;
+        }
     }
 }

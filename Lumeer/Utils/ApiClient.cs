@@ -1,4 +1,5 @@
-﻿using Lumeer.Models.Rest;
+﻿using Lumeer.Models;
+using Lumeer.Models.Rest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -85,13 +86,13 @@ namespace Lumeer.Utils
 
         public async Task<List<Table>> GetTables()
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections";
             return await SendRequestGetContent<List<Table>>(HttpMethod.Get, uri);
         }
 
         public async Task<List<User>> GetUsers()
         {
-            string uri = $"users/organizations/{Session.Instance.OrganizationId}/users";
+            string uri = $"users/organizations/{Session.Instance.CurrentOrganization.Id}/users";
             return await SendRequestGetContent<List<User>>(HttpMethod.Get, uri);
         }
 
@@ -103,13 +104,13 @@ namespace Lumeer.Utils
         
         public async Task<List<Project>> GetProjects()
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects";
             return await SendRequestGetContent<List<Project>>(HttpMethod.Get, uri);
         }
 
         public async Task<List<SelectionList>> GetSelectionLists()
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/selection-lists";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/selection-lists";
             return await SendRequestGetContent<List<SelectionList>>(HttpMethod.Get, uri);
         }
 
@@ -121,61 +122,61 @@ namespace Lumeer.Utils
         
         public async Task<List<TaskComment>> GetComments(Models.Rest.Task task, int pageStart = 0, int pageLength = 0)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{task.Id}?pageStart={pageStart}&pageLength={pageLength}";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/comments/document/{task.Id}?pageStart={pageStart}&pageLength={pageLength}";
             return await SendRequestGetContent<List<TaskComment>>(HttpMethod.Get, uri);
         }
 
         public async Task<List<TaskActivity>> GetTaskActivity(Models.Rest.Task task)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}/audit";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{task.CollectionId}/documents/{task.Id}/audit";
             return await SendRequestGetContent<List<TaskActivity>>(HttpMethod.Get, uri);
         }
         
         public async Task<List<Models.Rest.Task>> GetActualTasks(params string[] taskIds)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/data/documents";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/data/documents";
             return await SendRequestGetContent<List<Models.Rest.Task>>(HttpMethod.Post, uri, taskIds);
         }
 
-        public async Task<Tasks> GetTasks(SearchFilter searchFilter)
+        public async Task<Tasks> GetTasks(TasksFilterSettings tasksFilterSettings)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/search/tasks?subItems=false";
-            return await SendRequestGetContent<Tasks>(HttpMethod.Post, uri, searchFilter);
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/search/tasks?subItems={tasksFilterSettings.IncludeSubItems}";
+            return await SendRequestGetContent<Tasks>(HttpMethod.Post, uri, tasksFilterSettings.TasksFilter);
         }
 
         public async Task<Models.Rest.Task> CreateTask(NewTask newTask)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{newTask.CollectionId}/documents";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{newTask.CollectionId}/documents";
             return await SendRequestGetContent<Models.Rest.Task>(HttpMethod.Post, uri, newTask);
         }
         
         public async Task<TaskComment> SendComment(TaskComment taskComment)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{taskComment.ParentId}/documents";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{taskComment.ParentId}/documents";
             return await SendRequestGetContent<TaskComment>(HttpMethod.Post, uri, taskComment);
         }
         
         public async Task<TaskComment> EditComment(EditedTaskComment editedTaskComment)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{editedTaskComment.ResourceId}";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/comments/document/{editedTaskComment.ResourceId}";
             return await SendRequestGetContent<TaskComment>(HttpMethod.Put, uri, editedTaskComment);
         }
         
         public async Task<HttpResponseMessage> DeleteComment(TaskComment taskComment)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/comments/document/{taskComment.ResourceId}/{taskComment.Id}";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/comments/document/{taskComment.ResourceId}/{taskComment.Id}";
             return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, new object());
         }
 
         public async Task<Models.Rest.Task> UpdateTask(Models.Rest.Task oldTask, Dictionary<string, object> changedAttributes)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{oldTask.CollectionId}/documents/{oldTask.Id}/data";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{oldTask.CollectionId}/documents/{oldTask.Id}/data";
             return await SendRequestGetContent<Models.Rest.Task>(new HttpMethod("PATCH"), uri, changedAttributes);
         }
 
         public async Task<HttpResponseMessage> ChangeTaskFavoriteStatus(Models.Rest.Task task, bool makeFavorite)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}/favorite";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{task.CollectionId}/documents/{task.Id}/favorite";
             return await SendRequestAndEnsureSuccessStatusCode(makeFavorite ? HttpMethod.Post : HttpMethod.Delete, uri, new object());
         }
 
@@ -201,8 +202,21 @@ namespace Lumeer.Utils
 
         public async Task<HttpResponseMessage> DeleteTask(Models.Rest.Task task)
         {
-            string uri = $"organizations/{Session.Instance.OrganizationId}/projects/{Session.Instance.ProjectId}/collections/{task.CollectionId}/documents/{task.Id}";
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{task.CollectionId}/documents/{task.Id}";
             return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Delete, uri, new object());
+        }
+
+        public async Task<HttpResponseMessage> ChangeWorkspace()
+        {
+            string uri = $"users/workspace";
+
+            var payload = new
+            {
+                organizationId = Session.Instance.CurrentOrganization.Id,
+                projectId = Session.Instance.CurrentProject.Id
+            };
+
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Put, uri, payload);
         }
     }
 }
