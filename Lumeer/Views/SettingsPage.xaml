@@ -8,7 +8,7 @@
              Title="Settings">
 
     <ContentPage.IconImageSource>
-        <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.Gear}"/>
+        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Glyph="{x:Static fa:FontAwesomeIcons.Gear}"/>
     </ContentPage.IconImageSource>
 
     <ContentPage.Content>
@@ -21,7 +21,7 @@
             <StackLayout Grid.Row="0" Margin="10" HorizontalOptions="Center" VerticalOptions="Center">
                 <Image Margin="0,5,0,5" HeightRequest="80" WidthRequest="80">
                     <Image.Source>
-                        <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.User}"/>
+                        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CircleUser}"/>
                     </Image.Source>
                 </Image>
                 <Label Text="Username" HorizontalOptions="Center" TextColor="Black"/>
@@ -36,13 +36,13 @@
                                 <StackLayout Orientation="Horizontal">
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.EarthEurope}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.EarthEurope}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Language" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                                     <Image HorizontalOptions="End" Margin="12,8,8,8" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPL" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_LIGHT}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
                                         </Image.Source>
                                     </Image>
                                 </StackLayout> 
@@ -51,13 +51,13 @@
                                 <StackLayout Orientation="Horizontal">
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Bell}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Bell}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Notifications" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                                     <Image HorizontalOptions="End" Margin="12,8,8,8" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPL" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_LIGHT}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
                                         </Image.Source>
                                     </Image>
                                 </StackLayout>
@@ -69,13 +69,13 @@
                                     </StackLayout.GestureRecognizers>
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPR" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.LifeRing}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.LifeRing}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Get help" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                                     <Image HorizontalOptions="End" Margin="12,8,8,8" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPL" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_LIGHT}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.AngleRight}"/>
                                         </Image.Source>
                                     </Image>
                                 </StackLayout>
@@ -98,7 +98,7 @@
                                     </StackLayout.GestureRecognizers>
                                     <Image  Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPR" Color="Red" Glyph="{x:Static fa:FontAwesomeIcons.ArrowRightFromBracket}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Red" Glyph="{x:Static fa:FontAwesomeIcons.ArrowRightFromBracket}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Log out" TextColor="Red" VerticalOptions="Center"/>

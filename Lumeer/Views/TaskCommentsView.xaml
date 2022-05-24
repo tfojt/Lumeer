@@ -14,9 +14,16 @@
                 HasShadow="True">
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
+                        <Image
+                            WidthRequest="15"
+                            HeightRequest="15">
+                            <Image.Source>
+                                <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CircleUser}"/>
+                            </Image.Source>
+                        </Image>
                         <Image WidthRequest="10" HeightRequest="10">
                             <Image.Source>
-                                <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.FilePlus}"/>
+                                <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.FilePlus}"/>
                             </Image.Source>
                         </Image>
                         <Label VerticalOptions="Center" Text="{TemplateBinding BindingContext.CreationDateTxt}"/>
@@ -84,12 +91,12 @@
                 <StackLayout Grid.Column="1" VerticalOptions="End" Orientation="Horizontal">
                     <ImageButton Command="{Binding EndEditingCommentCmd}" IsVisible="{Binding EditingComment}" BackgroundColor="Transparent" HeightRequest="25" WidthRequest="25">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FAPS" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Xmark}"/>
+                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_SOLID}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Xmark}"/>
                         </ImageButton.Source>
                     </ImageButton>
                     <ImageButton Command="{Binding SendCommentCmd}" IsEnabled="{Binding CanSendComment}" BackgroundColor="Transparent" HeightRequest="25" WidthRequest="25">
                         <ImageButton.Source>
-                            <FontImageSource FontFamily="FAPS" Color="{Binding SendCommentColor}" Glyph="{x:Static fa:FontAwesomeIcons.PaperPlaneTop}"/>
+                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_SOLID}" Color="{Binding SendCommentColor}" Glyph="{x:Static fa:FontAwesomeIcons.PaperPlaneTop}"/>
                         </ImageButton.Source>
                     </ImageButton>
                 </StackLayout>

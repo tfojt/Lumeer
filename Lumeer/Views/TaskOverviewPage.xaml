@@ -9,7 +9,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Order="Primary" Command="{Binding DisplayOptionsCmd}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.Ellipsis}">
+                <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Glyph="{x:Static fa:FontAwesomeIcons.Ellipsis}">
                     <FontImageSource.Color>
                         <OnPlatform x:TypeArguments="Color">
                             <On Platform="Android">White</On>

@@ -11,7 +11,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.IconImageSource>
-        <FontImageSource FontFamily="FAPR" Glyph="{x:Static fa:FontAwesomeIcons.Bell}"/>
+        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Glyph="{x:Static fa:FontAwesomeIcons.Bell}"/>
     </ContentPage.IconImageSource>
 
     <ContentPage.Content>
@@ -30,7 +30,7 @@
                 <ImageButton Command="{Binding SearchSettingsCmd}"
                            Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="25" WidthRequest="25">
                     <ImageButton.Source>
-                        <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/>
+                        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/>
                     </ImageButton.Source>
                 </ImageButton>
             </StackLayout>
@@ -90,7 +90,7 @@
                                         Grid.Column="1"
                                         HorizontalOptions="End">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="FAPR" Color="Gray" Glyph="{Binding ReadIconGlyph}"/>
+                                            <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Gray" Glyph="{Binding ReadIconGlyph}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label
