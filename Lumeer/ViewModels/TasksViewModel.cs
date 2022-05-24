@@ -21,17 +21,7 @@ namespace Lumeer.ViewModels
     {
         private readonly INavigationService _navigationService;
 
-        private List<Models.Rest.Task> _originalTasks = new List<Models.Rest.Task>();
-        public List<Models.Rest.Task> OriginalTasks 
-        {
-            get => _originalTasks;
-            set
-            {
-                _originalTasks = value;
-
-                FilterDisplayedTasks();
-            }
-        }
+        public List<TaskItem> OriginalTasks { get; set; } = new List<TaskItem>();
 
         public ObservableCollection<TaskItem> DisplayedTasks { get; set; } = new ObservableCollection<TaskItem>();
 
@@ -50,11 +40,11 @@ namespace Lumeer.ViewModels
             }
         }
 
-        public IAsyncCommand RefreshTasksCmd { get; set; }
-        public ICommand SearchCmd { get; set; }
-        public ICommand TasksFilterCmd { get; set; }
-        public ICommand CreateTaskCmd { get; set; }
-        public ICommand ChangeTaskFavoriteStatusCmd { get; set; }
+        public IAsyncCommand RefreshTasksCmd => new AsyncCommand(RefreshTasks, allowsMultipleExecutions: false);
+        public ICommand SearchCmd => new Command(Search);
+        public ICommand TasksFilterCmd => new Command(DisplayTasksFilter);
+        public ICommand CreateTaskCmd => new Command(CreateTask);
+        public ICommand ChangeTaskFavoriteStatusCmd => new Command<TaskItem>(ChangeTaskFavoriteStatus);
 
         private bool _isRefreshingTasks;
         public bool IsRefreshingTasks 
@@ -77,131 +67,13 @@ namespace Lumeer.ViewModels
             }
         }
 
-        private DataTemplate _tasksDataTemplate;
-        public DataTemplate TasksDataTemplate
-        {
-            get => _tasksDataTemplate;
-            set => SetValue(ref _tasksDataTemplate, value);
-        }
-
         private TasksFilterSettings _tasksFilterSettings = new TasksFilterSettings();
 
         public TasksViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>();
 
-            RefreshTasksCmd = new AsyncCommand(RefreshTasks, allowsMultipleExecutions: false);
-            SearchCmd = new Command(Search);
-            TasksFilterCmd = new Command(DisplayTasksFilter);
-            CreateTaskCmd = new Command(CreateTask);
-            ChangeTaskFavoriteStatusCmd = new Command<TaskItem>(ChangeTaskFavoriteStatus);
-
             Task.Run(RefreshTasks);
-        }
-
-        private Dictionary<string, DataTemplate> CreateTableDataTemplates()
-        {
-            var tableDataTemplates = new Dictionary<string, DataTemplate>();
-
-            foreach (var table in Session.Instance.TaskTables)
-            {
-                /*foreach (TableAttribute tableAttribute in table.Attributes)
-                {
-                    var constraint = tableAttribute.Constraint;
-                    if (constraint == null)
-                    {
-                        return AttributeType.None;
-                    }
-
-                    return (AttributeType)Enum.Parse(typeof(AttributeType), constraint.Type);
-                }*/
-
-                /*var favoriteSwipeItem = new SwipeItem()
-                {
-                    BackgroundColor = Color.Orange,
-                    Command = ChangeTaskFavoriteStatusCmd,
-                };
-                favoriteSwipeItem.SetBinding(MenuItem.TextProperty, "FavoriteText");
-                favoriteSwipeItem.SetBinding(MenuItem.CommandParameterProperty, ".");
-
-                var dataTemplate = new DataTemplate(() =>
-                {
-                    var stackLayout = new StackLayout();
-
-                    var swipeView = new SwipeView()
-                    {
-                        RightItems = new SwipeItems()
-                        {
-                            favoriteSwipeItem
-                        },
-                    };
-
-                    int propertiesCount = 4;
-                    for (int i = 1; i < propertiesCount + 1; i++)
-                    {
-                        var label = new Label();
-                        label.SetBinding(Label.TextProperty, $"Data[a{i}]", BindingMode.TwoWay);
-                        stackLayout.Children.Add(label);
-                    }
-
-                    swipeView.Content = stackLayout;
-
-                    return swipeView;
-                });*/
-
-                var dataTemplate = new DataTemplate(() =>
-                {
-                    var stackLayout = new StackLayout()
-                    {
-                        Orientation = StackOrientation.Horizontal
-                    };
-
-                    // TODOT replace with icon
-                    var boxView = new BoxView()
-                    {
-                        Color = Color.FromHex(table.Color),
-                        WidthRequest = 35,
-                        HeightRequest = 35,
-                    };
-                    stackLayout.Children.Add(boxView);
-
-                    // TODOT find out how to display "Empty title" if value is null
-                    var label = new Label()
-                    {
-                        Margin = new Thickness(8, 0, 0, 0),
-                        VerticalOptions = LayoutOptions.Center
-                    };
-                    label.SetBinding(Label.TextProperty, $"Data[a{1}]", BindingMode.TwoWay);
-                    stackLayout.Children.Add(label);
-
-                    var menuItem = new MenuItem()
-                    {
-                        Command = ChangeTaskFavoriteStatusCmd,
-                    };
-                    menuItem.SetBinding(MenuItem.TextProperty, "FavoriteText");
-                    menuItem.SetBinding(MenuItem.CommandParameterProperty, ".");
-
-                    var viewCell = new ViewCell
-                    {
-                        View = new Frame()
-                        {
-                            CornerRadius = 10,
-                            HasShadow = true,
-                            Content = stackLayout
-                        },
-                        ContextActions =
-                        {
-                            menuItem
-                        }
-                    };
-
-                    return viewCell;
-                });
-
-                tableDataTemplates.Add(table.Id, dataTemplate);
-            }
-
-            return tableDataTemplates;
         }
 
         private async void DisplayTaskOverview(TaskItem taskItem)
@@ -218,10 +90,9 @@ namespace Lumeer.ViewModels
 
         private void TaskOverviewViewModel_TaskDeleted(Models.Rest.Task task)
         {
-            var taskItem = DisplayedTasks.Single(t => t.Task == task);
+            var taskItem = OriginalTasks.Single(t => t.Task == task);
+            OriginalTasks.Remove(taskItem);
             DisplayedTasks.Remove(taskItem);
-
-            OriginalTasks.Remove(task);
         }
 
         private async void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
@@ -269,33 +140,24 @@ namespace Lumeer.ViewModels
         {
             DisplayedTasks.Clear();
 
-            if (string.IsNullOrEmpty(SearchedText))
-            {
-                foreach (var task in OriginalTasks)
-                {
-                    var taskItem = new TaskItem(task);
-                    DisplayedTasks.Add(taskItem);
-                }
-            }
-            else
-            {
-                foreach (var task in OriginalTasks)
-                {
-                    foreach (object value in task.Data.Values)
-                    {
-                        if (value == null)
-                        {
-                            continue;
-                        }
+            bool shouldSearch = !string.IsNullOrEmpty(SearchedText);
 
-                        string stringValue = value.ToString();
-                        if (stringValue.Contains(SearchedText))
-                        {
-                            var taskItem = new TaskItem(task);
-                            DisplayedTasks.Add(taskItem);
-                            break;
-                        }
+            foreach (var taskItem in OriginalTasks)
+            {
+                foreach (object value in taskItem.Task.Data.Values)
+                {
+                    if (value == null)
+                    {
+                        continue;
                     }
+
+                    if (shouldSearch && !value.ToString().Contains(SearchedText))
+                    {
+                        continue;
+                    }
+
+                    DisplayedTasks.Add(taskItem);
+                    break;
                 }
             }
         }
@@ -307,7 +169,16 @@ namespace Lumeer.ViewModels
             try
             {
                 var tasks = await ApiClient.Instance.GetTasks(_tasksFilterSettings);
-                OriginalTasks = tasks.Documents;
+
+                OriginalTasks.Clear();
+
+                foreach (var task in tasks.Documents)
+                {
+                    var taskItem = new TaskItem(task);
+                    OriginalTasks.Add(taskItem);
+                }
+
+                FilterDisplayedTasks();
             }
             catch (Exception ex)
             {
