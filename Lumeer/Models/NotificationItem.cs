@@ -15,7 +15,9 @@ namespace Lumeer.Models
 
         public string Title { get; set; }
 
-        public Color IconColor { get; set; }
+        public string MainIconFontFamily { get; set; }
+        public string MainIconGlyph { get; set; }
+        public Color MainIconColor { get; set; }
 
         private string _readContextMenuText;
         public string ReadContextMenuText 
@@ -42,7 +44,7 @@ namespace Lumeer.Models
             set => SetValue(ref _readIconGlyph, value);
         }
 
-    public NotificationItem(Notification notification)
+        public NotificationItem(Notification notification)
         {
             Notification = notification;
 
@@ -51,6 +53,26 @@ namespace Lumeer.Models
             ParseNotificationType();
 
             DateText = DateTimeOffset.FromUnixTimeMilliseconds(notification.CreatedAt).ToString("M/d/yy, h:mm tt");
+
+            MainIconFontFamily = FontAwesomeAliases.PRO_REGULAR;
+            MainIconGlyph = FontAwesomeIcons.CircleQuestion;
+            MainIconColor = GetMainIconColor();
+        }
+
+        private Color GetMainIconColor()
+        {
+            if (!Notification.Data.TryGetValue("collectionColor", out object hexColor))
+            {
+                if (!Notification.Data.TryGetValue("projectColor", out hexColor))
+                {
+                    if (!Notification.Data.TryGetValue("organizationColor", out hexColor))
+                    {
+                        return Color.Gray;
+                    }
+                }
+            }
+
+            return Color.FromHex((string)hexColor);
         }
 
         public void ChangeReadStatus()

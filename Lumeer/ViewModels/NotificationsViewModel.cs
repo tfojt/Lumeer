@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using Task = System.Threading.Tasks.Task;
 
@@ -19,17 +20,7 @@ namespace Lumeer.ViewModels
         private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
 
-        private List<Notification> _originalNotifications = new List<Notification>();
-        public List<Notification> OriginalNotifications
-        {
-            get => _originalNotifications;
-            set
-            {
-                _originalNotifications = value;
-
-                FilterDisplayedNotifications();
-            }
-        }
+        public List<NotificationItem> OriginalNotifications { get; set; } = new List<NotificationItem>();
 
         public ObservableCollection<NotificationItem> DisplayedNotifications { get; set; } = new ObservableCollection<NotificationItem>();
 
@@ -41,18 +32,18 @@ namespace Lumeer.ViewModels
             {
                 SetValue(ref _searchedText, value);
 
-                if (string.IsNullOrEmpty(_searchedText))    // text is cleared and we have to manually show all tasks, because search is not triggered when the text is empty
+                if (string.IsNullOrEmpty(_searchedText))    // text is cleared and we have to manually show all notifications, because search is not triggered when the text is empty
                 {
                     FilterDisplayedNotifications();
                 }
             }
         }
 
-        public ICommand RefreshNotificationsCmd { get; set; }
-        public ICommand SearchCmd { get; set; }
-        public ICommand SearchSettingsCmd { get; set; }
-        public ICommand ChangeNotificationReadStatusCmd { get; set; }
-        public ICommand DeleteNotificationCmd { get; set; }
+        public IAsyncCommand RefreshNotificationsCmd => new AsyncCommand(RefreshNotifications);
+        public ICommand SearchCmd => new Command(Search);
+        public ICommand SearchSettingsCmd => new Command(DisplaySearchSettings);
+        public ICommand ChangeNotificationReadStatusCmd => new Command<NotificationItem>(ChangeNotificationReadStatus);
+        public ICommand DeleteNotificationCmd => new Command<NotificationItem>(DeleteNotification);
 
         private bool _isRefreshingNotifications;
         public bool IsRefreshingNotifications
@@ -70,65 +61,36 @@ namespace Lumeer.ViewModels
                 SetValue(ref _selectedNotification, value);
                 if (value != null)
                 {
-                    DisplayTaskDetail(value);
+                    DisplayNotificationData(value);
                 }
             }
         }
+
+        NotificationsFilterSettings _notificationsFilterSettings = new NotificationsFilterSettings();
 
         public NotificationsViewModel()
         {
             _alertService = DependencyService.Get<IAlertService>();
             _navigationService = DependencyService.Get<INavigationService>();
 
-            RefreshNotificationsCmd = new Command(RefreshNotifications);
-            SearchCmd = new Command(Search);
-            SearchSettingsCmd = new Command(DisplaySearchSettings);
-            ChangeNotificationReadStatusCmd = new Command<NotificationItem>(ChangeNotificationReadStatus);
-            DeleteNotificationCmd = new Command<NotificationItem>(DeleteNotification);
-
             Task.Run(RefreshNotifications);
         }
 
-        private async void DisplayTaskDetail(NotificationItem notificationItem)
+        private async void DisplayNotificationData(NotificationItem notificationItem)
         {
-            // TODOT cache LastTaskDetail and unhook TaskChangesSaved event?
-
-            /*var task = notificationItem.Task;
-            var table = Session.Instance.AllTables.Single(t => t.Id == task.CollectionId);
-            var taskDetailPage = new TaskDetailPage(task, table);
-            taskDetailPage.TaskDetailViewModel.TaskChangesSaved += TaskDetailViewModel_TaskChangesSaved;
-
-            await _navigationService.PushAsync(taskDetailPage);
-            SelectedNotification = null;*/
-        }
-
-        private void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
-        {
-            /*// TODOT make binding work
-            var taskIndex = Tasks.IndexOf(task);
-            Tasks.Remove(task);
-            Tasks.Insert(taskIndex, task);*/
-            RefreshNotifications();
-        }
-
-        private void CreateTask()
-        {
-            var newTaskPage = new NewTaskPage();
-            newTaskPage.NewTaskViewModel.TaskCreated += NewTaskViewModel_TaskCreated;
-            _navigationService.PushModalAsync(newTaskPage);
-        }
-
-        private void NewTaskViewModel_TaskCreated(Models.Rest.Task task)
-        {
-            /*// TODOT 
-            Tasks.Add(task);*/
-            RefreshNotifications();
+            
         }
 
         private void DisplaySearchSettings()
         {
-            _navigationService.PushAsync(new SearchSettingsPage());
-            // TODOT apply settings
+            var notificationsFilterPage = new NotificationsFilterPage(_notificationsFilterSettings);
+            notificationsFilterPage.NotificationsFilterViewModel.NotificationsFilterChanged += NotificationsFilterViewModel_NotificationsFilterChanged;
+            _navigationService.PushAsync(notificationsFilterPage);
+        }
+
+        private void NotificationsFilterViewModel_NotificationsFilterChanged()
+        {
+            FilterDisplayedNotifications();
         }
 
         private void Search()
@@ -140,44 +102,41 @@ namespace Lumeer.ViewModels
         {
             DisplayedNotifications.Clear();
 
-            if (string.IsNullOrEmpty(SearchedText))
-            {
-                foreach (var notification in OriginalNotifications)
-                {
-                    var notificationItem = new NotificationItem(notification);
-                    DisplayedNotifications.Add(notificationItem);
-                }
-            }
-            else
-            {
-                foreach (var notification in OriginalNotifications)
-                {
-                    foreach (object value in notification.Data.Values)
-                    {
-                        if (value == null)
-                        {
-                            continue;
-                        }
+            bool shouldSearch = !string.IsNullOrEmpty(SearchedText);
 
-                        string stringValue = value.ToString();
-                        if (stringValue.Contains(SearchedText))
-                        {
-                            var notificationItem = new NotificationItem(notification);
-                            DisplayedNotifications.Add(notificationItem);
-                            break;
-                        }
-                    }
+            foreach (var notificationItem in OriginalNotifications)
+            {
+                if (_notificationsFilterSettings.OnlyUnread && notificationItem.Notification.Read)
+                {
+                    continue;
                 }
+
+                if (shouldSearch && !notificationItem.Title.Contains(SearchedText))
+                {
+                    continue;
+                }
+
+                DisplayedNotifications.Add(notificationItem);
             }
         }
 
-        private async void RefreshNotifications()
+        private async Task RefreshNotifications()
         {
             IsRefreshingNotifications = true;
 
             try
             {
-                OriginalNotifications = await ApiClient.Instance.GetNotifications();
+                List<Notification> notifications = await ApiClient.Instance.GetNotifications();
+
+                OriginalNotifications.Clear();
+
+                foreach (var notification in notifications)
+                {
+                    var notificationItem = new NotificationItem(notification);
+                    OriginalNotifications.Add(notificationItem);
+                }
+
+                FilterDisplayedNotifications();
             }
             catch (Exception ex)
             {
@@ -198,6 +157,11 @@ namespace Lumeer.ViewModels
                 bool newReadValue = !notification.Read;
                 await ApiClient.Instance.ChangeNotificationReadStatus(notification, newReadValue);
                 notificationItem.ChangeReadStatus();
+
+                if (_notificationsFilterSettings.OnlyUnread && notificationItem.Notification.Read)
+                {
+                    DisplayedNotifications.Remove(notificationItem);
+                }
             }
             catch (Exception ex)
             {
@@ -216,10 +180,9 @@ namespace Lumeer.ViewModels
 
             try
             {
-                var notification = notificationItem.Notification;
-                await ApiClient.Instance.DeleteNotification(notification);
+                await ApiClient.Instance.DeleteNotification(notificationItem.Notification);
                 DisplayedNotifications.Remove(notificationItem);
-                OriginalNotifications.Remove(notification);
+                OriginalNotifications.Remove(notificationItem);
             }
             catch (Exception ex)
             {
