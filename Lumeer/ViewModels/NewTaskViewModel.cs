@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
-using Task = Lumeer.Models.Rest.Task;
+using Task = System.Threading.Tasks.Task;
 
 namespace Lumeer.ViewModels
 {
@@ -14,17 +15,14 @@ namespace Lumeer.ViewModels
     {
         public event TaskEventHandler TaskCreated;
 
-        public ICommand CancelCmd { get; set; }
-        public ICommand CreateCmd { get; set; }
+        public IAsyncCommand CancelCmd => new AsyncCommand(Cancel);
+        public IAsyncCommand CreateCmd => new AsyncCommand(Create);
 
         public List<Table> Tables { get; } = Session.Instance.TaskTables;
 
         // TODOT what if user does not have task table?
-        public NewTaskViewModel(TableSection tableSection) : base(new Task(), Session.Instance.TaskTables.First(), tableSection)
+        public NewTaskViewModel(TableSection tableSection) : base(new Models.Rest.Task(), Session.Instance.TaskTables.First(), tableSection)
         {
-            //Task = new Task();
-            CancelCmd = new Command(Cancel);
-            CreateCmd = new Command(Create);
         }
 
         public async Task<bool> CheckCancellation()
@@ -38,12 +36,12 @@ namespace Lumeer.ViewModels
             return discardChanges;
         }
 
-        private async void Cancel()
+        private async Task Cancel()
         {
             await CheckCancellation();
         }
 
-        private async void Create()
+        private async Task Create()
         {
             if (TaskAttributesChanged(out Dictionary<string, object> changedAttributes))
             {

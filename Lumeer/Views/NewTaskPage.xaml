@@ -2,34 +2,54 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
-             xmlns:views="clr-namespace:Lumeer.Views"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
              x:Class="Lumeer.Views.NewTaskPage"
              x:DataType="viewModels:NewTaskViewModel">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Table"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center"/>
-                <Picker ItemsSource="{Binding Tables}" 
-                        SelectedItem="{Binding Table}"
-                        HorizontalOptions="FillAndExpand"/>
-            </StackLayout>
-            <TableView Intent="Data"
-                       IsVisible="{Binding TableSelected}">
-                <TableRoot>
-                    <TableSection x:Name="tableSection"
-                                  Title="Task Detail"/>
-                </TableRoot>
-            </TableView>
-            <Grid VerticalOptions="End">
-                <Button Text="Cancel" Grid.Column="0"
-                    Command="{Binding CancelCmd}"
-                    HorizontalOptions="Start"/>
-                <Button Text="Create" Grid.Column="1"
-                    Command="{Binding CreateCmd}"
-                    HorizontalOptions="End"/>
+            <Grid Padding="10">
+                <Grid.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Down" Command="{Binding CancelCmd}"/>
+                </Grid.GestureRecognizers>
+                <ImageButton Grid.Column="0"
+                             HorizontalOptions="Start"
+                             VerticalOptions="CenterAndExpand"
+                             Command="{Binding CancelCmd}"
+                             BackgroundColor="Transparent" 
+                             HeightRequest="25" 
+                             WidthRequest="25">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Xmark}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+                <Button Grid.Column="1" 
+                        HorizontalOptions="End" 
+                        VerticalOptions="Center"
+                        Text="Create" 
+                        Command="{Binding CreateCmd}"
+                        TextColor="White"
+                        BackgroundColor="{x:StaticResource LumeerGreen}" 
+                        CornerRadius="10"/>
             </Grid>
+            <ScrollView >
+                <StackLayout>
+                    <StackLayout Padding="10" Orientation="Horizontal">
+                        <Label Text="Table"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"/>
+                        <Picker ItemsSource="{Binding Tables}" 
+                            SelectedItem="{Binding Table}"
+                            HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                    <TableView Intent="Data"
+                        IsVisible="{Binding TableSelected}">
+                        <TableRoot>
+                            <TableSection x:Name="tableSection"
+                                  Title="Task Detail"/>
+                        </TableRoot>
+                    </TableView>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
