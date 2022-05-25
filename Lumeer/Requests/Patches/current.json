@@ -1,0 +1,337 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+//users/current
+
+//payload
+/*{
+  "name": "Tomas Fojt",
+  "notifications": {
+    "settings": [
+      {
+        "notificationType": "ORGANIZATION_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "PROJECT_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "COLLECTION_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "VIEW_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "TASK_ASSIGNED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "TASK_UNASSIGNED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "TASK_REOPENED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "TASK_UPDATED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "TASK_REMOVED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "DUE_DATE_SOON",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "PAST_DUE_DATE",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "DUE_DATE_CHANGED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "STATE_UPDATE",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Email"
+      },
+      {
+        "notificationType": "ORGANIZATION_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "PROJECT_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "COLLECTION_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "VIEW_SHARED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "BULK_ACTION",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_ASSIGNED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_REOPENED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_UPDATED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_REMOVED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_UNASSIGNED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "STATE_UPDATE",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "DUE_DATE_SOON",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "PAST_DUE_DATE",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "DUE_DATE_CHANGED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_COMMENTED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      },
+      {
+        "notificationType": "TASK_MENTIONED",
+        "notificationFrequency": "Immediately",
+        "notificationChannel": "Internal"
+      }
+    ],
+    "language": null
+  },
+  "hints": {}
+}*/
+
+{
+  "id": "620fa0c48e43bf296c088962",
+  "name": "Tomas Fojt",
+  "email": "tomasfojt@seznam.cz",
+  "organizations": [ "620fa0c48e43bf296c088963", "606da781152511224fb1fc02" ],
+  "agreement": true,
+  "agreementDate": 1646246127628,
+  "newsletter": false,
+  "notifications": {
+    "settings": [
+      {
+        "notificationType": "ORGANIZATION_SHARED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "PROJECT_SHARED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "COLLECTION_SHARED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "VIEW_SHARED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_ASSIGNED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_UNASSIGNED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_REOPENED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_UPDATED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_REMOVED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "DUE_DATE_SOON",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "PAST_DUE_DATE",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "DUE_DATE_CHANGED",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "STATE_UPDATE",
+        "notificationChannel": "Email",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "ORGANIZATION_SHARED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "PROJECT_SHARED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "COLLECTION_SHARED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "VIEW_SHARED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "BULK_ACTION",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_ASSIGNED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_REOPENED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_UPDATED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_REMOVED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_UNASSIGNED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "STATE_UPDATE",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "DUE_DATE_SOON",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "PAST_DUE_DATE",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "DUE_DATE_CHANGED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_COMMENTED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      },
+      {
+        "notificationType": "TASK_MENTIONED",
+        "notificationChannel": "Internal",
+        "notificationFrequency": "Immediately"
+      }
+    ],
+    "language": null
+  },
+  "hints": {},
+  "defaultWorkspace": {
+    "organizationId": "620fa0c48e43bf296c088963",
+    "projectId": "621fb8f6d508224e0888e786",
+    "organizationCode": null,
+    "projectCode": null
+  },
+  "wizardDismissed": true,
+  "timeZone": "Europe/Prague",
+  "language": "en",
+  "affiliatePartner": false,
+  "emailVerified": true,
+  "onboarding": {
+    "template": "BUG",
+    "helpOpened": true,
+    "videoShowed": true,
+    "videoPlayed": true,
+    "videoPlayedSeconds": 206
+  }
+}

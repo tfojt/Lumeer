@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:models="clr-namespace:Lumeer.Models"
+             x:DataType="viewmodels:LanguagesViewModel"
+             x:Class="Lumeer.Views.LanguagesPage"
+             Title="Languages">
+    <ContentPage.Content>
+        <ListView 
+            x:Name="listView"
+            ItemsSource="{Binding Languages}"
+            SeparatorVisibility="Default"
+            RowHeight="60"
+            SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell x:DataType="models:LanguageItem">
+                        <StackLayout Padding="15" Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Path=BindingContext.SelectLanguageCmd, Source={x:Reference Name=listView}}"
+                                    CommandParameter="{Binding .}"/>
+                            </StackLayout.GestureRecognizers>
+                            <Label
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="Center"
+                                    Text="{Binding Name}"/>
+                            <Image
+                                    HorizontalOptions="End"
+                                    WidthRequest="25"
+                                    HeightRequest="25"
+                                    IsVisible="{Binding IsSelected}">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="{x:StaticResource LumeerGreen}" Glyph="{x:Static fa:FontAwesomeIcons.Check}"/>
+                                </Image.Source>
+                            </Image>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

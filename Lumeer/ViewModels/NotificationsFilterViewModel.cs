@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 using static Lumeer.Utils.EventHandlers;
 
 namespace Lumeer.ViewModels
@@ -17,6 +19,8 @@ namespace Lumeer.ViewModels
             set => SetValue(ref _onlyUnread, value);
         }
 
+        public ICommand ChangeOnlyUnreadCmd => new Command(ChangeOnlyUnread);
+
         NotificationsFilterSettings _notificationsFilterSettings;
 
         public NotificationsFilterViewModel(NotificationsFilterSettings notificationsFilterSettings)
@@ -26,6 +30,10 @@ namespace Lumeer.ViewModels
             OnlyUnread = notificationsFilterSettings.OnlyUnread;
         }
 
+        private void ChangeOnlyUnread()
+        {
+            OnlyUnread = !OnlyUnread;
+        }
 
         private bool CheckOnlyUnreadChanged()
         {

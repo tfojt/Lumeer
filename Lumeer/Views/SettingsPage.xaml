@@ -24,8 +24,8 @@
                         <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CircleUser}"/>
                     </Image.Source>
                 </Image>
-                <Label Text="Username" HorizontalOptions="Center" TextColor="Black"/>
-                <Label Text="email@" HorizontalOptions="Center"/>
+                <Label Text="{Binding UserName}" HorizontalOptions="Center" TextColor="Black"/>
+                <Label Text="{Binding UserEmail}" HorizontalOptions="Center"/>
             </StackLayout>
 
             <StackLayout Grid.Row="1">
@@ -34,6 +34,9 @@
                         <TableSection Title="Settings" TextColor="Black">
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ChangeLanguageCmd}"/>
+                                    </StackLayout.GestureRecognizers>
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
                                             <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.EarthEurope}"/>
@@ -49,6 +52,9 @@
                             </ViewCell>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DisplayNotificationsSettingsCmd}"/>
+                                    </StackLayout.GestureRecognizers>
                                     <Image HorizontalOptions="Start" Margin="12,5,8,5" HeightRequest="25" WidthRequest="25">
                                         <Image.Source>
                                             <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.Bell}"/>

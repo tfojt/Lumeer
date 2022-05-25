@@ -4,5 +4,12 @@
              x:Class="Lumeer.App">
     <Application.Resources>
         <Color x:Key="LumeerGreen">#08b48c</Color>
+        <Style TargetType="Switch">
+            <Setter Property="ThumbColor" Value="White"/>
+            <Setter Property="OnColor" Value="{x:StaticResource LumeerGreen}"/>
+        </Style>
+        <Style TargetType="ActivityIndicator">
+            <Setter Property="Color" Value="{x:StaticResource LumeerGreen}"/>
+        </Style>
     </Application.Resources>
 </Application>

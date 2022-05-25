@@ -218,5 +218,19 @@ namespace Lumeer.Utils
 
             return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Put, uri, payload);
         }
+
+        public async Task<HttpResponseMessage> ChangeNotificationsSettings(User user)
+        {
+            string uri = $"users/current";
+
+            var payload = new
+            {
+                hints = user.Hints,
+                name = user.Name,
+                notifications = user.Notifications
+            };
+
+            return await SendRequestAndEnsureSuccessStatusCode(new HttpMethod("PATCH"), uri, payload);
+        }
     }
 }

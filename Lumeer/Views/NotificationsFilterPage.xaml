@@ -1,19 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
              x:Class="Lumeer.Views.NotificationsFilterPage"
              x:DataType="viewmodels:NotificationsFilterViewModel"
              Title="Notifications Filter">
     <ContentPage.Content>
-        <TableView Intent="Form">
+        <TableView Intent="Settings" HasUnevenRows="True">
             <TableRoot>
                 <TableSection>
                     <ViewCell>
-                        <Grid Margin="16, 0, 10, 0">
+                        <Grid Padding="15">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding ChangeOnlyUnreadCmd}"/>
+                            </Grid.GestureRecognizers>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" VerticalOptions="Center" Text="Show only unread"/>
                             <Switch Grid.Column="1" IsToggled="{Binding OnlyUnread}"/>

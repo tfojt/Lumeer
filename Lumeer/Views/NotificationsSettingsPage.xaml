@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:models="clr-namespace:Lumeer.Models"
+             x:DataType="viewmodels:NotificationsSettingsViewModel"
+             x:Class="Lumeer.Views.NotificationsSettingsPage"
+             Title="Notifications Settings">
+    <ContentPage.Content>
+        <ListView
+            x:Name="listView"
+            ItemsSource="{Binding NotificationsSettings}"
+            HasUnevenRows="True"
+            SeparatorVisibility="Default"
+            SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell x:DataType="models:NotificationSettingsItem">
+                        <Grid Padding="15">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Path=BindingContext.ToggleSettingsCmd, Source={x:Reference Name=listView}}"
+                                    CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" VerticalOptions="Center" Text="{Binding Type}" TextColor="Black"/>
+                            <Label Grid.Column="0" Grid.Row="1" VerticalOptions="Center" Text="{Binding Hint}"/>
+                            <Switch Grid.Column="1" Grid.RowSpan="2" IsToggled="{Binding IsToggled}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

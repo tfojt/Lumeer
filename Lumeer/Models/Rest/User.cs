@@ -18,5 +18,6 @@ namespace Lumeer.Models.Rest
         public bool AffiliatePartner { get; set; }
         public bool EmailVerified { get; set; }
         public object Onboarding { get; set; }
+        public string Language { get; set; }
     }
 }
