@@ -107,6 +107,7 @@ namespace Lumeer.ViewModels
         public ICommand ClearSelectedTableCmd => new Command(ClearSelectedTable);
 
         private TasksFilterSettings _tasksFilterSettings;
+        private bool _workspaceChanged;
 
         public TasksFilterViewModel(TasksFilterSettings tasksFilterSettings)
         {
@@ -162,6 +163,8 @@ namespace Lumeer.ViewModels
             {
                 Session.Instance.CurrentProject = _selectedProject;
                 await ApiClient.Instance.ChangeWorkspace();
+                _workspaceChanged = true;
+
                 await Session.Instance.LoadLinkTypes();
                 await LoadTables();
             }
@@ -194,7 +197,7 @@ namespace Lumeer.ViewModels
 
             bool tableChanged = CheckSelectedTableChanged();
 
-            if (includeSubItemsChanged || tableChanged)
+            if (includeSubItemsChanged || tableChanged || _workspaceChanged)
             {
                 TasksFilterChanged?.Invoke();
             }
