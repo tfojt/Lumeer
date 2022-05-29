@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
              xmlns:fa="clr-namespace:Lumeer.Fonts"
+             xmlns:models="clr-namespace:Lumeer.Models"
              x:Class="Lumeer.Views.TasksPage"
              Title="Tasks">
     <ContentPage.BindingContext>
@@ -50,7 +51,7 @@
                 IsPullToRefreshEnabled="True"
                 RefreshCommand="{Binding RefreshTasksCmd}"
                 IsRefreshing="{Binding IsRefreshingTasks}"
-                HasUnevenRows="True"
+                RowHeight="80"
                 SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -65,16 +66,11 @@
                                 CornerRadius="10"
                                 HasShadow="True">
                                 <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20"/>
-                                        <RowDefinition Height="20"/>
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Image
-                                        Grid.RowSpan="2"
                                         Grid.Column="0"
                                         Margin="0,0,10,0"
                                         WidthRequest="40"
@@ -83,25 +79,36 @@
                                             <FontImageSource FontFamily="{Binding TableFontFamily}" Color="{Binding TableColor}" Glyph="{Binding TableGlyph}"/>
                                         </Image.Source>
                                     </Image>
-                                    <Label
-                                        Grid.Row="0"
+                                    <StackLayout
                                         Grid.Column="1"
-                                        Text="{Binding Title}"
-                                        FontAttributes="Bold"/>
-                                    <CollectionView
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        ItemsLayout="HorizontalList"
-                                        ItemsSource="{Binding Selections}">
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackLayout>
-                                                    <Label 
-                                                        Text="{Binding EffectiveValue}"/>
-                                                </StackLayout>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
+                                        VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding Title}"
+                                            FontAttributes="Bold"/>
+                                        <CollectionView
+                                            x:Name="collectionView"
+                                            ItemsLayout="HorizontalList"
+                                            ItemsSource="{Binding Selections}">
+                                            <CollectionView.Triggers>
+                                                <DataTrigger TargetType="CollectionView"
+                                                         Binding="{Binding Source={RelativeSource Self}, Path=ItemsSource.Count}"
+                                                         Value="0">
+                                                    <Setter Property="IsVisible"
+                                                            Value="false"/>
+                                                </DataTrigger>
+                                            </CollectionView.Triggers>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="models:SelectionOptionItem">
+                                                    <StackLayout Padding="0,0,10,0">
+                                                        <Label 
+                                                            Padding="5,0,5,0"
+                                                            Text="{Binding Name}"
+                                                            BackgroundColor="{Binding BackgroundColor}"/>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </StackLayout>
                                 </Grid>
                             </Frame>
                         </ViewCell>

@@ -4,6 +4,7 @@ using Lumeer.Models.Rest.Enums;
 using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -28,7 +29,7 @@ namespace Lumeer.Models
 
         public string DateText { get; set; }
 
-        public List<string> Path { get; set; } = new List<string>() { "Org", "Proj", "Table"};
+        public List<IconLabel> Path { get; set; } = new List<IconLabel>();
 
         private Color _titleColor;
         public Color TitleColor 
@@ -57,22 +58,40 @@ namespace Lumeer.Models
             MainIconFontFamily = FontAwesomeAliases.PRO_REGULAR;
             MainIconGlyph = FontAwesomeIcons.CircleQuestion;
             MainIconColor = GetMainIconColor();
+
+            GeneratePath();
+        }
+
+        private void GeneratePath()
+        {
+            foreach (string part in new string[] { "organization", "project", "collection" })
+            {
+                if (Notification.Data.ContainsKey($"{part}Id"))
+                {
+                    var partColor = (string)Notification.Data[$"{part}Color"];
+
+                    string partName = Notification.Data.TryGetValue($"{part}Code", out object codeObj) ?
+                        (string)codeObj :
+                        (string)Notification.Data[$"{part}Name"];
+
+                    var partIcon = new FontImageData(FontAwesomeAliases.PRO_REGULAR, FontAwesomeIcons.CircleQuestion, partColor);
+                    var iconLabel = new IconLabel(partIcon, partName);
+                    Path.Add(iconLabel);
+                }
+            }
         }
 
         private Color GetMainIconColor()
         {
-            if (!Notification.Data.TryGetValue("collectionColor", out object hexColor))
+            foreach (string part in new string[] { "collection", "project", "organization" })
             {
-                if (!Notification.Data.TryGetValue("projectColor", out hexColor))
+                if (Notification.Data.TryGetValue($"{part}Color", out object hexColor))
                 {
-                    if (!Notification.Data.TryGetValue("organizationColor", out hexColor))
-                    {
-                        return Color.Gray;
-                    }
+                    return Color.FromHex((string)hexColor);
                 }
             }
 
-            return Color.FromHex((string)hexColor);
+            return Color.Gray;
         }
 
         public void ChangeReadStatus()

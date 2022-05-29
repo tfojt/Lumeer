@@ -27,7 +27,7 @@
                            Text="{Binding SearchedText}"
                            SearchCommand="{Binding SearchCmd}"
                            HorizontalOptions="FillAndExpand"/>
-                <ImageButton Command="{Binding SearchSettingsCmd}"
+                <ImageButton Command="{Binding NotificationsFilterCmd}"
                            Margin="0,5,15,0" BackgroundColor="Transparent" HorizontalOptions="End" HeightRequest="25" WidthRequest="25">
                     <ImageButton.Source>
                         <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.Filter}"/>
@@ -47,12 +47,12 @@
                 x:Name="listView"
                 Grid.Row="1"
                 ItemsSource="{Binding DisplayedNotifications}"
-                SelectedItem="{Binding SelectedNotification, Mode=TwoWay}"
                 IsPullToRefreshEnabled="True"
                 RefreshCommand="{Binding RefreshNotificationsCmd}"
                 IsRefreshing="{Binding IsRefreshingNotifications}"
                 HasUnevenRows="True"
-                SeparatorVisibility="Default">
+                SeparatorVisibility="Default"
+                SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:NotificationItem">
                         <ViewCell>
@@ -113,14 +113,22 @@
                                         Grid.Column="1"
                                         ItemsLayout="HorizontalList"
                                         ItemsSource="{Binding Path}">
-                                        <!--<CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:IconLabel">
+                                                <StackLayout
+                                                    Orientation="Horizontal"
+                                                    Spacing="3"
+                                                    Margin="0,0,15,0">
+                                                    <Image WidthRequest="15" HeightRequest="15">
+                                                        <Image.Source>
+                                                            <FontImageSource FontFamily="{Binding Icon.FontFamily}" Color="{Binding Icon.Color}" Glyph="{Binding Icon.Glyph}"/>
+                                                        </Image.Source>
+                                                    </Image>
                                                     <Label 
-                                                        Text="{Binding EffectiveValue}"/>
+                                                        Text="{Binding Label}"/>
                                                 </StackLayout>
                                             </DataTemplate>
-                                        </CollectionView.ItemTemplate>-->
+                                        </CollectionView.ItemTemplate>
                                     </CollectionView>
                                 </Grid>
                             </Frame>
