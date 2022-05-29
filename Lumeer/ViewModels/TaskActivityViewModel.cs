@@ -55,12 +55,6 @@ namespace Lumeer.ViewModels
 
                 var taskCreatedActivity = new TaskActivityItem(_task);
                 Activities.Add(taskCreatedActivity);
-
-                /*if (Comments.Count > 0)
-                {
-                    var lastComment = Comments[lastIndex];
-                    ScrollRequested?.Invoke(lastComment, ScrollToPosition.End, true);
-                }*/
             }
             catch (Exception ex)
             {

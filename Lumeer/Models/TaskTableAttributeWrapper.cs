@@ -84,12 +84,10 @@ namespace Lumeer.Models
                             }
                             else
                             {
-                                datePicker.NullableDate = (DateTime)_originalValue;  // TODOT handle format
+                                datePicker.NullableDate = (DateTime)_originalValue;
                             }
                         }
                         stackLayout.Children.Add(datePicker);
-
-                        // TODOT sometimes TimerPicker
 
                         Cell = new ViewCell
                         {
@@ -100,7 +98,6 @@ namespace Lumeer.Models
                     }
                 case AttributeType.Number:
                     {
-                        // TODOT check string or int
                         Cell = GenerateEntryCell(attributeName, Keyboard.Numeric);
 
                         if (_originalValueHasValue)
@@ -209,12 +206,6 @@ namespace Lumeer.Models
                                     newValue = currentValue;
                                     break;
                                 }
-                            /*case AttributeType.Number:
-                                {
-                                    currentValueHasValue = long.TryParse(currentValue, out long currentParsedValue);
-                                    newValue = currentParsedValue;
-                                    break;
-                                }*/
                             default:
                                 throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {_attributeType}");
                         }

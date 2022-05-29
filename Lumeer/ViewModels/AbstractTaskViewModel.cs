@@ -62,8 +62,6 @@ namespace Lumeer.ViewModels
 
         private void CreateNewTaskTableAttributeWrappers()
         {
-            // TODOT cache <Table, TaskTableAttributeWrapper> ?
-
             TaskTableAttributeWrappers.Clear();
             _tableSection.Clear();
 

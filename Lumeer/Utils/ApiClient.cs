@@ -34,7 +34,6 @@ namespace Lumeer.Utils
 
         public void Authorize(string accessToken)
         {
-            // TODOT what if accessToken expires?
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
 

@@ -41,7 +41,7 @@ namespace Lumeer.ViewModels
 
         public IAsyncCommand RefreshNotificationsCmd => new AsyncCommand(RefreshNotifications);
         public ICommand SearchCmd => new Command(Search);
-        public ICommand SearchSettingsCmd => new Command(DisplaySearchSettings);
+        public ICommand NotificationsFilterCmd => new Command(DisplayNotificationsFilter);
         public ICommand ChangeNotificationReadStatusCmd => new Command<NotificationItem>(ChangeNotificationReadStatus);
         public ICommand DeleteNotificationCmd => new Command<NotificationItem>(DeleteNotification);
 
@@ -50,20 +50,6 @@ namespace Lumeer.ViewModels
         {
             get => _isRefreshingNotifications;
             set => SetValue(ref _isRefreshingNotifications, value);
-        }
-
-        private NotificationItem _selectedNotification;
-        public NotificationItem SelectedNotification
-        {
-            get => _selectedNotification;
-            set
-            {
-                SetValue(ref _selectedNotification, value);
-                if (value != null)
-                {
-                    DisplayNotificationData(value);
-                }
-            }
         }
 
         NotificationsFilterSettings _notificationsFilterSettings = new NotificationsFilterSettings();
@@ -76,12 +62,7 @@ namespace Lumeer.ViewModels
             Task.Run(RefreshNotifications);
         }
 
-        private async void DisplayNotificationData(NotificationItem notificationItem)
-        {
-            
-        }
-
-        private void DisplaySearchSettings()
+        private void DisplayNotificationsFilter()
         {
             var notificationsFilterPage = new NotificationsFilterPage(_notificationsFilterSettings);
             notificationsFilterPage.NotificationsFilterViewModel.NotificationsFilterChanged += NotificationsFilterViewModel_NotificationsFilterChanged;

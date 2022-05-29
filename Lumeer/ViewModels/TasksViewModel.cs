@@ -20,6 +20,7 @@ namespace Lumeer.ViewModels
     public class TasksViewModel : BaseTaskViewModel
     {
         private readonly INavigationService _navigationService;
+        private readonly IAlertService _alertService;
 
         public List<TaskItem> OriginalTasks { get; set; } = new List<TaskItem>();
 
@@ -72,6 +73,7 @@ namespace Lumeer.ViewModels
         public TasksViewModel()
         {
             _navigationService = DependencyService.Get<INavigationService>();
+            _alertService = DependencyService.Get<IAlertService>();
 
             Task.Run(RefreshTasks);
         }
@@ -97,15 +99,17 @@ namespace Lumeer.ViewModels
 
         private async void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
         {
-            /*// TODOT make binding work
-            var taskIndex = Tasks.IndexOf(task);
-            Tasks.Remove(task);
-            Tasks.Insert(taskIndex, task);*/
             await RefreshTasks();
         }
 
         private void CreateTask()
         {
+            if (!Session.Instance.TaskTables.Any())
+            {
+                _alertService.DisplayAlert("Warning", "You have no task tables!", "Ok");
+                return;
+            }
+
             var newTaskPage = new NewTaskPage();
             newTaskPage.NewTaskViewModel.TaskCreated += NewTaskViewModel_TaskCreated;
             _navigationService.PushModalAsync(newTaskPage);
@@ -113,8 +117,6 @@ namespace Lumeer.ViewModels
 
         private async void NewTaskViewModel_TaskCreated(Models.Rest.Task task)
         {
-            /*// TODOT 
-            Tasks.Add(task);*/
             await RefreshTasks();
         }
 

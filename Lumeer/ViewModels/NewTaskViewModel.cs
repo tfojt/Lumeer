@@ -20,7 +20,6 @@ namespace Lumeer.ViewModels
 
         public List<Table> Tables { get; } = Session.Instance.TaskTables;
 
-        // TODOT what if user does not have task table?
         public NewTaskViewModel(TableSection tableSection) : base(new Models.Rest.Task(), Session.Instance.TaskTables.First(), tableSection)
         {
         }

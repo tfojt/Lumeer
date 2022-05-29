@@ -18,14 +18,16 @@ namespace Lumeer.Models
         public string TableGlyph { get; set; }
         public Color TableColor { get; set; }
 
-        public List<SelectionOption> Selections { get; set; } = new List<SelectionOption>();
+        public List<SelectionOptionItem> Selections { get; set; } = new List<SelectionOptionItem>();
 
         public TaskItem(Rest.Task task)
         {
             Task = task;
 
+            var table = Session.Instance.TaskTables.Single(t => t.Id == task.CollectionId);
+
             const string EMPTY_TITLE = "Empty title";
-            if (Task.Data.TryGetValue("a1", out object firstData))
+            if (Task.Data.TryGetValue(table.DefaultAttributeId, out object firstData))
             {
                 string title = firstData?.ToString();
                 Title = !string.IsNullOrEmpty(title) ? title : EMPTY_TITLE;
@@ -34,8 +36,6 @@ namespace Lumeer.Models
             {
                 Title = EMPTY_TITLE;
             }
-
-            var table = Session.Instance.TaskTables.Single(t => t.Id == task.CollectionId);
 
             TableFontFamily = FontAwesomeAliases.PRO_REGULAR;
             TableGlyph = FontAwesomeIcons.CircleQuestion;
@@ -56,31 +56,17 @@ namespace Lumeer.Models
                 }
 
                 string selection = value.ToString();
-
-                if (!string.IsNullOrEmpty(selection))
+                if (string.IsNullOrEmpty(selection))
                 {
-                    var selectionOption = new SelectionOption()
-                    {
-                        Value = selection
-                    };
-
-                    Selections.Add(selectionOption);
+                    continue;
                 }
 
-                /*var selectionListId = (string)tableAttribute.Constraint.Config["selectionListId"];
-                var selectionList = Session.Instance.SelectionLists.Single(sl => sl.Id == selectionListId);*/
-            }
+                var selectionListId = (string)tableAttribute.Constraint.Config["selectionListId"];
+                var selectionList = Session.Instance.SelectionLists.Single(sl => sl.Id == selectionListId);
+                var selectionOption = selectionList.Options.Single(o => o.EffectiveValue == selection);
 
-            var random = new Random();
-            var count = random.Next(1, 10);
-            for (int i = 0; i < count; i++)
-            {
-                var selectionOption = new SelectionOption()
-                {
-                    Value = $"Selection{i}"
-                };
-
-                Selections.Add(selectionOption);
+                var selectionOptionItem = new SelectionOptionItem(selectionOption);
+                Selections.Add(selectionOptionItem);
             }
         }
 

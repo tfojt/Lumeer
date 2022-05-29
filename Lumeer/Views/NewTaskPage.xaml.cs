@@ -13,7 +13,6 @@ namespace Lumeer.Views
     {
         public NewTaskViewModel NewTaskViewModel { get; }
 
-        // TODOT pass optional Table argument, if specific table is filtered?
         public NewTaskPage()
         {
             InitializeComponent();
@@ -21,16 +20,6 @@ namespace Lumeer.Views
             NewTaskViewModel = new NewTaskViewModel(tableSection);
             BindingContext = NewTaskViewModel;
         }
-
-        /*private void TaskTableAttributeWrappersCreated(List<TaskTableAttributeWrapper> taskTableAttributeWrappers)
-        {
-            taskTableView.TableSection.Clear();
-
-            foreach (var taskTableAttributeWrapper in taskTableAttributeWrappers)
-            {
-                taskTableView.TableSection.Add(taskTableAttributeWrapper.Cell);
-            }
-        }*/
 
         protected override bool OnBackButtonPressed()
         {
