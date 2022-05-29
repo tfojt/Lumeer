@@ -30,7 +30,7 @@ namespace Lumeer.Views
             var linksTabViewItem = new TabViewItem()
             {
                 Text = "Links",
-                Content = new TaskLinksView()
+                Content = new TaskLinksView(task, table)
             };
             this.tabView.TabItems.Add(linksTabViewItem);
 

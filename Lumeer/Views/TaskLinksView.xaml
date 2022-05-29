@@ -1,10 +1,117 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:xctk="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fa="clr-namespace:Lumeer.Fonts"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
+             xmlns:models="clr-namespace:Lumeer.Models"
+             x:DataType="viewmodels:TaskLinksViewModel"
              x:Class="Lumeer.Views.TaskLinksView">
   <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
+        <StackLayout>
+            <Button Text="Create New Link" HorizontalOptions="End" Command="{Binding CreateNewLinkTypeCmd}"/>
+            <ListView 
+                x:Name="listView"
+                VerticalOptions="Fill"
+                ItemsSource="{Binding Links}"
+                HasUnevenRows="True"
+                SeparatorVisibility="Default"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell x:DataType="models:TaskLinkItem">
+                            <xctk:Expander IsExpanded="{Binding ContentVisible}">
+                                <xctk:Expander.Header>
+                                    <Grid Padding="10" BackgroundColor="WhiteSmoke">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0" Orientation="Horizontal">
+                                            <Image WidthRequest="10" HeightRequest="10">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_SOLID}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CaretRight}"/>
+                                                </Image.Source>
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type xctk:Expander}}, Path=IsExpanded}"
+                                                             Value="True">
+                                                        <Setter Property="Source">
+                                                            <Setter.Value>
+                                                                <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_SOLID}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CaretDown}"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                            <Grid Margin="8,0,6,0" ColumnSpacing="0" RowSpacing="0">
+                                                <Image
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                WidthRequest="15"
+                                                HeightRequest="15">
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="{Binding CurrentTableFontImageData.FontFamily}" Color="{Binding CurrentTableFontImageData.Color}" Glyph="{Binding CurrentTableFontImageData.Glyph}"/>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                WidthRequest="15"
+                                                HeightRequest="15">
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="{Binding LinkedTableFontImageData.FontFamily}" Color="{Binding LinkedTableFontImageData.Color}" Glyph="{Binding LinkedTableFontImageData.Glyph}"/>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Grid>
+                                            <Label VerticalOptions="Center" Text="{Binding Name}" FontAttributes="Bold"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Orientation="Horizontal">
+                                            <ImageButton WidthRequest="20" HeightRequest="20" Command="{Binding EditingCmd}">
+                                                <ImageButton.Source>
+                                                    <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_SOLID}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CirclePlus}"/>
+                                                </ImageButton.Source>
+                                            </ImageButton>
+                                            <Label VerticalOptions="Center" Text="{Binding Source={x:Reference listViewLinks}, Path=ItemsSource.Count}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </xctk:Expander.Header>
+                                <xctk:Expander.Content>
+                                    <ListView
+                                        x:Name="listViewLinks"
+                                        HasUnevenRows="True"
+                                        SeparatorVisibility="Default"
+                                        SelectionMode="None"
+                                        Header="{Binding LinkedTableAttributesView}" 
+                                        ItemsSource="{Binding DisplayedLinkedTableDocuments}" 
+                                        ItemTemplate="{Binding LinkedTableDocumentDataTemplate}">
+                                        <ListView.Footer>
+                                            <Button HorizontalOptions="End"
+                                                Text="Confirm" 
+                                                TextColor="White"
+                                                BackgroundColor="Black"
+                                                CornerRadius="5"
+                                                HeightRequest="40"
+                                                Command="{Binding SaveCmd}" 
+                                                IsVisible="{Binding Editing}"
+                                                IsEnabled="{Binding MadeChanges}">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                             Binding="{Binding MadeChanges}"
+                                                             Value="false">
+                                                        <Setter Property="BackgroundColor" Value="Gray"/>
+                                                        <Setter Property="TextColor" Value="WhiteSmoke"/>
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                        </ListView.Footer>
+                                    </ListView>
+                                </xctk:Expander.Content>
+                            </xctk:Expander>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentView.Content>
 </ContentView>

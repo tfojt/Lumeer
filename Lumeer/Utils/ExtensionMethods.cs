@@ -18,16 +18,16 @@ namespace Lumeer.Utils
             return false;
         }
 
-        public static void AddRange<T>(this ObservableCollection<T> observableCollection, IEnumerable<T> collection, bool clearTargetCollection = false)
+        public static void AddRange<T>(this ICollection<T> targetCollection, IEnumerable<T> collection, bool clearTargetCollection = false)
         {
             if (clearTargetCollection)
             {
-                observableCollection.Clear();
+                targetCollection.Clear();
             }
 
             foreach (var item in collection)
             {
-                observableCollection.Add(item);
+                targetCollection.Add(item);
             }
         }
     }

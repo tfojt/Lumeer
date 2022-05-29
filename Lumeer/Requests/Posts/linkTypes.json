@@ -1,0 +1,23 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/link-types
+
+/* payload
+  {
+  "name": "Issues Bugs 2",
+  "collectionIds": [ "621fb8f9d508224e0888e794", "628f83efaff2314cdb15e9a4" ],
+  "attributes": [],
+  "rules": {}
+  }*/
+
+{
+  "name": "Issues Bugs 2",
+  "collectionIds": [ "621fb8f9d508224e0888e794", "628f83efaff2314cdb15e9a4" ],
+  "attributes": [],
+  "rules": {},
+  "permissions": null,
+  "permissionsType": null,
+  "id": "6291d898f531217c09f34953",
+  "version": 0,
+  "lastAttributeNum": 0,
+  "linksCount": 0
+}

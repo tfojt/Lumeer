@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup  xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+            xmlns:viewmodels="clr-namespace:Lumeer.ViewModels"
+            xmlns:restModels="clr-namespace:Lumeer.Models.Rest"
+            x:DataType="viewmodels:NewLinkTypeViewModel"
+            x:Class="Lumeer.Views.NewLinkTypePopup"
+            x:TypeArguments="restModels:NewLinkType"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" 
+            xct:CornerRadiusEffect.CornerRadius="10"
+            Size="300, 300">
+    <xct:Popup.Resources>
+        <ResourceDictionary>
+            <Style x:Key="invalidEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Red"/>
+            </Style>
+        </ResourceDictionary>
+    </xct:Popup.Resources>
+
+    <ScrollView>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" RowSpacing="0">
+                <Label Grid.Row="0" VerticalOptions="Center" Text="Linked Table"/>
+                <Picker Grid.Row="1" ItemsSource="{Binding Tables}" SelectedItem="{Binding SelectedTable}"/>
+            </Grid>
+            <Grid Grid.Row="1" RowSpacing="0">
+                <Label Grid.Row="0" VerticalOptions="Center" Text="Link Name"/>
+                <Entry Grid.Row="1" Text="{Binding Name}" Placeholder="Enter link name...">
+                    <Entry.Behaviors>
+                        <xct:TextValidationBehavior
+                        InvalidStyle="{StaticResource invalidEntryStyle}"
+                        MinimumLength="3"/>
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+            <Grid Grid.Row="2" VerticalOptions="End">
+                <Button Grid.Column="0" HorizontalOptions="Start" Text="Cancel" Command="{Binding CancelCmd}"/>
+                <Button Grid.Column="1" HorizontalOptions="End" Text="Create" Command="{Binding CreateCmd}" IsEnabled="{Binding CanCreate}"/>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</xct:Popup>

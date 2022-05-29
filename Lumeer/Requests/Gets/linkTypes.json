@@ -1,0 +1,50 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+  //organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/link-types
+
+[
+  {
+    "name": "Issues Features",
+    "collectionIds": [ "621fb8f9d508224e0888e794", "621fb8f9d508224e0888e795" ],
+    "attributes": [],
+    "rules": {},
+    "permissions": {
+      "users": [],
+      "groups": []
+    },
+    "permissionsType": null,
+    "id": "621fb8f9d508224e0888e796",
+    "version": 2,
+    "lastAttributeNum": 0,
+    "linksCount": 13
+  },
+  {
+    "name": "Issues Features 2",
+    "collectionIds": [ "621fb8f9d508224e0888e794", "621fb8f9d508224e0888e795" ],
+    "attributes": [],
+    "rules": {},
+    "permissions": {
+      "users": [],
+      "groups": []
+    },
+    "permissionsType": null,
+    "id": "626ac18247fe0b7f5318c012",
+    "version": 0,
+    "lastAttributeNum": 0,
+    "linksCount": 1
+  },
+  {
+    "name": "Issues Bugs",
+    "collectionIds": [ "621fb8f9d508224e0888e794", "628f83efaff2314cdb15e9a4" ],
+    "attributes": [],
+    "rules": {},
+    "permissions": {
+      "users": [],
+      "groups": []
+    },
+    "permissionsType": null,
+    "id": "628f8403aff2314cdb15e9a5",
+    "version": 0,
+    "lastAttributeNum": 0,
+    "linksCount": 1
+  }
+]

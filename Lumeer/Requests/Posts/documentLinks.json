@@ -1,0 +1,34 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/link-instances/621fb8f9d508224e0888e796/documentLinks
+
+/*payload
+{
+  "documentId": "621fb8f9d508224e0888e7a0",
+  "removedLinkInstancesIds": [
+    "629115dff531217c09f3419f"
+  ],
+  "createdLinkInstances": [
+    {
+      "correlationId": "1653675488270:0.6383315177877893",
+      "linkTypeId": "621fb8f9d508224e0888e796",
+      "documentIds": [ "621fb8f9d508224e0888e7a0", "621fb8f9d508224e0888e7a5" ],
+      "data": {}
+    }
+  ]
+}*/
+
+// created links
+[
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a0", "621fb8f9d508224e0888e7a5" ],
+    "id": "629115dff531217c09f3419f",
+    "creationDate": 1653675487553,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": null,
+    "data": { "_id": "629115dff531217c09f3419f" },
+    "commentsCount": null
+  }
+]

@@ -162,6 +162,7 @@ namespace Lumeer.ViewModels
             {
                 Session.Instance.CurrentProject = _selectedProject;
                 await ApiClient.Instance.ChangeWorkspace();
+                await Session.Instance.LoadLinkTypes();
                 await LoadTables();
             }
             catch (Exception ex)

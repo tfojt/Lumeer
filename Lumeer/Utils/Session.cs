@@ -37,6 +37,8 @@ namespace Lumeer.Utils
 
         public List<SelectionList> SelectionLists { get; set; }
 
+        public List<LinkType> LinkTypes { get; set; }
+
         static Session()
         {
             Instance = new Session();
@@ -55,6 +57,7 @@ namespace Lumeer.Utils
             await LoadTables();
             await LoadUsers();
             await LoadSelectionLists();
+            await LoadLinkTypes();
         }
 
         public async Task LoadOrganizations()
@@ -80,6 +83,11 @@ namespace Lumeer.Utils
         public async Task LoadSelectionLists()
         {
             SelectionLists = await ApiClient.Instance.GetSelectionLists();
+        }
+
+        public async Task LoadLinkTypes()
+        {
+            LinkTypes = await ApiClient.Instance.GetLinkTypes();
         }
     }
 }

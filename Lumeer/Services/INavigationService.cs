@@ -14,5 +14,6 @@ namespace Lumeer.Services
         Task<Page> PopAsync();
         Task<Page> PopModalAsync();
         void ShowPopup(BasePopup basePopup);
+        Task<T> ShowPopupAsync<T>(Popup<T> popup);
     }
 }

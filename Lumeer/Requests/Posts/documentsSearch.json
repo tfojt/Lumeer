@@ -1,0 +1,96 @@
+// Get all documents of tables according to table ids
+
+//https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/search/documents?subItems=false
+
+/*payload
+  { "stems": [ { "collectionId": "621fb8f9d508224e0888e795" } ] }
+  */
+
+[
+  {
+    "data": {
+      "_id": "621fb8f9d508224e0888e7a8",
+      "a1": "Function editor",
+      "a2": 5
+    },
+    "id": "621fb8f9d508224e0888e7a8",
+    "collectionId": "621fb8f9d508224e0888e795",
+    "creationDate": 1646246137693,
+    "updateDate": 1651417521409,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": "620fa0c48e43bf296c088962",
+    "dataVersion": 1,
+    "metaData": { "templateId": "5e7252d4fdb59d10a4a62196" },
+    "commentsCount": 0,
+    "favorite": false
+  },
+  {
+    "data": {
+      "_id": "621fb8f9d508224e0888e7a7",
+      "a1": "Helpdesk videos",
+      "a2": 4
+    },
+    "id": "621fb8f9d508224e0888e7a7",
+    "collectionId": "621fb8f9d508224e0888e795",
+    "creationDate": 1646246137693,
+    "updateDate": 1651417520797,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": "620fa0c48e43bf296c088962",
+    "dataVersion": 1,
+    "metaData": { "templateId": "5e7252d4fdb59d10a4a62195" },
+    "commentsCount": 0,
+    "favorite": false
+  },
+  {
+    "data": {
+      "_id": "621fb8f9d508224e0888e7a6",
+      "a1": "User configuration dialog",
+      "a2": 3
+    },
+    "id": "621fb8f9d508224e0888e7a6",
+    "collectionId": "621fb8f9d508224e0888e795",
+    "creationDate": 1646246137693,
+    "updateDate": 1651417517753,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": "620fa0c48e43bf296c088962",
+    "dataVersion": 1,
+    "metaData": { "templateId": "5e7252d4fdb59d10a4a62194" },
+    "commentsCount": 0,
+    "favorite": false
+  },
+  {
+    "data": {
+      "_id": "621fb8f9d508224e0888e7a5",
+      "a1": "Perspective settings",
+      "a2": 2
+    },
+    "id": "621fb8f9d508224e0888e7a5",
+    "collectionId": "621fb8f9d508224e0888e795",
+    "creationDate": 1646246137693,
+    "updateDate": 1651417517083,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": "620fa0c48e43bf296c088962",
+    "dataVersion": 1,
+    "metaData": { "templateId": "5e7252d4fdb59d10a4a62193" },
+    "commentsCount": 0,
+    "favorite": false
+  },
+  {
+    "data": {
+      "_id": "621fb8f9d508224e0888e7a4",
+      "a1": "View controls",
+      "a2": 1
+    },
+    "id": "621fb8f9d508224e0888e7a4",
+    "collectionId": "621fb8f9d508224e0888e795",
+    "creationDate": 1646246137693,
+    "updateDate": 1651417609357,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": "620fa0c48e43bf296c088962",
+    "dataVersion": 5,
+    "metaData": { "templateId": "5e7252d4fdb59d10a4a62192" },
+    "commentsCount": 0,
+    "favorite": false
+  }
+]

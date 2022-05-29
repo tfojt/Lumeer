@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static Lumeer.Utils.EventHandlers;
 
 namespace Lumeer.Utils
 {
@@ -132,6 +133,12 @@ namespace Lumeer.Utils
             return await SendRequestGetContent<List<TaskActivity>>(HttpMethod.Get, uri);
         }
         
+        public async Task<List<LinkType>> GetLinkTypes()
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/link-types";
+            return await SendRequestGetContent<List<LinkType>>(HttpMethod.Get, uri);
+        }
+        
         public async Task<List<Models.Rest.Task>> GetActualTasks(params string[] taskIds)
         {
             string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/data/documents";
@@ -142,6 +149,85 @@ namespace Lumeer.Utils
         {
             string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/search/tasks?subItems={tasksFilterSettings.IncludeSubItems}";
             return await SendRequestGetContent<Tasks>(HttpMethod.Post, uri, tasksFilterSettings.TasksFilter);
+        }
+        
+        public async Task<List<Document>> GetDocuments(string collectionId)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/search/documents?subItems=false";
+
+            var stems = new List<object>
+            {
+                new
+                {
+                    collectionId = collectionId
+                }
+            };
+
+            var payload = new
+            {
+                stems = stems
+            };
+            
+            return await SendRequestGetContent<List<Document>>(HttpMethod.Post, uri, payload);
+        }
+        
+        public async Task<List<Link>> GetLinks(string collectionId, string linkTypeId)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/search/linkInstances?subItems=false";
+
+            var stems = new List<object>
+            {
+                new
+                {
+                    collectionId = collectionId,
+                    linkTypeIds = new List<string>
+                    {
+                        linkTypeId
+                    }
+                }
+            };
+
+            var payload = new
+            {
+                stems = stems
+            };
+
+            return await SendRequestGetContent<List<Link>>(HttpMethod.Post, uri, payload);
+        }
+
+        public async Task<List<Link>> EditDocumentLinks(string linkTypeId, string documentId, IEnumerable<string> removedLinkInstancesIds, IEnumerable<NewLink> createdLinkInstances)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/link-instances/{linkTypeId}/documentLinks";
+
+            var payload = new
+            {
+                documentId = documentId,
+                removedLinkInstancesIds = removedLinkInstancesIds,
+                createdLinkInstances = createdLinkInstances
+            };
+
+            return await SendRequestGetContent<List<Link>>(HttpMethod.Post, uri, payload);
+        }
+        
+        public async Task<List<Link>> GetActualLinks(params string[] linkIds)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/data/linkInstances";
+            return await SendRequestGetContent<List<Link>>(HttpMethod.Post, uri, linkIds);
+        }
+
+        public async Task<LinkType> CreateLinkType(NewLinkType newLinkType)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/link-types";
+
+            var payload = new
+            {
+                name = newLinkType.Name,
+                collectionIds = new string[] { newLinkType.CurrentTableId, newLinkType.LinkedTableId },
+                attributes = new object[0] { },
+                rules = new object()
+            };
+
+            return await SendRequestGetContent<LinkType>(HttpMethod.Post, uri, payload);
         }
 
         public async Task<Models.Rest.Task> CreateTask(NewTask newTask)

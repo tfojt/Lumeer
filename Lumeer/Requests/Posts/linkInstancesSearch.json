@@ -1,0 +1,172 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/search/linkInstances?subItems=false
+
+/*
+  payload
+  {
+    "stems": [
+      {
+        "collectionId": "621fb8f9d508224e0888e794",
+        "linkTypeIds": [ "621fb8f9d508224e0888e796" ]
+      }
+    ]
+  }
+*/
+[
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a4", "621fb8f9d508224e0888e797" ],
+    "id": "621fb8f9d508224e0888e7a9",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7a9" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a1", "621fb8f9d508224e0888e7a5" ],
+    "id": "628e32eff531217c09f31427",
+    "creationDate": 1653486319735,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "628e32eff531217c09f31427" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a5", "621fb8f9d508224e0888e797" ],
+    "id": "621fb8f9d508224e0888e7ab",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7ab" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a7", "621fb8f9d508224e0888e798" ],
+    "id": "621fb8f9d508224e0888e7ac",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7ac" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a6", "621fb8f9d508224e0888e799" ],
+    "id": "621fb8f9d508224e0888e7aa",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7aa" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a3", "621fb8f9d508224e0888e7a5" ],
+    "id": "626abffd0c151c1885876434",
+    "creationDate": 1651163133726,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "626abffd0c151c1885876434" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a7", "621fb8f9d508224e0888e79c" ],
+    "id": "621fb8f9d508224e0888e7af",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7af" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a3", "621fb8f9d508224e0888e7a4" ],
+    "id": "626ea36f0c151c1885879304",
+    "creationDate": 1651417967134,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "626ea36f0c151c1885879304" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a8", "621fb8f9d508224e0888e79a" ],
+    "id": "621fb8f9d508224e0888e7ad",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7ad" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a7", "621fb8f9d508224e0888e79b" ],
+    "id": "621fb8f9d508224e0888e7ae",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7ae" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a6", "621fb8f9d508224e0888e79d" ],
+    "id": "621fb8f9d508224e0888e7b0",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7b0" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a0", "621fb8f9d508224e0888e7a4" ],
+    "id": "628e32d8f531217c09f3141e",
+    "creationDate": 1653486296241,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "628e32d8f531217c09f3141e" },
+    "commentsCount": 0
+  },
+  {
+    "linkTypeId": "621fb8f9d508224e0888e796",
+    "documentIds": [ "621fb8f9d508224e0888e7a8", "621fb8f9d508224e0888e79e" ],
+    "id": "621fb8f9d508224e0888e7b1",
+    "creationDate": 1646246137782,
+    "updateDate": null,
+    "createdBy": "620fa0c48e43bf296c088962",
+    "updatedBy": null,
+    "dataVersion": 0,
+    "data": { "_id": "621fb8f9d508224e0888e7b1" },
+    "commentsCount": 0
+  }
+]

@@ -44,5 +44,10 @@ namespace Lumeer.Services
         {
             App.Current.MainPage.Navigation.ShowPopup(basePopup);
         }
+
+        public async Task<T> ShowPopupAsync<T>(Popup<T> popup)
+        {
+            return await App.Current.MainPage.Navigation.ShowPopupAsync(popup);
+        }
     }
 }
