@@ -34,6 +34,15 @@
                     </ImageButton.Source>
                 </ImageButton>
             </StackLayout>
+            <Label Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Text="No notifications..." IsVisible="False">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                        Binding="{Binding Source={x:Reference listView}, Path=ItemsSource.Count}" 
+                        Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
             <ListView 
                 x:Name="listView"
                 Grid.Row="1"
