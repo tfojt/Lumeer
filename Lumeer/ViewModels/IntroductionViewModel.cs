@@ -35,10 +35,9 @@ namespace Lumeer.ViewModels
 
             IntroductionTips = new ObservableCollection<IntroductionTip>
             {
-                new IntroductionTip("Lumeer.Images.kanban.gif", "Tip 0"),
-                new IntroductionTip("Lumeer.Images.lumeerLogo.png", "Tip 1"),
-                new IntroductionTip("Lumeer.Images.lumeerLogo.png", "Tip 2"),
-                new IntroductionTip("Lumeer.Images.lumeerLogo.png", "Tip 3"),
+                new IntroductionTip("undraw_schedule_pnbk.png", "Keep all your tasks in the same place", "Lumeer’s task management software is the one source of truth for your team tasks. No more switching between endless excel files!"),
+                new IntroductionTip("undraw_data_xmfy.png", "Track your team’s progress", "Who is available? How many tasks have been completed? Do we meet the deadline? It’s all in Lumeer work management platform."),
+                new IntroductionTip("undraw_booking_33fn.png", "Set due dates and never miss a deadline", "Manage your weekly tasks, receive notifications two days before that important presentation is coming up and receive an automated email when a task is complete."),
             };
         }
 

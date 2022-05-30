@@ -6,12 +6,16 @@ namespace Lumeer.Models
     {
         public ImageSource ImageSource { get; set; }
 
-        public string Tip { get; set; }
+        public string Title { get; set; }
+        public string Comment { get; set; }
 
-        public IntroductionTip(string imagePath, string tip)
+        public IntroductionTip(string imageName, string title, string comment)
         {
-            ImageSource = ImageSource.FromResource(imagePath);
-            Tip = tip;
+            const string imagesLocation = "Lumeer.Images.";
+
+            ImageSource = ImageSource.FromResource(imagesLocation + imageName);
+            Title = title;
+            Comment = comment;
         }
     }
 }

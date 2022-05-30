@@ -13,7 +13,6 @@
             <views:LogoView BackgroundColor="LightGray"/>
             <CarouselView ItemsSource="{Binding IntroductionTips}" 
                           IndicatorView="indicatorView"
-                          Loop="False"
                           Margin="20">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="models:IntroductionTip">
@@ -21,14 +20,23 @@
                                BorderColor="DarkGray"
                                CornerRadius="5"
                                HorizontalOptions="Center">
-                            <StackLayout>
-                                <Image Source="{Binding ImageSource}" 
-                                       HorizontalOptions="CenterAndExpand"
-                                       VerticalOptions="CenterAndExpand"/>
-                                <Label Text="{Binding Tip}"
-                                       HorizontalOptions="CenterAndExpand"
-                                       VerticalOptions="CenterAndExpand"/>
-                            </StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Image Grid.Row="0"
+                                       Source="{Binding ImageSource}"/>
+                                <Label Grid.Row="1" 
+                                       Text="{Binding Title}"
+                                       FontSize="Title"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center"/>
+                                <Label Grid.Row="2" 
+                                       Text="{Binding Comment}"
+                                       HorizontalTextAlignment="Center"/>
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
