@@ -235,10 +235,18 @@ namespace Lumeer.Utils
             return await SendRequestGetContent<Models.Rest.Task>(HttpMethod.Post, uri, newTask);
         }
         
-        public async Task<TaskComment> SendComment(TaskComment taskComment)
+        public async Task<TaskComment> SendComment(string comment, string taskId)
         {
-            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/collections/{taskComment.ParentId}/documents";
-            return await SendRequestGetContent<TaskComment>(HttpMethod.Post, uri, taskComment);
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/comments/document/{taskId}";
+
+            var payload = new
+            {
+                comment = comment,
+                resourceId = taskId,
+                resourceType = "DOCUMENT"
+            };
+            
+            return await SendRequestGetContent<TaskComment>(HttpMethod.Post, uri, payload);
         }
         
         public async Task<TaskComment> EditComment(EditedTaskComment editedTaskComment)

@@ -122,29 +122,44 @@ namespace Lumeer.ViewModels
 
         private async Task SendComment()
         {
-            if (EditingComment)
+            try
             {
-                try
+                if (EditingComment)
                 {
-                    var editedTaskComment = new EditedTaskComment(_editedTaskCommentItem.TaskComment, NewCommentText);
-                    TaskComment updatedTaskComment = await ApiClient.Instance.EditComment(editedTaskComment);
-
-                    var updatedTaskCommentItem = new TaskCommentItem(updatedTaskComment);
-                    _editedTaskCommentItem.UpdateData(updatedTaskCommentItem);
-
-                    EndEditingComment();
+                    await EditComment();
                 }
-                catch (Exception ex)
+                else
                 {
-                    var message = "Could not edit comment";
-                    await _alertService.DisplayAlert("Error", message, "Ok", ex);
+                    await SendNewComment();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //ApiClient.Instance.SendComment();
-                //await RefreshTaskData();
+                var message = "Could not send comment";
+                await _alertService.DisplayAlert("Error", message, "Ok", ex);
             }
+        }
+
+        private async Task EditComment()
+        {
+            var editedTaskComment = new EditedTaskComment(_editedTaskCommentItem.TaskComment, NewCommentText);
+            TaskComment updatedTaskComment = await ApiClient.Instance.EditComment(editedTaskComment);
+
+            var updatedTaskCommentItem = new TaskCommentItem(updatedTaskComment);
+            _editedTaskCommentItem.UpdateData(updatedTaskCommentItem);
+
+            EndEditingComment();
+        }
+
+        private async Task SendNewComment()
+        {
+            var taskComment = await ApiClient.Instance.SendComment(NewCommentText, _task.Id);
+            await RefreshTaskData();
+
+            NewCommentText = null;
+            var taskCommentItem = new TaskCommentItem(taskComment);
+            Comments.Add(taskCommentItem);
+            ScrollRequested?.Invoke(taskCommentItem, ScrollToPosition.End, true);
         }
         
         private void EndEditingComment()
