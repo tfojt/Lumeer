@@ -1,8 +1,10 @@
 ﻿using Lumeer.Models.Rest;
+using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.CommunityToolkit.UI.Views;
 
 namespace Lumeer.Models
 {
@@ -17,6 +19,10 @@ namespace Lumeer.Models
 
         public bool IsCreationActivity { get; set; }
 
+        public string UserEmail { get; set; }
+
+        public GravatarImageSource GravatarImageSource { get; set; }
+
         public TaskActivityItem(TaskActivity taskActivity, List<TableAttribute> tableAttributes)
         {
             TaskActivity = taskActivity;
@@ -27,6 +33,10 @@ namespace Lumeer.Models
 
             NewStateTxt = GetFormattedState(taskActivity.NewState, tableAttributes);
             OldStateTxt = GetFormattedState(taskActivity.OldState, tableAttributes);
+
+            UserEmail = taskActivity.UserEmail;
+
+            GravatarImageSource = GenerateGravatarImageSource();
         }
         
         public TaskActivityItem(Task task)
@@ -36,6 +46,20 @@ namespace Lumeer.Models
             Type = "Created";
 
             ChangeDateTxt = GetFormattedChangeDate(task.CreationDate);
+
+            var user = Session.Instance.Users.SingleOrDefault(u => u.Id == task.CreatedBy);
+            UserEmail = user != null ? user.Email : "Unknown";
+
+            GravatarImageSource = GenerateGravatarImageSource();
+        }
+
+        private GravatarImageSource GenerateGravatarImageSource()
+        {
+            return new GravatarImageSource
+            {
+                Email = UserEmail,
+                Size = 30,
+            };
         }
 
         private string GetFormattedChangeDate(long dateMs)

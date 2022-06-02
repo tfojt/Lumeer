@@ -4,7 +4,8 @@
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels" 
              xmlns:models="clr-namespace:Lumeer.Models"
              xmlns:fa="clr-namespace:Lumeer.Fonts" 
-             xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
+             xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors" 
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="Lumeer.Views.TaskCommentsView"
              x:DataType="viewModels:TaskCommentsViewModel">
     <ContentView.Resources>
@@ -14,13 +15,7 @@
                 HasShadow="True">
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Image
-                            WidthRequest="15"
-                            HeightRequest="15">
-                            <Image.Source>
-                                <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CircleUser}"/>
-                            </Image.Source>
-                        </Image>
+                        <xct:AvatarView VerticalOptions="Center" Source="{TemplateBinding BindingContext.GravatarImageSource}" Size="{TemplateBinding BindingContext.GravatarImageSource.Size}"/>
                         <Image WidthRequest="10" HeightRequest="10">
                             <Image.Source>
                                 <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Gray" Glyph="{x:Static fa:FontAwesomeIcons.FilePlus}"/>

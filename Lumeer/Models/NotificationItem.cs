@@ -203,7 +203,7 @@ namespace Lumeer.Models
         
         private string GetTaskName()
         {
-            return (string)Notification.Data["taskName"];
+            return Notification.Data["taskName"].ToString();
         }
 
         private string GetTaskTitleCommonPart()

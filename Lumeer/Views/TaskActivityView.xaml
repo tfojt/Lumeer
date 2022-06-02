@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels" 
-             xmlns:fa="clr-namespace:Lumeer.Fonts" 
-             xmlns:models="clr-namespace:Lumeer.Models" 
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:models="clr-namespace:Lumeer.Models"
              xmlns:templateSelectors="clr-namespace:Lumeer.TemplateSelectors"
+             xmlns:viewmodels="clr-namespace:Lumeer.ViewModels"
              x:DataType="viewmodels:TaskActivityViewModel"
              x:Class="Lumeer.Views.TaskActivityView">
     <ContentView.Resources>
@@ -15,11 +15,7 @@
         </ControlTemplate>
 
         <ControlTemplate x:Key="userImageControlTemplate">
-            <Image HeightRequest="30" WidthRequest="30">
-                <Image.Source>
-                    <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Color="Black" Glyph="{x:Static fa:FontAwesomeIcons.CircleUser}"/>
-                </Image.Source>
-            </Image>
+            <xct:AvatarView Source="{TemplateBinding BindingContext.GravatarImageSource}" Size="{TemplateBinding BindingContext.GravatarImageSource.Size}"/>
         </ControlTemplate>
 
         <ControlTemplate x:Key="typeLabelControlTemplate">

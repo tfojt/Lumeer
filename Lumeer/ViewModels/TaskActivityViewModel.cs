@@ -4,7 +4,6 @@ using Lumeer.Services;
 using Lumeer.Utils;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using Task = System.Threading.Tasks.Task;

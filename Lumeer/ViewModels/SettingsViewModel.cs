@@ -2,11 +2,9 @@
 using Lumeer.Utils;
 using Lumeer.Views;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -21,6 +19,7 @@ namespace Lumeer.ViewModels
 
         public string UserName { get; set; }
         public string UserEmail { get; set; }
+        public GravatarImageSource GravatarImageSource { get; set; }
 
         private readonly IAlertService _alertService;
         private readonly IAuthenticationService _authenticationService;
@@ -29,13 +28,19 @@ namespace Lumeer.ViewModels
 
         public SettingsViewModel()
         {
+            GravatarImageSource = new GravatarImageSource
+            {
+                Email = Session.Instance.User.Email,
+                Size = 80,
+            };
+
+            UserEmail = Session.Instance.User.Email;
+            UserName = Session.Instance.User.Name;
+
             _alertService = DependencyService.Get<IAlertService>();
             _authenticationService = DependencyService.Get<IAuthenticationService>();
             _secureStorageService = DependencyService.Get<ISecureStorageService>();
             _navigationService = DependencyService.Get<INavigationService>();
-
-            UserName = Session.Instance.User.Name;
-            UserEmail = Session.Instance.User.Email;
         }
 
         private async Task ChangeLanguage()
