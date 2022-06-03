@@ -76,7 +76,7 @@
                                         WidthRequest="40"
                                         HeightRequest="40">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="{Binding TableFontFamily}" Color="{Binding TableColor}" Glyph="{Binding TableGlyph}"/>
+                                            <FontImageSource FontFamily="{Binding TableFontImageData.FontFamily}" Color="{Binding TableFontImageData.Color}" Glyph="{Binding TableFontImageData.Glyph}"/>
                                         </Image.Source>
                                     </Image>
                                     <StackLayout

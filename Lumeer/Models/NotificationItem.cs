@@ -16,9 +16,7 @@ namespace Lumeer.Models
 
         public string Title { get; set; }
 
-        public string MainIconFontFamily { get; set; }
-        public string MainIconGlyph { get; set; }
-        public Color MainIconColor { get; set; }
+        public FontImageData MainFontImageData { get; set; }
 
         private string _readContextMenuText;
         public string ReadContextMenuText 
@@ -55,9 +53,7 @@ namespace Lumeer.Models
 
             DateText = DateTimeOffset.FromUnixTimeMilliseconds(notification.CreatedAt).ToString("M/d/yy, h:mm tt");
 
-            MainIconFontFamily = FontAwesomeAliases.PRO_REGULAR;
-            MainIconGlyph = FontAwesomeIcons.CircleQuestion;
-            MainIconColor = GetMainIconColor();
+            MainFontImageData = GetMainFontImageData();
 
             GeneratePath();
         }
@@ -66,32 +62,45 @@ namespace Lumeer.Models
         {
             foreach (string part in new string[] { "organization", "project", "collection" })
             {
-                if (Notification.Data.ContainsKey($"{part}Id"))
+                if (ContainsPartData(part))
                 {
-                    var partColor = (string)Notification.Data[$"{part}Color"];
+                    var partIcon = GetPartFontImageData(part);
 
                     string partName = Notification.Data.TryGetValue($"{part}Code", out object codeObj) ?
                         (string)codeObj :
                         (string)Notification.Data[$"{part}Name"];
 
-                    var partIcon = new FontImageData(FontAwesomeAliases.PRO_REGULAR, FontAwesomeIcons.CircleQuestion, partColor);
                     var iconLabel = new IconLabel(partIcon, partName);
                     Path.Add(iconLabel);
                 }
             }
         }
 
-        private Color GetMainIconColor()
+        private FontImageData GetMainFontImageData()
         {
             foreach (string part in new string[] { "collection", "project", "organization" })
             {
-                if (Notification.Data.TryGetValue($"{part}Color", out object hexColor))
+                if (ContainsPartData(part))
                 {
-                    return Color.FromHex((string)hexColor);
+                    return GetPartFontImageData(part);
                 }
             }
 
-            return Color.Gray;
+            return FontImageData.Default;
+        }
+
+        private bool ContainsPartData(string part)
+        {
+            return Notification.Data.ContainsKey($"{part}Id");
+        }
+
+        private FontImageData GetPartFontImageData(string part)
+        {
+            string partIcon = (string)Notification.Data[$"{part}Icon"];
+
+            var partColor = (string)Notification.Data[$"{part}Color"];
+
+            return new FontImageData(partIcon, partColor);
         }
 
         public void ChangeReadStatus()

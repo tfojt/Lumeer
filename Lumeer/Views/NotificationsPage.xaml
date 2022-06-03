@@ -87,7 +87,7 @@
                                         WidthRequest="40"
                                         HeightRequest="40">
                                         <Image.Source>
-                                            <FontImageSource FontFamily="{Binding MainIconFontFamily}" Color="{Binding MainIconColor}" Glyph="{Binding MainIconGlyph}"/>
+                                            <FontImageSource FontFamily="{Binding MainFontImageData.FontFamily}" Color="{Binding MainFontImageData.Color}" Glyph="{Binding MainFontImageData.Glyph}"/>
                                         </Image.Source>
                                     </Image>
                                     <Label

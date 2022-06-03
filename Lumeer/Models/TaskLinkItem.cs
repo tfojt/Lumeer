@@ -83,8 +83,8 @@ namespace Lumeer.Models
 
             _alertService = DependencyService.Get<IAlertService>();
 
-            CurrentTableFontImageData = new FontImageData(FontAwesomeAliases.PRO_REGULAR, FontAwesomeIcons.CircleQuestion, currentTable.Color);
-            LinkedTableFontImageData = new FontImageData(FontAwesomeAliases.PRO_REGULAR, FontAwesomeIcons.CircleQuestion, linkedTable.Color);
+            CurrentTableFontImageData = new FontImageData(currentTable.Icon, currentTable.Color);
+            LinkedTableFontImageData = new FontImageData(linkedTable.Icon, linkedTable.Color);
 
             var linkedTableDocumentIds = new List<string>();
             foreach (var relevantLink in relevantLinks)

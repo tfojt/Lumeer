@@ -18,6 +18,8 @@ namespace Lumeer.Models
         public string TableGlyph { get; set; }
         public Color TableColor { get; set; }
 
+        public FontImageData TableFontImageData { get; set; }
+
         public List<SelectionOptionItem> Selections { get; set; } = new List<SelectionOptionItem>();
 
         public TaskItem(Rest.Task task)
@@ -37,9 +39,7 @@ namespace Lumeer.Models
                 Title = EMPTY_TITLE;
             }
 
-            TableFontFamily = FontAwesomeAliases.PRO_REGULAR;
-            TableGlyph = FontAwesomeIcons.CircleQuestion;
-            TableColor = Color.FromHex(table.Color);
+            TableFontImageData = new FontImageData(table.Icon, table.Color);
 
             foreach (var tableAttribute in table.Attributes)
             {
