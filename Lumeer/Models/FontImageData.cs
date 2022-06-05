@@ -15,12 +15,7 @@ namespace Lumeer.Models
         private const string DEFAULT_GLYPH = FontAwesomeIcons.CircleQuestion;
         private static readonly Color DEFAULT_COLOR = Color.Black;
 
-        public static FontImageData Default = new FontImageData
-        {
-            FontFamily = DEFAULT_FONT_FAMILY,
-            Glyph = DEFAULT_GLYPH,
-            Color = DEFAULT_COLOR
-        };
+        public static FontImageData Default => new FontImageData();
 
         private string _fontFamily;
         public string FontFamily 
@@ -45,9 +40,8 @@ namespace Lumeer.Models
 
         private static Dictionary<string, string> _glyphCache = new Dictionary<string, string>();
 
-        private FontImageData()
+        private FontImageData() : this(DEFAULT_FONT_FAMILY, DEFAULT_GLYPH, DEFAULT_COLOR)
         {
-
         }
 
         public FontImageData(string fontFamily, string glyph, Color color)

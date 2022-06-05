@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lumeer.Models.Rest.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,7 @@ namespace Lumeer.Models.Rest
         public object Lock { get; set; }
         public object Function { get; set; }
         public int UsageCount { get; set; }
+
+        public ConstraintType ConstraintType => Constraint != null ? Constraint.Type : ConstraintType.None;
     }
 }

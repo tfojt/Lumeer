@@ -32,6 +32,15 @@ namespace Lumeer.Models
             ChangeDateTxt = GetFormattedChangeDate(taskActivity.ChangeDate);
 
             NewStateTxt = GetFormattedState(taskActivity.NewState, tableAttributes);
+
+            if (taskActivity.OldState.Count == 0)
+            {
+                foreach (KeyValuePair<string, object> kvp in taskActivity.NewState)
+                {
+                    taskActivity.OldState.Add(kvp.Key, null);
+                }
+            }
+
             OldStateTxt = GetFormattedState(taskActivity.OldState, tableAttributes);
 
             UserEmail = taskActivity.UserEmail;
@@ -71,15 +80,17 @@ namespace Lumeer.Models
         {
             var sb = new StringBuilder();
 
-            foreach (KeyValuePair<string, object> kvp in state)
+            if (state.Count > 0)
             {
-                var tableAttribute = tableAttributes.Single(tA => tA.Id == kvp.Key);
-                var formattedState = $"{tableAttribute.Name}: {kvp.Value}, ";
-                sb.Append(formattedState);
+                foreach (KeyValuePair<string, object> kvp in state)
+                {
+                    var tableAttribute = tableAttributes.Single(tA => tA.Id == kvp.Key);
+                    var formattedState = $"{tableAttribute.Name}: {kvp.Value}, ";
+                    sb.Append(formattedState);
+                }
+                
+                sb.Remove(sb.Length - 2, 2);    // Remove ', ' from last state
             }
-
-            // Remove ', ' from last state
-            sb.Remove(sb.Length - 2, 2);
 
             return sb.ToString();
         }

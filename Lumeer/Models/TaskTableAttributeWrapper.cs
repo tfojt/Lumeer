@@ -1,9 +1,11 @@
-﻿using Lumeer.CustomViews;
-using Lumeer.Models.Rest;
+﻿using Lumeer.Models.Rest;
 using Lumeer.Utils;
+using Lumeer.Views;
 using System;
+using System.Collections;
 using System.Linq;
 using Xamarin.Forms;
+using ConstraintType = Lumeer.Models.Rest.Enums.ConstraintType;
 
 namespace Lumeer.Models
 {
@@ -11,7 +13,6 @@ namespace Lumeer.Models
     {
         private Task _task;
         private TableAttribute _tableAttribute;
-        private AttributeType _attributeType;
         private bool _originalValueHasValue;
         private object _originalValue;
         public Cell Cell { get; private set; }
@@ -22,49 +23,57 @@ namespace Lumeer.Models
             _tableAttribute = tableAttribute;
             _originalValueHasValue = task.Data.TryGetValue(tableAttribute.Id, out object originalValue);
             _originalValue = originalValue;
-            _attributeType = ParseAttributeType(tableAttribute);
             
             GenerateCell();
-        }
-
-        private AttributeType ParseAttributeType(TableAttribute tableAttribute)
-        {
-            var constraint = tableAttribute.Constraint;
-            if (constraint == null)
-            {
-                return AttributeType.None;
-            }
-
-            return (AttributeType)Enum.Parse(typeof(AttributeType), constraint.Type);
         }
 
         private void GenerateCell()
         {
             string attributeName = _tableAttribute.Name;
 
-            switch (_attributeType)
+            switch (_tableAttribute.ConstraintType)
             {
-                case AttributeType.None:
-                case AttributeType.User:    // TODOT Handle user hints
-                case AttributeType.Text:
+                case ConstraintType.None:
+                case ConstraintType.Text:
                     {
                         Cell = GenerateEntryCell(attributeName);
                         break;
                     }
-                case AttributeType.DateTime:
+                case ConstraintType.User:
                     {
                         var stackLayout = GenerateStackLayout();
 
                         var label = GenerateLabel(attributeName);
                         stackLayout.Children.Add(label);
 
-                        var format = (string)_tableAttribute.Constraint.Config["format"];
+                        var usersEmails = Session.Instance.Users.Select(u => u.Email).ToList();
 
-                        var datePicker = new NullableDatePicker
+                        var picker = GeneratePicker(usersEmails);
+
+                        if (_originalValueHasValue)
                         {
-                            Format = format,
-                            HorizontalOptions = LayoutOptions.FillAndExpand
+                            var userEmail = (string)_originalValue;
+                            string correspondingEmail = usersEmails.Single(e => e == userEmail);
+                            picker.SelectedItem = correspondingEmail;
+                        }
+
+                        stackLayout.Children.Add(picker);
+
+                        Cell = new ViewCell
+                        {
+                            View = stackLayout
                         };
+                        break;
+                    }
+                case ConstraintType.DateTime:
+                    {
+                        var stackLayout = GenerateStackLayout();
+
+                        var label = GenerateLabel(attributeName);
+                        stackLayout.Children.Add(label);
+
+                        var restFormat = (string)_tableAttribute.Constraint.Config["format"];
+                        string format = RestParsers.ParseDateFormat(restFormat);
 
                         if (_originalValueHasValue)
                         {
@@ -78,15 +87,16 @@ namespace Lumeer.Models
                                 else
                                 {
                                     var dateTime = DateTime.Parse(dateString);
-                                    datePicker.NullableDate = dateTime;
                                     _originalValue = dateTime;
                                 }
                             }
-                            else
-                            {
-                                datePicker.NullableDate = (DateTime)_originalValue;
-                            }
                         }
+
+                        var datePicker = new NullableDatePicker((DateTime?)_originalValue, format)
+                        {
+                            HorizontalOptions = LayoutOptions.FillAndExpand,
+                        };
+
                         stackLayout.Children.Add(datePicker);
 
                         Cell = new ViewCell
@@ -96,7 +106,7 @@ namespace Lumeer.Models
 
                         break;
                     }
-                case AttributeType.Number:
+                case ConstraintType.Number:
                     {
                         Cell = GenerateEntryCell(attributeName, Keyboard.Numeric);
 
@@ -107,7 +117,7 @@ namespace Lumeer.Models
 
                         break;
                     }
-                case AttributeType.Select:
+                case ConstraintType.Select:
                     {
                         var stackLayout = GenerateStackLayout();
 
@@ -117,11 +127,7 @@ namespace Lumeer.Models
                         var selectionListId = (string)_tableAttribute.Constraint.Config["selectionListId"];
                         var selectionList = Session.Instance.SelectionLists.Single(sl => sl.Id == selectionListId);
 
-                        var picker = new Picker
-                        {
-                            ItemsSource = selectionList.Options,
-                            HorizontalOptions = LayoutOptions.FillAndExpand
-                        };
+                        var picker = GeneratePicker(selectionList.Options);
 
                         if (_originalValueHasValue)
                         {
@@ -139,7 +145,7 @@ namespace Lumeer.Models
                         break;
                     }
                 default:
-                    throw new NotImplementedException($"{nameof(GenerateCell)} - {_attributeType}");
+                    throw new NotImplementedException($"{nameof(GenerateCell)} - {_tableAttribute.ConstraintType}");
             }
         }
 
@@ -184,6 +190,17 @@ namespace Lumeer.Models
             return entryCell;
         }
 
+        private Picker GeneratePicker(IList itemsSource)
+        {
+            var picker = new Picker
+            {
+                ItemsSource = itemsSource,
+                HorizontalOptions = LayoutOptions.FillAndExpand
+            };
+
+            return picker;
+        }
+
         public bool ValueChanged(out string attributeId, out object newValue)
         {
             attributeId = _tableAttribute.Id;
@@ -195,28 +212,27 @@ namespace Lumeer.Models
                     {
                         string currentValue = entryCell.Text;
 
-                        switch (_attributeType)
+                        switch (_tableAttribute.ConstraintType)
                         {
-                            case AttributeType.None:
-                            case AttributeType.Text:
-                            case AttributeType.User:
-                            case AttributeType.Number:
+                            case ConstraintType.None:
+                            case ConstraintType.Text:
+                            case ConstraintType.Number:
                                 {
                                     currentValueHasValue = !string.IsNullOrEmpty(currentValue);
                                     newValue = currentValue;
                                     break;
                                 }
                             default:
-                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {_attributeType}");
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(EntryCell)} - {_tableAttribute.ConstraintType}");
                         }
 
                         break;
                     }
                 case ViewCell viewCell:
                     {
-                        switch (_attributeType)
+                        switch (_tableAttribute.ConstraintType)
                         {
-                            case AttributeType.DateTime:
+                            case ConstraintType.DateTime:
                                 {
                                     var stackLayout = (StackLayout)viewCell.View;
                                     var nullableDatePicker = (NullableDatePicker)stackLayout.Children.Single(ch => ch is NullableDatePicker);
@@ -226,7 +242,17 @@ namespace Lumeer.Models
                                     newValue = currentValue;
                                     break;
                                 }
-                            case AttributeType.Select:
+                            case ConstraintType.User:
+                                {
+                                    var stackLayout = (StackLayout)viewCell.View;
+                                    var picker = (Picker)stackLayout.Children.Single(ch => ch is Picker);
+
+                                    var currentValue = (string)picker.SelectedItem;
+                                    currentValueHasValue = currentValue != null;
+                                    newValue = currentValue;
+                                    break;
+                                }
+                            case ConstraintType.Select:
                                 {
                                     var stackLayout = (StackLayout)viewCell.View;
                                     var picker = (Picker)stackLayout.Children.Single(ch => ch is Picker);
@@ -237,7 +263,7 @@ namespace Lumeer.Models
                                     break;
                                 }
                             default:
-                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {_attributeType}");
+                                throw new NotImplementedException($"{nameof(ValueChanged)} - {nameof(ViewCell)} - {_tableAttribute.ConstraintType}");
                         }
 
                         break;

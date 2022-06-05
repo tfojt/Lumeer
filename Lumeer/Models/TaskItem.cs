@@ -4,7 +4,9 @@ using Lumeer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
+using ConstraintType = Lumeer.Models.Rest.Enums.ConstraintType;
 
 namespace Lumeer.Models
 {
@@ -22,34 +24,52 @@ namespace Lumeer.Models
 
         public List<SelectionOptionItem> Selections { get; set; } = new List<SelectionOptionItem>();
 
+        public GravatarImageSource GravatarImageSource { get; set; }
+
+        private const string EMPTY_TITLE = "Empty title";
+
         public TaskItem(Rest.Task task)
         {
             Task = task;
 
             var table = Session.Instance.TaskTables.Single(t => t.Id == task.CollectionId);
 
-            const string EMPTY_TITLE = "Empty title";
-            if (Task.Data.TryGetValue(table.DefaultAttributeId, out object firstData))
-            {
-                string title = firstData?.ToString();
-                Title = !string.IsNullOrEmpty(title) ? title : EMPTY_TITLE;
-            }
-            else
-            {
-                Title = EMPTY_TITLE;
-            }
+            Title = GetTaskTitle(table);
 
             TableFontImageData = new FontImageData(table.Icon, table.Color);
 
+            GenerateSelections(table);
+
+            if (TryGetAssigneeEmail(table, out string assigneeEmail))
+            {
+                GravatarImageSource = new GravatarImageSource
+                {
+                    Email = assigneeEmail,
+                    Size = 20,
+                };
+            }
+        }
+
+        private string GetTaskTitle(Table table)
+        {
+            if (!Task.Data.TryGetValue(table.DefaultAttributeId, out object defaultAttribute) || defaultAttribute == null)
+            {
+                return EMPTY_TITLE;
+            }
+
+            return defaultAttribute.ToString();
+        }
+
+        private void GenerateSelections(Table table)
+        {
             foreach (var tableAttribute in table.Attributes)
             {
-                var attributeType = ParseAttributeType(tableAttribute);
-                if (attributeType != AttributeType.Select)
+                if (tableAttribute.ConstraintType != ConstraintType.Select)
                 {
                     continue;
                 }
 
-                bool hasValue = task.Data.TryGetValue(tableAttribute.Id, out object value);
+                bool hasValue = Task.Data.TryGetValue(tableAttribute.Id, out object value);
                 if (!hasValue)
                 {
                     continue;
@@ -70,15 +90,17 @@ namespace Lumeer.Models
             }
         }
 
-        private AttributeType ParseAttributeType(TableAttribute tableAttribute)
+        private bool TryGetAssigneeEmail(Table table, out string assigneeEmail)
         {
-            var constraint = tableAttribute.Constraint;
-            if (constraint == null)
+            var assigneeAttributeId = (string)table.PurposeMetaData["assigneeAttributeId"];
+            if (assigneeAttributeId == null || !Task.Data.TryGetValue(assigneeAttributeId, out object value))
             {
-                return AttributeType.None;
+                assigneeEmail = null;
+                return false;
             }
 
-            return (AttributeType)Enum.Parse(typeof(AttributeType), constraint.Type);
+            assigneeEmail = (string)value;
+            return true;
         }
     }
 }

@@ -3,17 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewModels="clr-namespace:Lumeer.ViewModels"
              xmlns:fa="clr-namespace:Lumeer.Fonts"
-             xmlns:models="clr-namespace:Lumeer.Models"
+             xmlns:models="clr-namespace:Lumeer.Models" 
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
+             xmlns:converters="clr-namespace:Lumeer.Converters"
              x:Class="Lumeer.Views.TasksPage"
              Title="Tasks">
     <ContentPage.BindingContext>
         <viewModels:TasksViewModel/>
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <converters:ObjectNotNullToBoolConverter x:Key="objectNotNullToBoolConverter"/>
+    </ContentPage.Resources>
+
     <ContentPage.IconImageSource>
         <FontImageSource FontFamily="{x:Static fa:FontAwesomeAliases.PRO_REGULAR}" Glyph="{x:Static fa:FontAwesomeIcons.CalendarCheck}"/>
     </ContentPage.IconImageSource>
-    
+
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -51,7 +57,7 @@
                 IsPullToRefreshEnabled="True"
                 RefreshCommand="{Binding RefreshTasksCmd}"
                 IsRefreshing="{Binding IsRefreshingTasks}"
-                RowHeight="80"
+                HasUnevenRows="True"
                 SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -85,29 +91,38 @@
                                         <Label
                                             Text="{Binding Title}"
                                             FontAttributes="Bold"/>
-                                        <CollectionView
-                                            x:Name="collectionView"
-                                            ItemsLayout="HorizontalList"
-                                            ItemsSource="{Binding Selections}">
-                                            <CollectionView.Triggers>
-                                                <DataTrigger TargetType="CollectionView"
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <xct:AvatarView Grid.Column="0" Margin="0,0,8,0" VerticalOptions="Center" IsVisible="{Binding GravatarImageSource, Converter={x:StaticResource objectNotNullToBoolConverter}}" Source="{Binding GravatarImageSource}" Size="{Binding GravatarImageSource.Size}"/>
+                                            <CollectionView HeightRequest="20" Margin="-5,0,0,0"
+                                                x:Name="collectionView"
+                                                Grid.Column="1"
+                                                ItemsLayout="HorizontalList"
+                                                ItemsSource="{Binding Selections}">
+                                                <CollectionView.Triggers>
+                                                    <DataTrigger TargetType="CollectionView"
                                                          Binding="{Binding Source={RelativeSource Self}, Path=ItemsSource.Count}"
                                                          Value="0">
-                                                    <Setter Property="IsVisible"
+                                                        <Setter Property="IsVisible"
                                                             Value="false"/>
-                                                </DataTrigger>
-                                            </CollectionView.Triggers>
-                                            <CollectionView.ItemTemplate>
-                                                <DataTemplate x:DataType="models:SelectionOptionItem">
-                                                    <StackLayout Padding="0,0,10,0">
-                                                        <Label 
-                                                            Padding="5,0,5,0"
-                                                            Text="{Binding Name}"
-                                                            BackgroundColor="{Binding BackgroundColor}"/>
-                                                    </StackLayout>
-                                                </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                                                    </DataTrigger>
+                                                </CollectionView.Triggers>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:SelectionOptionItem">
+                                                        <StackLayout Padding="0,0,10,0">
+                                                            <Label 
+                                                                Padding="5,0,5,0"
+                                                                Text="{Binding Name}"
+                                                                BackgroundColor="{Binding BackgroundColor}"/>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </Grid>
                                     </StackLayout>
                                 </Grid>
                             </Frame>

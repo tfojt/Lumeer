@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Renderers\NullableDatePickerRenderer.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
