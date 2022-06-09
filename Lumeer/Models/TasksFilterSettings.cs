@@ -1,7 +1,4 @@
 ﻿using Lumeer.Models.Rest;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lumeer.Models
 {

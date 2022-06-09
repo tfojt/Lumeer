@@ -1,0 +1,54 @@
+//https://get.lumeer.io/lumeer-engine/rest/
+//organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/views/defaultConfigs/config
+
+/* payload 
+  {
+  "key": "default",
+  "perspective": "search",
+  "config": {
+    "search": {
+      "searchTab": "tasks",
+      "documents": {
+        "size": "S",
+        "expandedIds": [ "621fb8f9d508224e0888e799" ],
+        "groupBy": "state",
+        "sortBy": [
+          {
+            "attribute": "priority",
+            "type": "desc"
+          },
+          { "attribute": "dueDate" },
+          { "attribute": "lastUsed" }
+        ]
+      },
+      "views": { "size": "S" }
+    }
+  },
+  "updatedAt": 1654795485625
+  }*/
+
+{
+  "key": "default",
+  "perspective": "search",
+  "config": {
+    "search": {
+      "searchTab": "tasks",
+      "documents": {
+        "size": "S",
+        "expandedIds": [ "621fb8f9d508224e0888e799" ],
+        "groupBy": "state",
+        "sortBy": [
+          {
+            "attribute": "priority",
+            "type": "desc"
+          },
+          { "attribute": "dueDate" },
+          { "attribute": "lastUsed" }
+        ]
+      },
+      "views": { "size": "S" }
+    }
+  },
+  "updatedAt": 1654795485625,
+  "userId": "620fa0c48e43bf296c088962"
+}

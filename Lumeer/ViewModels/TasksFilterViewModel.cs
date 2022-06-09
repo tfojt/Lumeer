@@ -1,8 +1,10 @@
 ﻿using Lumeer.Models;
 using Lumeer.Models.Rest;
+using Lumeer.Models.Rest.Enums;
 using Lumeer.Services;
 using Lumeer.Utils;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace Lumeer.ViewModels
     public class TasksFilterViewModel : BaseViewModel
     {
         public event EmptyEventHandler TasksFilterChanged;
+        public event EmptyEventHandler GroupByChanged;
 
         private readonly INavigationService _navigationService;
         private readonly IAlertService _alertService;
@@ -104,6 +107,12 @@ namespace Lumeer.ViewModels
             set => SetValue(ref _includeSubItems, value);
         }
 
+        public List<TaskTableAttribute> GroupByAttributes { get; set; }
+
+        private TaskTableAttribute _originalGroupByAttribute;
+
+        public TaskTableAttribute SelectedGroupByAttribute { get; set; }
+
         public ICommand ClearSelectedTableCmd => new Command(ClearSelectedTable);
 
         private TasksFilterSettings _tasksFilterSettings;
@@ -126,6 +135,18 @@ namespace Lumeer.ViewModels
             _selectedTable = Session.Instance.CurrentTaskTable;
 
             IncludeSubItems = tasksFilterSettings.IncludeSubItems;
+
+            GroupByAttributes = new List<TaskTableAttribute>
+            {
+                TaskTableAttribute.None,
+                TaskTableAttribute.Assignee,
+                TaskTableAttribute.DueDate,
+                TaskTableAttribute.Priority,
+                TaskTableAttribute.State
+            };
+
+            _originalGroupByAttribute = Session.Instance.SearchConfig.Config.Search.Documents.GroupBy ?? TaskTableAttribute.None;
+            SelectedGroupByAttribute = _originalGroupByAttribute;
         }
 
         private async void SelectedOrganizationChanged()
@@ -166,6 +187,7 @@ namespace Lumeer.ViewModels
                 _workspaceChanged = true;
 
                 await Session.Instance.LoadLinkTypes();
+                await Session.Instance.LoadConfigs();
                 await LoadTables();
             }
             catch (Exception ex)
@@ -191,15 +213,21 @@ namespace Lumeer.ViewModels
             SelectedTable = null;
         }
 
-        public void CheckTasksFilterSettingsChanged()
+        public async Task CheckTasksFilterSettingsChanged()
         {
             bool includeSubItemsChanged = CheckIncludeSubItemsChanged();
 
             bool tableChanged = CheckSelectedTableChanged();
 
+            bool groupByChanged = await CheckSelectedGroupByAttributeChanged();
+
             if (includeSubItemsChanged || tableChanged || _workspaceChanged)
             {
                 TasksFilterChanged?.Invoke();
+            }
+            else if (groupByChanged)
+            {
+                GroupByChanged.Invoke();
             }
         }
 
@@ -238,6 +266,30 @@ namespace Lumeer.ViewModels
 
                 var stem = new Stem(_selectedTable);
                 _tasksFilterSettings.TasksFilter.Stems.Add(stem);
+            }
+
+            return true;
+        }
+
+        private async Task<bool> CheckSelectedGroupByAttributeChanged()
+        {
+            if (_originalGroupByAttribute == SelectedGroupByAttribute)
+            {
+                return false;
+            }
+
+            Session.Instance.SearchConfig.Config.Search.Documents.GroupBy = SelectedGroupByAttribute != TaskTableAttribute.None ?
+                    (TaskTableAttribute?)SelectedGroupByAttribute :
+                    null;
+
+            try
+            {
+                await ApiClient.Instance.ChangeSearchConfig(Session.Instance.SearchConfig);
+            }
+            catch (Exception ex)
+            {
+                await _alertService.DisplayAlert("Error", "Sorry, there was an error while changing Group By attribute", "Ok", ex);
+                return false;
             }
 
             return true;

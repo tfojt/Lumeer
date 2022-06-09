@@ -52,13 +52,15 @@
             <ListView 
                 x:Name="listView"
                 Grid.Row="1"
-                ItemsSource="{Binding DisplayedTasks}"
+                ItemsSource="{Binding DisplayedTaskGroups}"
                 SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
                 IsPullToRefreshEnabled="True"
                 RefreshCommand="{Binding RefreshTasksCmd}"
-                IsRefreshing="{Binding IsRefreshingTasks}"
+                IsRefreshing="{Binding IsRefreshingTasks, Mode=TwoWay}"
                 HasUnevenRows="True"
-                SeparatorVisibility="Default">
+                SeparatorVisibility="Default"
+                GroupDisplayBinding="{Binding Name}"
+                IsGroupingEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

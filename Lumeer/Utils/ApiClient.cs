@@ -138,6 +138,12 @@ namespace Lumeer.Utils
             return await SendRequestGetContent<List<LinkType>>(HttpMethod.Get, uri);
         }
         
+        public async Task<List<DefaultConfig>> GetDefaultConfigs()
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/views/defaultConfigs/all";
+            return await SendRequestGetContent<List<DefaultConfig>>(HttpMethod.Get, uri);
+        }
+        
         public async Task<List<Models.Rest.Task>> GetActualTasks(params string[] taskIds)
         {
             string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/data/documents";
@@ -285,6 +291,13 @@ namespace Lumeer.Utils
             };
             
             return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Put, uri, payload);
+        }
+        
+        public async Task<HttpResponseMessage> ChangeSearchConfig(SearchConfig searchConfig)
+        {
+            string uri = $"organizations/{Session.Instance.CurrentOrganization.Id}/projects/{Session.Instance.CurrentProject.Id}/views/defaultConfigs/config";
+
+            return await SendRequestAndEnsureSuccessStatusCode(HttpMethod.Put, uri, searchConfig);
         }
 
         public async Task<HttpResponseMessage> DeleteNotification(Notification notification)

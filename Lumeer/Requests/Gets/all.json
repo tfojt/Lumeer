@@ -1,5 +1,182 @@
-//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/views/defaultConfigs/all
+//https://get.lumeer.io/lumeer-engine/rest/
+  //organizations/620fa0c48e43bf296c088963/projects/621fb8f6d508224e0888e786/views/defaultConfigs/all
+
 [
+  {
+    "key": "default",
+    "perspective": "search",
+    "config": {
+      "search": {
+        "searchTab": "tasks",
+        "documents": {
+          "size": "S",
+          "expandedIds": [ "621fb8f9d508224e0888e799" ],
+          "groupBy": "priority",
+          "sortBy": [
+            {
+              "attribute": "priority",
+              "type": "desc"
+            },
+            { "attribute": "dueDate" },
+            { "attribute": "lastUsed" }
+          ]
+        },
+        "views": { "size": "S" }
+      }
+    },
+    "updatedAt": 1654443847756,
+    "userId": "620fa0c48e43bf296c088962"
+  },
+  {
+    "key": "621fb8f9d508224e0888e795",
+    "perspective": "table",
+    "config": {
+      "table": {
+        "parts": [
+          {
+            "collectionId": "621fb8f9d508224e0888e795",
+            "columns": [
+              {
+                "type": "compound",
+                "attributeIds": [ "a1" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1651152930787:0.29219413482158063"
+              },
+              {
+                "type": "compound",
+                "correlationId": "1651417475971:0.7096765569131422",
+                "attributeIds": [ "a2" ],
+                "children": [],
+                "width": 100
+              }
+            ]
+          }
+        ],
+        "rows": []
+      }
+    },
+    "updatedAt": 1651417489842,
+    "userId": "620fa0c48e43bf296c088962"
+  },
+  {
+    "key": "621fb8f9d508224e0888e794",
+    "perspective": "table",
+    "config": {
+      "table": {
+        "parts": [
+          {
+            "collectionId": "621fb8f9d508224e0888e794",
+            "columns": [
+              {
+                "type": "compound",
+                "attributeIds": [ "a1" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.5782648389584164"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a2" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.17195553853847878"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a3" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.02535924243011567"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a4" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.9213412709753395"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a5" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.28475578374721056"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a6" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190532:0.21781689905455726"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a7" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190533:0.15803984893576706"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a8" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190533:0.6909867149426747"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a9" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190533:0.959606459934131"
+              },
+              {
+                "type": "compound",
+                "attributeIds": [ "a10" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1650113190533:0.33536375341282976"
+              }
+            ]
+          }
+        ],
+        "rows": []
+      }
+    },
+    "updatedAt": 1650113191728,
+    "userId": "620fa0c48e43bf296c088962"
+  },
+  {
+    "key": "628f83efaff2314cdb15e9a4",
+    "perspective": "table",
+    "config": {
+      "table": {
+        "parts": [
+          {
+            "collectionId": "628f83efaff2314cdb15e9a4",
+            "columns": [
+              {
+                "type": "compound",
+                "attributeIds": [ "a1" ],
+                "children": [],
+                "width": 100,
+                "correlationId": "1653572635564:0.21854077591091547"
+              }
+            ]
+          }
+        ],
+        "rows": []
+      }
+    },
+    "updatedAt": 1653572636646,
+    "userId": "620fa0c48e43bf296c088962"
+  }
+]
+
+
+//http://localhost:8080/lumeer-engine/rest/organizations/621636e75eed7129e47d119c/projects/62305fe17ba59b6cf5da1835/views/defaultConfigs/all
+/*[
   {
     "key": "default",
     "perspective": "search",
@@ -131,4 +308,4 @@
     "updatedAt": 1648572179012,
     "userId": "621636e75eed7129e47d119b"
   }
-]
+]*/

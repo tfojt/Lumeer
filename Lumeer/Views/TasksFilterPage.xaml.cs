@@ -18,9 +18,9 @@ namespace Lumeer.Views
             BindingContext = TasksFilterViewModel;
         }
 
-        protected override void OnDisappearing()
+        protected async override void OnDisappearing()
         {
-            TasksFilterViewModel.CheckTasksFilterSettingsChanged();
+            await TasksFilterViewModel.CheckTasksFilterSettingsChanged();
         }
     }
 }

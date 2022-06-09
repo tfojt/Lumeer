@@ -39,6 +39,10 @@ namespace Lumeer.Utils
 
         public List<LinkType> LinkTypes { get; set; }
 
+        public List<DefaultConfig> DefaultConfigs { get; set; }
+
+        public SearchConfig SearchConfig { get; set; }
+
         static Session()
         {
             Instance = new Session();
@@ -58,6 +62,7 @@ namespace Lumeer.Utils
             await LoadUsers();
             await LoadSelectionLists();
             await LoadLinkTypes();
+            await LoadConfigs();
         }
 
         public async Task LoadOrganizations()
@@ -88,6 +93,14 @@ namespace Lumeer.Utils
         public async Task LoadLinkTypes()
         {
             LinkTypes = await ApiClient.Instance.GetLinkTypes();
+        }
+
+        public async Task LoadConfigs()
+        {
+            DefaultConfigs = await ApiClient.Instance.GetDefaultConfigs();
+
+            var defaultSearchConfig = DefaultConfigs.Last(dc => dc.Perspective == PerspectiveType.Search);
+            SearchConfig = new SearchConfig(defaultSearchConfig);
         }
     }
 }

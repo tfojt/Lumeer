@@ -24,7 +24,7 @@ namespace Lumeer.ViewModels
 
         public List<TaskItem> OriginalTasks { get; set; } = new List<TaskItem>();
 
-        public ObservableCollection<TaskItem> DisplayedTasks { get; set; } = new ObservableCollection<TaskItem>();
+        public ObservableCollection<TaskGroup> DisplayedTaskGroups { get; set; } = new ObservableCollection<TaskGroup>();
 
         private string _searchedText;
         public string SearchedText
@@ -94,7 +94,19 @@ namespace Lumeer.ViewModels
         {
             var taskItem = OriginalTasks.Single(t => t.Task == task);
             OriginalTasks.Remove(taskItem);
-            DisplayedTasks.Remove(taskItem);
+
+            foreach (var taskGroup in DisplayedTaskGroups)
+            {
+                for (int i = 0; i < taskGroup.Count; i++)
+                {
+                    var currentTaskItem = taskGroup[i];
+                    if (currentTaskItem == taskItem)
+                    {
+                        taskGroup.RemoveAt(i);
+                        return;
+                    }
+                }
+            }
         }
 
         private async void TaskDetailViewModel_TaskChangesSaved(Models.Rest.Task task)
@@ -124,8 +136,14 @@ namespace Lumeer.ViewModels
         {
             var tasksFilterPage = new TasksFilterPage(_tasksFilterSettings);
             tasksFilterPage.TasksFilterViewModel.TasksFilterChanged += TasksFilterViewModel_TasksFilterChanged;
+            tasksFilterPage.TasksFilterViewModel.GroupByChanged += TasksFilterViewModel_GroupByChanged;
 
             _navigationService.PushAsync(tasksFilterPage);
+        }
+
+        private void TasksFilterViewModel_GroupByChanged()
+        {
+            FilterDisplayedTasks();
         }
 
         private async void TasksFilterViewModel_TasksFilterChanged()
@@ -140,10 +158,11 @@ namespace Lumeer.ViewModels
 
         private void FilterDisplayedTasks()
         {
-            DisplayedTasks.Clear();
+            DisplayedTaskGroups.Clear();
 
             bool shouldSearch = !string.IsNullOrEmpty(SearchedText);
 
+            var tasksToDisplay = new List<TaskItem>();
             foreach (var taskItem in OriginalTasks)
             {
                 foreach (object value in taskItem.Task.Data.Values)
@@ -158,10 +177,85 @@ namespace Lumeer.ViewModels
                         continue;
                     }
 
-                    DisplayedTasks.Add(taskItem);
+                    tasksToDisplay.Add(taskItem);
                     break;
                 }
             }
+
+            if (!Session.Instance.SearchConfig.Config.Search.Documents.GroupBy.HasValue)
+            {
+                var taskGroup = new TaskGroup(TaskGroup.ALL_GROUP_NAME, tasksToDisplay);
+                DisplayedTaskGroups.Add(taskGroup);
+            }
+            else
+            {
+                var othersGroup = new TaskGroup(TaskGroup.OTHERS_GROUP_NAME);
+
+                foreach (var taskItem in tasksToDisplay)
+                {
+                    if (TryGetGroupName(taskItem, out string groupName))
+                    {
+                        var group = DisplayedTaskGroups.SingleOrDefault(g => g.Name == groupName);
+                        if (group == null)
+                        {
+                            group = new TaskGroup(groupName);
+                            DisplayedTaskGroups.Add(group);
+                        }
+
+                        group.Add(taskItem);
+                    }
+                    else
+                    {
+                        othersGroup.Add(taskItem);
+                    }
+                }
+
+                // So 'Others' group is displayed as last group
+                if (othersGroup.Any())
+                {
+                    DisplayedTaskGroups.Add(othersGroup);
+                }
+            }
+        }
+
+        private bool TryGetGroupName(TaskItem taskItem, out string groupName)
+        {
+            var table = Session.Instance.TaskTables.Single(t => t.Id == taskItem.Task.CollectionId);
+
+            string groupByAttributeId = null;
+            switch (Session.Instance.SearchConfig.Config.Search.Documents.GroupBy.Value)
+            {
+                case Models.Rest.Enums.TaskTableAttribute.Assignee:
+                    groupByAttributeId = "assigneeAttributeId";
+                    break;
+                case Models.Rest.Enums.TaskTableAttribute.DueDate:
+                    groupByAttributeId = "dueDateAttributeId";
+                    break;
+                case Models.Rest.Enums.TaskTableAttribute.State:
+                    groupByAttributeId = "stateAttributeId";
+                    break;
+                case Models.Rest.Enums.TaskTableAttribute.Priority:
+                    groupByAttributeId = "priorityAttributeId";
+                    break;
+                default:
+                    break;
+            }
+
+            string taskAttributeId = (string)table.PurposeMetaData[groupByAttributeId];
+            if (taskAttributeId == null || !taskItem.Task.Data.TryGetValue(taskAttributeId, out var value))
+            {
+                groupName = null;
+                return false;
+            }
+
+            groupName = value?.ToString();
+            if (string.IsNullOrEmpty(groupName))
+            {
+                groupName = null;
+                return false;
+            }
+
+            return true;
         }
 
         private async Task RefreshTasks()
@@ -180,7 +274,7 @@ namespace Lumeer.ViewModels
                     OriginalTasks.Add(taskItem);
                 }
 
-                FilterDisplayedTasks();
+                await Device.InvokeOnMainThreadAsync(FilterDisplayedTasks);
             }
             catch (Exception ex)
             {

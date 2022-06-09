@@ -72,6 +72,18 @@
                             <Switch HorizontalOptions="Start" Grid.Column="1" IsToggled="{Binding IncludeSubItems}"/>
                         </Grid>
                     </ViewCell>
+                    <ViewCell>
+                        <Grid Margin="16, 0, 10, 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" VerticalOptions="Center" Text="Group By"/>
+                            <Picker Grid.Column="1"
+                                    ItemsSource="{Binding GroupByAttributes}"
+                                    SelectedItem="{Binding SelectedGroupByAttribute}"/>
+                        </Grid>
+                    </ViewCell>
                 </TableSection>
             </TableRoot>
         </TableView>
